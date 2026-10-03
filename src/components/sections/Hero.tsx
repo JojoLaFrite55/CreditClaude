@@ -1,89 +1,94 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { ArrowDownRight, Download } from "lucide-react";
+import { useRef } from "react";
 import { Terminal } from "@/components/sections/Terminal";
 import { Container } from "@/components/ui/Container";
+import { KineticText } from "@/components/ui/KineticText";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { duration, easing, variants } from "@/config/ui";
+import { Reveal } from "@/components/ui/Reveal";
+import { duration, easing } from "@/config/ui";
 import { profile } from "@/content/profile";
 
-const letter = {
-  hidden: { y: "110%", opacity: 0 },
-  visible: { y: "0%", opacity: 1, transition: { duration: duration.slow, ease: easing.out } },
-};
-
-function AnimatedWord({ word, className }: { word: string; className?: string }) {
-  return (
-    <motion.span
-      className={`inline-flex overflow-hidden pb-1 ${className ?? ""}`}
-      variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.035 } } }}
-    >
-      {Array.from(word).map((char, index) => (
-        <motion.span key={`${char}-${index}`} variants={letter} className="inline-block">
-          {char === " " ? " " : char}
-        </motion.span>
-      ))}
-    </motion.span>
-  );
-}
+const [middleName, lastName] = profile.lastName.split(" ");
 
 export function Hero() {
-  return (
-    <Container as="section" className="relative grid min-h-[92dvh] items-center gap-14 pt-32 pb-16 grid-cols-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
-      <motion.div initial="hidden" animate="visible" variants={variants.stagger} className="flex flex-col gap-7">
-        {profile.availability.open && (
-          <motion.span
-            variants={variants.fadeUp}
-            className="inline-flex w-fit items-center gap-2.5 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-xs text-accent-soft"
-          >
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-pulse-ring rounded-full bg-accent" />
-              <span className="relative inline-flex size-2 rounded-full bg-accent" />
-            </span>
-            {profile.availability.label}
-          </motion.span>
-        )}
+  const ref = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const factor = reduceMotion ? 0 : 1;
+  const slow = useTransform(scrollYProgress, [0, 1], [0, 140 * factor]);
+  const fast = useTransform(scrollYProgress, [0, 1], [0, -220 * factor]);
+  const drift = useTransform(scrollYProgress, [0, 1], [0, -120 * factor]);
+  const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-        <h1 className="font-display text-[2.6rem] leading-[1.05] font-semibold tracking-tight sm:text-6xl lg:text-7xl">
+  return (
+    <section ref={ref} className="relative min-h-[100svh] overflow-hidden pt-28 pb-16 sm:pt-32">
+      <Container className="relative grid grid-cols-12 gap-x-4">
+        <motion.div style={{ y: slow }} className="col-span-12 flex items-center gap-3 font-mono text-[11px] tracking-[0.25em] text-ink/60 uppercase sm:col-span-6">
+          {profile.availability.open && (
+            <>
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
+                <span className="relative inline-flex size-2 rounded-full bg-accent" />
+              </span>
+              <span>{profile.availability.label}</span>
+            </>
+          )}
+        </motion.div>
+
+        <h1 className="relative col-span-12 mt-10 font-display leading-[0.8] font-extrabold tracking-[-0.065em] uppercase sm:mt-6">
           <span className="sr-only">{profile.fullName}</span>
-          <span aria-hidden className="flex flex-col">
-            <AnimatedWord word={profile.firstName} />
-            <span className="flex flex-wrap gap-x-[0.25em]">
-              {profile.lastName.split(" ").map((word, index, words) => (
-                <AnimatedWord key={word} word={word} className={index === words.length - 1 ? "text-gradient" : undefined} />
-              ))}
-            </span>
-          </span>
+          <motion.span aria-hidden style={{ y: drift }} className="block">
+            <KineticText as="span" by="char" text={profile.firstName} immediate delay={0.3} className="block text-[19vw] text-ink sm:text-[19vw]" />
+          </motion.span>
+          <motion.span aria-hidden style={{ y: fast }} className="relative z-10 -mt-[2vw] block pl-[2vw] sm:-mt-[3.5vw] sm:pl-[16vw]">
+            <KineticText as="span" by="char" text={middleName ?? ""} immediate delay={0.5} className="block text-[10vw] text-accent sm:text-[9vw]" />
+          </motion.span>
+          <motion.span aria-hidden style={{ y: slow }} className="-mt-[1vw] block text-right">
+            <KineticText as="span" by="char" text={lastName ?? ""} immediate delay={0.7} className="text-outline block text-[9.6vw] sm:text-[9.6vw]" />
+          </motion.span>
         </h1>
 
-        <motion.div variants={variants.fadeUp} className="space-y-2">
-          <p className="font-display text-xl font-medium text-ink sm:text-2xl">{profile.role}</p>
-          <p className="font-mono text-sm text-accent">{profile.education}</p>
+        <motion.div style={{ opacity: fade }} className="col-span-12 mt-12 grid grid-cols-12 gap-x-4 gap-y-10 sm:mt-4">
+          <div className="col-span-12 space-y-5 sm:col-span-6 lg:col-span-4 lg:col-start-2">
+            <Reveal delay={1.1}>
+              <p className="font-mono text-[11px] tracking-[0.25em] text-accent uppercase">/ {profile.role}</p>
+              <p className="mt-2 font-mono text-[11px] tracking-[0.2em] text-ink/50 uppercase">{profile.education}</p>
+            </Reveal>
+            <KineticText
+              as="p"
+              text={profile.tagline}
+              delay={1.2}
+              immediate
+              className="max-w-md font-display text-2xl leading-[1.05] font-bold tracking-tight text-ink sm:text-3xl"
+            />
+            <Reveal delay={1.5} className="flex flex-wrap items-center gap-3 pt-3">
+              <MagneticButton href="/projets">
+                Voir mes projets <ArrowDownRight className="size-4" />
+              </MagneticButton>
+              <MagneticButton href={profile.cvPath} download variant="secondary">
+                CV <Download className="size-4" />
+              </MagneticButton>
+            </Reveal>
+          </div>
+
+          <motion.div
+            className="col-span-12 sm:col-span-6 lg:col-span-5 lg:col-start-8 lg:-mt-24"
+            initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
+            animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
+            transition={{ duration: duration.reveal, ease: easing.expo, delay: 1.3 }}
+          >
+            <Terminal lines={profile.terminal} />
+          </motion.div>
         </motion.div>
+      </Container>
 
-        <motion.p variants={variants.fadeUp} className="max-w-xl text-lg text-pretty text-muted">
-          {profile.tagline}
-        </motion.p>
-
-        <motion.div variants={variants.fadeUp} className="flex flex-wrap items-center gap-4 pt-2">
-          <MagneticButton href="/projets">
-            Voir mes projets <ArrowRight className="size-4" />
-          </MagneticButton>
-          <MagneticButton href={profile.cvPath} download variant="secondary">
-            Télécharger mon CV <Download className="size-4" />
-          </MagneticButton>
-        </motion.div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 40, rotateX: 12 }}
-        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-        transition={{ duration: 1, ease: easing.out, delay: 0.35 }}
-        style={{ transformPerspective: 1200 }}
-      >
-        <Terminal lines={profile.terminal} />
-      </motion.div>
-    </Container>
+      <div className="absolute bottom-6 left-4 hidden items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-ink/40 uppercase sm:left-8 sm:flex lg:left-12">
+        <span className="block h-10 w-px origin-top animate-pulse bg-accent" />
+        scroll
+      </div>
+    </section>
   );
 }

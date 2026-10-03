@@ -14,7 +14,7 @@ export function AnimatedLink({ href, children, className, active = false }: Anim
     <span
       aria-hidden
       className={cn(
-        "absolute inset-x-0 -bottom-0.5 h-px origin-right scale-x-0 bg-gradient-to-r from-accent to-cta transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:origin-left group-hover:scale-x-100",
+        "absolute inset-x-0 -bottom-0.5 h-px origin-right scale-x-0 bg-gradient-to-r from-accent to-accent-soft transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:origin-left group-hover:scale-x-100",
         active && "scale-x-100",
       )}
     />

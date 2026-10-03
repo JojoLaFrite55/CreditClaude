@@ -1,14 +1,17 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { useLenis } from "lenis/react";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrandLink } from "@/components/layout/BrandLink";
+import { LocalClock } from "@/components/layout/LocalClock";
 import { TransitionLink } from "@/components/transition/TransitionLink";
-import { MagneticButton } from "@/components/ui/MagneticButton";
+import { GlitchText } from "@/components/ui/GlitchText";
+import { Magnetic } from "@/components/ui/Magnetic";
 import { navigation } from "@/config/site";
-import { duration, easing, springs } from "@/config/ui";
+import { duration, easing } from "@/config/ui";
+import { profile } from "@/content/profile";
 import { cn } from "@/lib/cn";
 
 function isActive(pathname: string, href: string) {
@@ -17,115 +20,138 @@ function isActive(pathname: string, href: string) {
 
 export function Navbar() {
   const pathname = usePathname();
+  const lenis = useLenis();
   const { scrollY } = useScroll();
-  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
-  const links = navigation.filter((item) => item.href !== "/contact");
 
-  useMotionValueEvent(scrollY, "change", (value) => setScrolled(value > 24));
+  useMotionValueEvent(scrollY, "change", (value) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    setHidden(value > 160 && value > previous && !open);
+  });
+
+  useEffect(() => {
+    if (!lenis) return;
+    if (open) lenis.stop();
+    else lenis.start();
+  }, [lenis, open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
       <motion.nav
-        initial={{ y: -40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: duration.slow, ease: easing.out }}
-        className={cn(
-          "mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-4 py-3 transition-all duration-500 sm:px-5",
-          scrolled || open ? "glass shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]" : "border border-transparent",
-        )}
         aria-label="Navigation principale"
+        initial={{ y: "-120%" }}
+        animate={{ y: hidden ? "-120%" : "0%" }}
+        transition={{ duration: duration.base, ease: easing.out }}
+        className="pointer-events-auto mx-auto grid max-w-[1600px] grid-cols-12 items-start gap-x-4 px-4 pt-5 mix-blend-difference sm:px-8 lg:px-12"
       >
-        <BrandLink onNavigate={() => setOpen(false)} />
+        <div className="col-span-8 sm:col-span-4 lg:col-span-3">
+          <BrandLink onNavigate={() => setOpen(false)} />
+        </div>
 
-        <ul className="hidden items-center gap-1 md:flex">
-          {links.map((item) => {
+        <div className="hidden font-mono text-[11px] leading-relaxed tracking-[0.18em] text-ink/60 uppercase lg:col-span-3 lg:block">
+          <p>{profile.location} — FR</p>
+          <p className="text-accent">
+            <LocalClock />
+          </p>
+        </div>
+
+        <ul className="hidden gap-x-8 gap-y-1 sm:col-span-6 sm:flex sm:flex-wrap sm:justify-end lg:col-span-5">
+          {navigation.map((item, index) => {
             const active = isActive(pathname, item.href);
             return (
-              <li key={item.href} className="relative">
-                <TransitionLink
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "relative z-10 block rounded-full px-4 py-2 text-sm transition-colors",
-                    active ? "text-ink" : "text-muted hover:text-ink",
-                  )}
-                >
-                  {item.label}
-                </TransitionLink>
-                {active && (
-                  <motion.span
-                    layoutId="nav-active"
-                    transition={springs.layout}
-                    className="absolute inset-0 rounded-full border border-accent/30 bg-accent/10"
-                  />
-                )}
+              <li key={item.href}>
+                <Magnetic strength={0.25}>
+                  <TransitionLink
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className="glitch-host group flex items-baseline gap-1.5 py-1 font-mono text-xs tracking-[0.16em] uppercase"
+                  >
+                    <span className="text-[9px] text-accent">0{index + 1}</span>
+                    <span className={cn("relative", active ? "text-ink" : "text-ink/55 transition-colors group-hover:text-ink")}>
+                      <GlitchText text={item.label} />
+                      {active && (
+                        <motion.span
+                          layoutId="nav-active"
+                          transition={{ duration: duration.base, ease: easing.inOut }}
+                          className="absolute -bottom-1 left-0 h-px w-full bg-accent"
+                        />
+                      )}
+                    </span>
+                  </TransitionLink>
+                </Magnetic>
               </li>
             );
           })}
         </ul>
 
-        <div className="hidden md:block">
-          <MagneticButton href="/contact" className="px-5 py-2.5">
-            Me contacter
-          </MagneticButton>
+        <div className="col-span-4 flex justify-end sm:col-span-2 sm:hidden lg:col-span-1 lg:flex">
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+            className="flex h-10 items-center gap-3 font-mono text-[11px] tracking-[0.2em] text-ink uppercase"
+          >
+            <span className="hidden sm:inline">{open ? "Close" : "Menu"}</span>
+            <span className="relative block h-3 w-7">
+              <motion.span
+                className="absolute top-0 left-0 h-px w-full bg-ink"
+                animate={open ? { top: "50%", rotate: 45 } : { top: "0%", rotate: 0 }}
+                transition={{ duration: duration.fast, ease: easing.inOut }}
+              />
+              <motion.span
+                className="absolute right-0 bottom-0 h-px bg-ink"
+                animate={open ? { bottom: "50%", rotate: -45, width: "100%" } : { bottom: "0%", rotate: 0, width: "60%" }}
+                transition={{ duration: duration.fast, ease: easing.inOut }}
+              />
+            </span>
+          </button>
         </div>
-
-        <button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-          className="grid size-10 place-items-center rounded-xl border border-line text-ink md:hidden"
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span
-              key={open ? "close" : "open"}
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: duration.fast }}
-            >
-              {open ? <X className="size-5" /> : <Menu className="size-5" />}
-            </motion.span>
-          </AnimatePresence>
-        </button>
       </motion.nav>
 
       <AnimatePresence>
         {open && (
           <motion.div
             id="mobile-menu"
-            initial={{ opacity: 0, y: -12, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.98 }}
-            transition={{ duration: duration.fast, ease: easing.out }}
-            className="glass mx-auto mt-2 max-w-6xl rounded-2xl p-3 md:hidden"
+            className="pointer-events-auto fixed inset-0 -z-10 flex flex-col justify-end bg-carbon px-4 pt-28 pb-10 sm:px-8"
+            initial={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
+            animate={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 82%)" }}
+            exit={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
+            transition={{ duration: duration.slow, ease: easing.expo }}
           >
             <ul className="flex flex-col">
               {navigation.map((item, index) => (
-                <motion.li
-                  key={item.href}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05, duration: duration.fast }}
-                >
-                  <TransitionLink
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    aria-current={isActive(pathname, item.href) ? "page" : undefined}
-                    className={cn(
-                      "flex items-center justify-between rounded-xl px-4 py-3 text-base",
-                      isActive(pathname, item.href) ? "bg-accent/10 text-ink" : "text-muted",
-                    )}
+                <li key={item.href} className="overflow-hidden border-b border-line">
+                  <motion.div
+                    initial={{ y: "110%" }}
+                    animate={{ y: "0%" }}
+                    exit={{ y: "110%" }}
+                    transition={{ duration: duration.base, ease: easing.out, delay: 0.15 + index * 0.05 }}
                   >
-                    {item.label}
-                    <span className="font-mono text-xs text-accent">0{index + 1}</span>
-                  </TransitionLink>
-                </motion.li>
+                    <TransitionLink
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      aria-current={isActive(pathname, item.href) ? "page" : undefined}
+                      className="flex items-baseline justify-between py-3"
+                      style={{ paddingLeft: `${(index % 3) * 8}%` }}
+                    >
+                      <span
+                        className={cn(
+                          "font-display text-[10vw] leading-none font-extrabold tracking-[-0.05em] uppercase sm:text-[7vw]",
+                          isActive(pathname, item.href) ? "text-accent" : "text-ink",
+                        )}
+                      >
+                        {item.label}
+                      </span>
+                      <span className="font-mono text-xs text-muted">0{index + 1}</span>
+                    </TransitionLink>
+                  </motion.div>
+                </li>
               ))}
             </ul>
+            <p className="mt-8 font-mono text-xs tracking-[0.2em] text-muted uppercase">{profile.email}</p>
           </motion.div>
         )}
       </AnimatePresence>

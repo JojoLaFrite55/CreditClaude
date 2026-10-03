@@ -6,38 +6,37 @@ import { statusLabels } from "@/content/projects";
 import type { Project } from "@/types/content";
 
 const statusTone = {
-  "en-cours": "cta",
+  "en-cours": "solid",
   termines: "accent",
   futurs: "neutral",
 } as const;
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <TiltCard>
-      <article className="flex h-full flex-col gap-5 p-5">
+      <article className="flex h-full flex-col" data-cursor="label" data-cursor-label="Lab">
         <ProjectPreview preview={project.preview} />
-        <div className="flex items-center justify-between gap-3">
-          <span className="grid size-10 place-items-center rounded-lg border border-accent/30 bg-accent/10 text-accent">
-            <Icon name={project.icon} className="size-5" />
-          </span>
-          <div className="flex items-center gap-2">
-            {project.placeholder && (
-              <span className="font-mono text-[10px] tracking-wider text-muted/70 uppercase">Exemple</span>
-            )}
-            <Tag tone={statusTone[project.status]}>{statusLabels[project.status]}</Tag>
+        <div className="flex flex-1 flex-col gap-5 p-5 sm:p-6">
+          <div className="flex items-center justify-between gap-3 font-mono text-[10px] tracking-[0.25em] text-muted uppercase">
+            <span className="flex items-center gap-2">
+              <Icon name={project.icon} className="size-4 text-accent" />
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="flex items-center gap-2">
+              {project.placeholder && <span className="text-ink/40">Exemple</span>}
+              <Tag tone={statusTone[project.status]}>{statusLabels[project.status]}</Tag>
+            </span>
           </div>
-        </div>
-        <div className="space-y-2">
-          <h3 className="font-display text-xl font-semibold">{project.title}</h3>
+          <h3 className="font-display text-3xl leading-[0.9] font-extrabold tracking-[-0.04em] uppercase sm:text-4xl">{project.title}</h3>
           <p className="text-sm leading-relaxed text-muted">{project.summary}</p>
+          <ul className="mt-auto flex flex-wrap gap-1.5 pt-2">
+            {project.tags.map((tag) => (
+              <li key={tag}>
+                <Tag>{tag}</Tag>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className="mt-auto flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <li key={tag}>
-              <Tag>{tag}</Tag>
-            </li>
-          ))}
-        </ul>
       </article>
     </TiltCard>
   );

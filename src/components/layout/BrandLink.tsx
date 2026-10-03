@@ -7,12 +7,12 @@ import { profile } from "@/content/profile";
 
 export function BrandLink({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <TransitionLink href="/" onClick={onNavigate} aria-label="Retour à l'accueil" className="flex items-center gap-3">
+    <TransitionLink href="/" onClick={onNavigate} aria-label="Retour à l'accueil" className="inline-flex items-center gap-3" data-cursor="magnetic">
       <motion.span initial="rest" animate="rest" whileHover="hover" className="flex items-center gap-3">
-        <Logo />
-        <span className="hidden flex-col leading-tight sm:flex">
-          <span className="font-display text-sm font-semibold tracking-tight">{profile.fullName}</span>
-          <span className="font-mono text-[11px] text-muted">sys &amp; net admin</span>
+        <Logo className="size-8" />
+        <span className="flex flex-col font-mono text-[11px] leading-tight tracking-[0.16em] uppercase">
+          <span className="text-ink">{profile.firstName} T.C.</span>
+          <span className="text-ink/50">sys / net</span>
         </span>
       </motion.span>
     </TransitionLink>

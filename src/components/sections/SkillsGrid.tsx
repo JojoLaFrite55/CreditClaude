@@ -2,24 +2,28 @@
 
 import { motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
-import { Stagger, StaggerItem } from "@/components/ui/Stagger";
-import { TiltCard } from "@/components/ui/TiltCard";
-import { easing, variants, viewport } from "@/config/ui";
+import { KineticText } from "@/components/ui/KineticText";
+import { Magnetic } from "@/components/ui/Magnetic";
+import { Parallax } from "@/components/ui/Parallax";
+import { duration, easing, variants, viewport } from "@/config/ui";
+import { cn } from "@/lib/cn";
 import type { CefrLevel, Language, SkillGroup } from "@/types/content";
 
 const levels: CefrLevel[] = ["A1", "A2", "B1", "B2", "C1", "C2"];
+
+const offsets = ["lg:col-start-1", "lg:col-start-4", "lg:col-start-2", "lg:col-start-5"];
 
 function LanguageMeter({ language }: { language: Language }) {
   const reached = levels.indexOf(language.level);
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-baseline justify-between">
-        <span className="font-medium">{language.name}</span>
-        <span className="font-mono text-sm text-accent">{language.level}</span>
+    <div className="grid grid-cols-12 items-end gap-x-4 gap-y-6">
+      <div className="col-span-12 sm:col-span-5">
+        <p className="font-mono text-[11px] tracking-[0.3em] text-accent uppercase">/ Langues</p>
+        <p className="mt-3 font-display text-5xl font-extrabold tracking-[-0.04em] uppercase">{language.name}</p>
       </div>
       <motion.div
-        className="grid grid-cols-6 gap-1.5"
+        className="col-span-12 grid grid-cols-6 sm:col-span-7"
         role="img"
         aria-label={`${language.name} : niveau ${language.level} sur l'échelle européenne`}
         initial="hidden"
@@ -27,21 +31,25 @@ function LanguageMeter({ language }: { language: Language }) {
         viewport={viewport}
       >
         {levels.map((level, index) => (
-          <div key={level} className="space-y-1.5">
-            <div className="h-2 overflow-hidden rounded-full bg-line">
-              <motion.div
-                className="h-full origin-left rounded-full bg-gradient-to-r from-accent to-accent-soft"
-                custom={index}
-                variants={{
-                  hidden: { scaleX: 0 },
-                  visible: (i: number) => ({
-                    scaleX: i <= reached ? 1 : 0,
-                    transition: { duration: 0.4, delay: 0.15 + i * 0.1, ease: easing.out },
-                  }),
-                }}
-              />
-            </div>
-            <span className={`block text-center font-mono text-[10px] ${index <= reached ? "text-ink/80" : "text-muted/50"}`}>
+          <div key={level} className="relative border-l border-line pb-1 pl-2 last:border-r">
+            <motion.div
+              className="absolute inset-x-0 bottom-0 origin-bottom bg-accent"
+              style={{ height: `${30 + index * 14}%` }}
+              custom={index}
+              variants={{
+                hidden: { scaleY: 0 },
+                visible: (i: number) => ({
+                  scaleY: i <= reached ? 1 : 0,
+                  transition: { duration: duration.base, ease: easing.out, delay: 0.1 + i * 0.08 },
+                }),
+              }}
+            />
+            <span
+              className={cn(
+                "relative block pt-20 font-display text-2xl font-extrabold sm:text-4xl",
+                index <= reached ? "text-void" : "text-ink/20",
+              )}
+            >
               {level}
             </span>
           </div>
@@ -58,54 +66,47 @@ type SkillsGridProps = {
 
 export function SkillsGrid({ groups, languages }: SkillsGridProps) {
   return (
-    <Stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-      {groups.map((group) => (
-        <StaggerItem key={group.title} className="h-full">
-          <TiltCard>
-            <div className="flex h-full flex-col gap-5 p-6">
-              <h3 className="flex items-center gap-3 font-display text-lg font-semibold">
-                <span className="grid size-10 place-items-center rounded-lg border border-accent/30 bg-accent/10 text-accent">
-                  <Icon name={group.icon} className="size-5" />
-                </span>
-                {group.title}
-              </h3>
-              <motion.ul
-                className="flex flex-wrap gap-2"
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewport}
-                variants={variants.stagger}
-              >
-                {group.items.map((item) => (
-                  <motion.li
-                    key={item}
-                    variants={variants.scaleIn}
-                    whileHover={{ y: -3, borderColor: "rgba(20,184,166,0.6)" }}
-                    className="cursor-default rounded-lg border border-line bg-obsidian/60 px-3 py-1.5 font-mono text-xs text-ink/85"
-                  >
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
+    <div className="flex flex-col gap-20">
+      <div className="grid grid-cols-12 gap-x-4 gap-y-16">
+        {groups.map((group, index) => (
+          <Parallax
+            key={group.title}
+            speed={0.05 + (index % 2) * 0.15}
+            className={cn("col-span-12 sm:col-span-6 lg:col-span-8", offsets[index % offsets.length])}
+          >
+            <div className="mb-5 flex items-center gap-3 border-b border-line pb-3">
+              <Icon name={group.icon} className="size-4 text-accent" />
+              <KineticText as="h3" text={group.title} className="font-mono text-[11px] tracking-[0.3em] text-ink/70 uppercase" />
+              <span className="ml-auto font-mono text-[10px] text-muted">{String(group.items.length).padStart(2, "0")}</span>
             </div>
-          </TiltCard>
-        </StaggerItem>
+            <motion.ul
+              className="flex flex-wrap gap-x-2 gap-y-3"
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewport}
+              variants={variants.stagger}
+            >
+              {group.items.map((item) => (
+                <motion.li key={item} variants={variants.clipUp}>
+                  <Magnetic strength={0.4}>
+                    <span
+                      data-cursor="magnetic"
+                      className="glitch-host inline-block border border-line px-4 py-2 font-display text-lg font-bold tracking-tight uppercase transition-colors duration-500 hover:border-accent hover:bg-accent hover:text-void sm:text-2xl"
+                    >
+                      <span data-text={item} className="glitch">
+                        {item}
+                      </span>
+                    </span>
+                  </Magnetic>
+                </motion.li>
+              ))}
+            </motion.ul>
+          </Parallax>
+        ))}
+      </div>
+      {languages.map((language) => (
+        <LanguageMeter key={language.name} language={language} />
       ))}
-      <StaggerItem className="h-full sm:col-span-2">
-        <div className="glass grid gap-6 rounded-2xl p-6 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-10">
-          <h3 className="flex items-center gap-3 font-display text-lg font-semibold">
-            <span className="grid size-10 place-items-center rounded-lg border border-accent/30 bg-accent/10 text-accent">
-              <Icon name="languages" className="size-5" />
-            </span>
-            Langues
-          </h3>
-          <div className="space-y-6">
-            {languages.map((language) => (
-              <LanguageMeter key={language.name} language={language} />
-            ))}
-          </div>
-        </div>
-      </StaggerItem>
-    </Stagger>
+    </div>
   );
 }

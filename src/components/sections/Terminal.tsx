@@ -10,9 +10,7 @@ type Cursor = { line: number; char: number };
 function Prompt() {
   return (
     <span className="text-accent">
-      joan@infra<span className="text-muted">:</span>
-      <span className="text-cta-soft">~</span>
-      <span className="text-muted">$</span>{" "}
+      joan@infra<span className="text-muted">:</span>~<span className="text-muted">$</span>{" "}
     </span>
   );
 }
@@ -44,14 +42,12 @@ export function Terminal({ lines }: { lines: TerminalLine[] }) {
   }, [cursor, done, lines, reduceMotion, started]);
 
   return (
-    <div className="glass overflow-hidden rounded-2xl shadow-[0_30px_80px_-30px_rgba(20,184,166,0.35)]">
-      <div className="flex items-center gap-2 border-b border-line/80 px-4 py-3">
-        <span className="size-3 rounded-full bg-danger/80" />
-        <span className="size-3 rounded-full bg-cta/80" />
-        <span className="size-3 rounded-full bg-accent/80" />
-        <span className="ml-3 font-mono text-xs text-muted">ssh joan@infra — bash</span>
+    <div className="relative border border-line bg-void/85">
+      <div className="flex items-center justify-between border-b border-line px-4 py-2.5 font-mono text-[10px] tracking-[0.2em] text-muted uppercase">
+        <span>tty1 — ssh joan@infra</span>
+        <span className="text-accent">● live</span>
       </div>
-      <div className="min-h-[248px] space-y-3 p-5 font-mono text-[13px] leading-relaxed sm:text-sm" aria-live="polite">
+      <div className="min-h-[232px] space-y-3 p-5 font-mono text-[12px] leading-relaxed sm:text-[13px]" aria-live="polite">
         {lines.map((line, index) => {
           if (index > cursor.line) return null;
           const isCurrent = index === cursor.line;
@@ -61,14 +57,10 @@ export function Terminal({ lines }: { lines: TerminalLine[] }) {
               <p className="break-words">
                 <Prompt />
                 <span className="text-ink">{typed}</span>
-                {isCurrent && <span className="ml-0.5 inline-block h-4 w-2 translate-y-0.5 animate-blink bg-accent" />}
+                {isCurrent && <span className="ml-0.5 inline-block h-3.5 w-2 translate-y-0.5 animate-blink bg-accent" />}
               </p>
               {!isCurrent && (
-                <motion.p
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="break-words text-accent-soft/90"
-                >
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="break-words text-ink/55">
                   {line.output}
                 </motion.p>
               )}
@@ -78,10 +70,11 @@ export function Terminal({ lines }: { lines: TerminalLine[] }) {
         {done && (
           <p>
             <Prompt />
-            <span className="inline-block h-4 w-2 translate-y-0.5 animate-blink bg-accent" />
+            <span className="inline-block h-3.5 w-2 translate-y-0.5 animate-blink bg-accent" />
           </p>
         )}
       </div>
+      <span aria-hidden className="absolute -top-1.5 -right-1.5 size-3 bg-accent" />
     </div>
   );
 }

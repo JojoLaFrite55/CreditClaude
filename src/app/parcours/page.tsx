@@ -20,23 +20,28 @@ export const metadata: Metadata = {
 export default function ParcoursPage() {
   return (
     <>
-      <Container as="section" className="pt-36 pb-16">
+      <Container as="section" className="pt-36 sm:pt-44">
         <SectionHeading
           as="h1"
+          index="(02)"
           eyebrow="CV & Expériences"
           title="Parcours professionnel"
+          ghost="CV"
           description="Trois expériences en entreprise, dont deux en alternance, du support utilisateur au déploiement d'infrastructures."
         />
-        <Reveal className="mb-12">
+        <Reveal className="sm:ml-[25%]">
           <MagneticButton href={profile.cvPath} download variant="secondary">
             Télécharger le CV complet <Download className="size-4" />
           </MagneticButton>
         </Reveal>
-        <ExperienceTimeline items={experiences} />
+        <div className="mt-16">
+          <ExperienceTimeline items={experiences} />
+        </div>
       </Container>
 
-      <Container as="section" className="py-16">
+      <Container as="section" className="py-24 sm:py-32">
         <SectionHeading
+          index="(03)"
           eyebrow="Stack technique"
           title="Compétences"
           description="Systèmes, virtualisation, réseau et outils que j'utilise au quotidien en entreprise et dans mon homelab."
@@ -44,8 +49,8 @@ export default function ParcoursPage() {
         <SkillsGrid groups={skillGroups} languages={languages} />
       </Container>
 
-      <Container as="section" className="py-16">
-        <SectionHeading eyebrow="Formation" title="Diplômes" />
+      <Container as="section" className="py-24 sm:py-32">
+        <SectionHeading index="(04)" eyebrow="Formation" title="Diplômes" />
         <EducationList items={diplomas} />
       </Container>
     </>

@@ -2,7 +2,7 @@
 
 Portfolio interactif d'un technicien système & réseau (BTS SIO SISR), orienté cybersécurité et infrastructures.
 
-**Stack** : Next.js 16 (App Router, SSG) · TypeScript strict · Tailwind CSS 4 · Framer Motion · Lucide · Vercel
+**Stack** : Next.js 16 (App Router, SSG) · TypeScript strict · Tailwind CSS 4 · Framer Motion · Three.js / React Three Fiber (shader GLSL) · Lenis · Vercel
 
 ## Démarrage
 
@@ -25,11 +25,12 @@ npm run dev
 src/
 ├── app/                  Routes (/, /a-propos, /parcours, /projets, /contact), SEO, OG image
 ├── components/
-│   ├── layout/           Navbar, Footer, fond animé
+│   ├── layout/           Navbar, Footer, fond WebGL + grain
 │   ├── sections/         Hero, terminal, timeline, compétences, projets, contact
 │   ├── transition/       Transitions de page (rideau + template)
-│   ├── providers/        MotionConfig + contexte de transition
-│   └── ui/               Logo SVG, bouton magnétique, carte 3D, reveal, stagger…
+│   ├── providers/        MotionConfig, smooth scroll Lenis, contexte de transition
+│   ├── webgl/            Canvas R3F + fragment shader (mesh gradient réactif à la souris)
+│   └── ui/               Curseur custom, texte cinétique, parallax, magnétique, glitch, carte 3D…
 ├── config/
 │   ├── site.ts           Métadonnées et navigation
 │   └── ui.ts             Palette, durées, easings, springs, variants d'animation

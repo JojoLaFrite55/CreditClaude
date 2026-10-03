@@ -1,40 +1,56 @@
 import { AnimatedLink } from "@/components/ui/AnimatedLink";
+import { Container } from "@/components/ui/Container";
+import { KineticText } from "@/components/ui/KineticText";
 import { navigation, siteConfig } from "@/config/site";
 import { profile } from "@/content/profile";
-import { Container } from "@/components/ui/Container";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-24 border-t border-line/70">
-      <Container className="flex flex-col gap-10 py-12 md:flex-row md:items-start md:justify-between">
-        <div className="max-w-sm space-y-3">
-          <p className="font-display text-lg font-semibold">{profile.fullName}</p>
-          <p className="text-sm text-muted">{profile.tagline}</p>
-          <p className="font-mono text-xs text-muted/70">
-            <span className="text-accent">$</span> uptime — {profile.location}, France
-          </p>
+    <footer className="relative mt-32 overflow-hidden border-t border-line">
+      <Container className="grid grid-cols-12 gap-x-4 gap-y-10 pt-14 pb-6">
+        <div className="col-span-12 space-y-3 sm:col-span-5 lg:col-span-4">
+          <p className="font-mono text-[11px] tracking-[0.3em] text-accent uppercase">[ contact ]</p>
+          <AnimatedLink href={`mailto:${profile.email}`} className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+            {profile.email}
+          </AnimatedLink>
+          <div>
+            <AnimatedLink href={`tel:${profile.phoneHref}`} className="font-mono text-sm text-muted">
+              {profile.phone}
+            </AnimatedLink>
+          </div>
         </div>
 
-        <nav aria-label="Pied de page" className="grid grid-cols-2 gap-x-12 gap-y-2 text-sm text-muted">
+        <nav aria-label="Pied de page" className="col-span-6 flex flex-col gap-1 font-mono text-xs tracking-[0.16em] text-muted uppercase sm:col-span-3 sm:col-start-7 lg:col-start-8">
           {navigation.map((item) => (
-            <AnimatedLink key={item.href} href={item.href}>
+            <AnimatedLink key={item.href} href={item.href} className="w-fit">
               {item.label}
             </AnimatedLink>
           ))}
         </nav>
 
-        <div className="flex flex-col gap-2 text-sm text-muted">
-          <AnimatedLink href={`mailto:${profile.email}`}>{profile.email}</AnimatedLink>
-          <AnimatedLink href={`tel:${profile.phoneHref}`}>{profile.phone}</AnimatedLink>
+        <div className="col-span-6 font-mono text-xs leading-relaxed text-muted sm:col-span-3 lg:col-span-2 lg:col-start-11">
+          <p className="max-w-[22ch]">{profile.tagline}</p>
+          <p className="mt-3 text-accent">{profile.location}, France</p>
         </div>
       </Container>
-      <Container className="flex flex-col gap-2 border-t border-line/50 py-6 text-xs text-muted/70 sm:flex-row sm:justify-between">
+
+      <Container className="relative">
+        <KineticText
+          as="div"
+          by="char"
+          text={profile.lastName}
+          className="font-display text-[10.5vw] leading-[0.78] font-extrabold tracking-[-0.07em] whitespace-nowrap text-ink/[0.08] uppercase lg:text-[9.6vw]"
+          stagger={0.02}
+        />
+      </Container>
+
+      <Container className="flex flex-col gap-2 border-t border-line py-5 font-mono text-[10px] tracking-[0.18em] text-muted/70 uppercase sm:flex-row sm:justify-between">
         <p>
-          © {year} {siteConfig.name}. Tous droits réservés.
+          © {year} {siteConfig.name}
         </p>
-        <p className="font-mono">Next.js · TypeScript · Framer Motion · Vercel</p>
+        <p>Next.js / R3F / GLSL / Lenis</p>
       </Container>
     </footer>
   );

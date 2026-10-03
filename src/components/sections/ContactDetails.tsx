@@ -3,25 +3,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
-import { Icon } from "@/components/ui/Icon";
+import { KineticText } from "@/components/ui/KineticText";
 import { Stagger, StaggerItem } from "@/components/ui/Stagger";
 import { profile } from "@/content/profile";
-import type { IconName } from "@/types/content";
-
-type Detail = {
-  icon: IconName;
-  label: string;
-  value: string;
-  href?: string;
-  copy?: string;
-};
-
-const details: Detail[] = [
-  { icon: "mail", label: "E-mail", value: profile.email, href: `mailto:${profile.email}`, copy: profile.email },
-  { icon: "phone", label: "Téléphone", value: profile.phone, href: `tel:${profile.phoneHref}`, copy: profile.phone },
-  { icon: "pin", label: "Localisation", value: `${profile.location}, Occitanie` },
-  { icon: "car", label: "Mobilité", value: profile.license },
-];
 
 function CopyButton({ value, label }: { value: string; label: string }) {
   const [copied, setCopied] = useState(false);
@@ -41,7 +25,7 @@ function CopyButton({ value, label }: { value: string; label: string }) {
       type="button"
       onClick={handleCopy}
       aria-label={copied ? `${label} copié` : `Copier ${label.toLowerCase()}`}
-      className="grid size-9 shrink-0 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-accent/50 hover:text-accent"
+      className="grid size-9 shrink-0 place-items-center rounded-full border border-line text-muted transition-colors hover:border-accent hover:text-accent"
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
@@ -58,31 +42,45 @@ function CopyButton({ value, label }: { value: string; label: string }) {
   );
 }
 
+const rows = [
+  { label: "Téléphone", value: profile.phone, href: `tel:${profile.phoneHref}`, copy: profile.phone },
+  { label: "Localisation", value: `${profile.location}, Occitanie` },
+  { label: "Mobilité", value: profile.license },
+];
+
 export function ContactDetails() {
   return (
-    <Stagger as="ul" className="flex flex-col gap-4">
-      {details.map((detail) => (
-        <StaggerItem
-          as="li"
-          key={detail.label}
-          className="glass flex items-center gap-4 rounded-2xl p-4 transition-colors hover:border-accent/30"
-        >
-          <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-accent/30 bg-accent/10 text-accent">
-            <Icon name={detail.icon} className="size-5" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-xs tracking-wide text-muted uppercase">{detail.label}</p>
-            {detail.href ? (
-              <a href={detail.href} className="block truncate font-medium transition-colors hover:text-accent-soft">
-                {detail.value}
+    <div className="flex flex-col gap-12">
+      <div>
+        <p className="mb-4 font-mono text-[10px] tracking-[0.3em] text-accent uppercase">/ E-mail</p>
+        <div className="flex items-start gap-3">
+          <a href={`mailto:${profile.email}`} data-cursor="label" data-cursor-label="Mail" className="group block min-w-0">
+            <KineticText
+              as="span"
+              by="char"
+              stagger={0.015}
+              text={profile.email}
+              className="block font-display text-[4.8vw] leading-[0.95] font-extrabold tracking-[-0.05em] break-all transition-colors duration-500 group-hover:text-accent sm:text-[3.4vw] lg:text-[1.8vw]"
+            />
+          </a>
+          <CopyButton value={profile.email} label="E-mail" />
+        </div>
+      </div>
+      <Stagger as="ul" className="border-t border-line">
+        {rows.map((row) => (
+          <StaggerItem as="li" key={row.label} className="grid grid-cols-[7rem_1fr_auto] items-center gap-3 border-b border-line py-4">
+            <span className="font-mono text-[10px] tracking-[0.25em] text-muted uppercase">{row.label}</span>
+            {row.href ? (
+              <a href={row.href} className="font-medium transition-colors hover:text-accent">
+                {row.value}
               </a>
             ) : (
-              <p className="truncate font-medium">{detail.value}</p>
+              <span className="font-medium">{row.value}</span>
             )}
-          </div>
-          {detail.copy && <CopyButton value={detail.copy} label={detail.label} />}
-        </StaggerItem>
-      ))}
-    </Stagger>
+            {row.copy ? <CopyButton value={row.copy} label={row.label} /> : <span />}
+          </StaggerItem>
+        ))}
+      </Stagger>
+    </div>
   );
 }

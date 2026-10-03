@@ -3,7 +3,8 @@
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { ProjectCard } from "@/components/sections/ProjectCard";
-import { duration, easing, springs } from "@/config/ui";
+import { GlitchText } from "@/components/ui/GlitchText";
+import { duration, easing, tweens } from "@/config/ui";
 import { cn } from "@/lib/cn";
 import type { Project, ProjectFilter } from "@/types/content";
 
@@ -11,6 +12,15 @@ type ProjectsExplorerProps = {
   projects: Project[];
   filters: ProjectFilter[];
 };
+
+const placements = [
+  "lg:col-span-5 lg:col-start-1",
+  "lg:col-span-4 lg:col-start-7 lg:mt-40",
+  "lg:col-span-4 lg:col-start-2",
+  "lg:col-span-5 lg:col-start-7 lg:mt-16",
+  "lg:col-span-4 lg:col-start-1",
+  "lg:col-span-4 lg:col-start-8 lg:mt-24",
+];
 
 export function ProjectsExplorer({ projects, filters }: ProjectsExplorerProps) {
   const [active, setActive] = useState<ProjectFilter["value"]>("tous");
@@ -28,7 +38,7 @@ export function ProjectsExplorer({ projects, filters }: ProjectsExplorerProps) {
 
   return (
     <LayoutGroup>
-      <div role="tablist" aria-label="Filtrer les projets" className="mb-10 flex flex-wrap gap-2">
+      <div role="tablist" aria-label="Filtrer les projets" className="mb-16 flex flex-wrap items-baseline gap-x-8 gap-y-4 border-b border-line pb-6 sm:ml-[25%]">
         {filters.map((filter) => {
           const selected = filter.value === active;
           return (
@@ -40,42 +50,45 @@ export function ProjectsExplorer({ projects, filters }: ProjectsExplorerProps) {
               aria-controls="projects-grid"
               onClick={() => setActive(filter.value)}
               className={cn(
-                "relative rounded-full px-5 py-2 text-sm transition-colors",
-                selected ? "text-obsidian" : "text-muted hover:text-ink",
+                "glitch-host relative flex items-start gap-1 font-display text-2xl font-extrabold tracking-[-0.03em] uppercase transition-colors sm:text-3xl",
+                selected ? "text-ink" : "text-ink/25 hover:text-ink/70",
               )}
             >
+              <GlitchText text={filter.label} />
+              <sup className="font-mono text-[10px] font-normal tracking-normal text-accent">{counts[filter.value] ?? 0}</sup>
               {selected && (
-                <motion.span layoutId="project-filter" transition={springs.layout} className="absolute inset-0 rounded-full bg-accent" />
+                <motion.span layoutId="project-filter" transition={tweens.layout} className="absolute -bottom-1.5 left-0 h-[3px] w-full bg-accent" />
               )}
-              <span className="relative z-10 flex items-center gap-2">
-                {filter.label}
-                <span className={cn("font-mono text-xs", selected ? "text-obsidian/70" : "text-muted/60")}>
-                  {counts[filter.value] ?? 0}
-                </span>
-              </span>
             </button>
           );
         })}
       </div>
 
-      <motion.ul id="projects-grid" role="tabpanel" layout className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <motion.ul id="projects-grid" role="tabpanel" layout className="grid grid-cols-1 gap-x-4 gap-y-10 md:grid-cols-2 lg:grid-cols-12">
         <AnimatePresence mode="popLayout" initial={false}>
           {visible.map((project, index) => (
             <motion.li
               key={project.slug}
               layout
-              initial={{ opacity: 0, y: 30, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1, transition: { duration: duration.base, ease: easing.out, delay: index * 0.06 } }}
-              exit={{ opacity: 0, scale: 0.92, transition: { duration: duration.fast } }}
-              className="h-full min-w-0"
+              transition={{ layout: tweens.layout }}
+              initial={{ opacity: 0, clipPath: "inset(100% 0% 0% 0%)" }}
+              animate={{
+                opacity: 1,
+                clipPath: "inset(0% 0% 0% 0%)",
+                transition: { duration: duration.reveal, ease: easing.expo, delay: index * 0.08 },
+                transitionEnd: { clipPath: "none" },
+              }}
+              exit={{ opacity: 0, clipPath: "inset(0% 0% 100% 0%)", transition: { duration: duration.fast, ease: easing.inOut } }}
+              className={cn("min-w-0", placements[index % placements.length])}
+              style={{ perspective: 1200 }}
             >
-              <ProjectCard project={project} />
+              <ProjectCard project={project} index={projects.indexOf(project)} />
             </motion.li>
           ))}
         </AnimatePresence>
       </motion.ul>
 
-      {visible.length === 0 && <p className="text-center text-muted">Aucun projet dans cette catégorie pour le moment.</p>}
+      {visible.length === 0 && <p className="text-muted">Aucun projet dans cette catégorie pour le moment.</p>}
     </LayoutGroup>
   );
 }

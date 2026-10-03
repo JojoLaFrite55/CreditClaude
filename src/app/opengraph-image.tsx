@@ -17,7 +17,7 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 80,
-          background: `radial-gradient(circle at 20% 0%, rgba(20,184,166,0.28), transparent 55%), ${palette.obsidian}`,
+          background: `radial-gradient(circle at 20% 0%, rgba(20,184,166,0.28), transparent 55%), ${palette.void}`,
           color: palette.ink,
         }}
       >
@@ -32,7 +32,7 @@ export default function OpengraphImage() {
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 26, color: palette.muted }}>
           <span>{profile.location} · Cybersécurité · Infrastructures</span>
-          <span style={{ color: palette.cta }}>Portfolio</span>
+          <span style={{ color: palette.accent }}>Portfolio</span>
         </div>
       </div>
     ),

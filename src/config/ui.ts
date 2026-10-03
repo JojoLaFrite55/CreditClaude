@@ -1,44 +1,56 @@
 import type { Transition, Variants } from "framer-motion";
 
 export const palette = {
-  obsidian: "#0B0F19",
-  surface: "#111827",
-  line: "#1F2937",
+  void: "#050505",
+  carbon: "#0c0c0d",
+  graphite: "#161618",
+  line: "#232326",
   accent: "#14B8A6",
   accentSoft: "#5EEAD4",
-  cta: "#F59E0B",
-  ink: "#E6EDF3",
-  muted: "#8B97A8",
+  ink: "#EDEDED",
+  muted: "#7C7C80",
 } as const;
 
 export const easing = {
-  out: [0.22, 1, 0.36, 1],
-  inOut: [0.76, 0, 0.24, 1],
+  out: [0.16, 1, 0.3, 1],
+  inOut: [0.83, 0, 0.17, 1],
+  expo: [0.87, 0, 0.13, 1],
   soft: [0.4, 0, 0.2, 1],
+  snap: [0.7, 0, 0.2, 1],
 } as const satisfies Record<string, [number, number, number, number]>;
 
 export const duration = {
-  fast: 0.2,
-  base: 0.5,
-  slow: 0.8,
-  curtain: 0.6,
+  fast: 0.25,
+  base: 0.6,
+  slow: 1,
+  reveal: 1.1,
+  curtain: 0.9,
   draw: 1.1,
 } as const;
 
-export const springs = {
-  magnetic: { type: "spring", stiffness: 160, damping: 14, mass: 0.2 },
-  tilt: { type: "spring", stiffness: 220, damping: 22, mass: 0.4 },
-  layout: { type: "spring", stiffness: 380, damping: 32 },
-  pop: { type: "spring", stiffness: 420, damping: 24 },
+export const tweens = {
+  magnetic: { duration: 0.6, ease: easing.out },
+  release: { duration: 0.9, ease: easing.out },
+  tilt: { duration: 0.7, ease: easing.out },
+  layout: { duration: 0.6, ease: easing.inOut },
+  pop: { duration: 0.6, ease: easing.out },
 } as const satisfies Record<string, Transition>;
 
 export const interaction = {
   magneticStrength: 0.35,
   magneticLabelStrength: 0.15,
-  tiltMaxDeg: 9,
+  tiltMaxDeg: 10,
   typingSpeedMs: 42,
   typingPauseMs: 520,
-  typingStartDelayMs: 700,
+  typingStartDelayMs: 1400,
+  cursorLerp: 0.18,
+  cursorMorphLerp: 0.2,
+} as const;
+
+export const scroll = {
+  lerp: 0.085,
+  wheelMultiplier: 1,
+  touchMultiplier: 1.4,
 } as const;
 
 export const viewport = {
@@ -46,9 +58,14 @@ export const viewport = {
   amount: 0.2,
 } as const;
 
+export const reveal = {
+  hidden: { clipPath: "inset(0% 0% 100% 0%)", y: "105%" },
+  visible: { clipPath: "inset(0% 0% 0% 0%)", y: "0%" },
+} as const;
+
 export const variants = {
   fadeUp: {
-    hidden: { opacity: 0, y: 28 },
+    hidden: { opacity: 0, y: 48 },
     visible: { opacity: 1, y: 0, transition: { duration: duration.slow, ease: easing.out } },
   },
   fadeIn: {
@@ -56,26 +73,27 @@ export const variants = {
     visible: { opacity: 1, transition: { duration: duration.base, ease: easing.soft } },
   },
   scaleIn: {
-    hidden: { opacity: 0, scale: 0.85 },
-    visible: { opacity: 1, scale: 1, transition: springs.pop },
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1, transition: tweens.pop },
+  },
+  clipUp: {
+    hidden: { clipPath: "inset(100% 0% 0% 0%)" },
+    visible: { clipPath: "inset(0% 0% 0% 0%)", transition: { duration: duration.reveal, ease: easing.expo } },
   },
   stagger: {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+    visible: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
   },
   page: {
-    hidden: { opacity: 0, x: 40, filter: "blur(6px)" },
-    visible: {
-      opacity: 1,
-      x: 0,
-      filter: "blur(0px)",
-      transition: { duration: duration.slow, ease: easing.out, delay: 0.1 },
-      transitionEnd: { filter: "none" },
-    },
-  },
-  curtain: {
-    idle: { x: "100%", transition: { duration: 0 } },
-    cover: { x: "0%", transition: { duration: duration.curtain, ease: easing.inOut } },
-    reveal: { x: "-100%", transition: { duration: duration.curtain, ease: easing.inOut } },
+    hidden: { opacity: 0, y: 80 },
+    visible: { opacity: 1, y: 0, transition: { duration: duration.slow, ease: easing.out, delay: 0.25 } },
   },
 } as const satisfies Record<string, Variants>;
+
+export const curtainPaths = {
+  hidden: "M0 100 L100 100 L100 100 C72 100 28 100 0 100 Z",
+  rising: "M0 100 L100 100 L100 38 C74 6 30 78 0 52 Z",
+  covered: "M0 100 L100 100 L100 0 C72 0 28 0 0 0 Z",
+  leaving: "M0 46 L100 12 L100 0 C72 0 28 0 0 0 Z",
+  gone: "M0 0 L100 0 L100 0 C72 0 28 0 0 0 Z",
+} as const;

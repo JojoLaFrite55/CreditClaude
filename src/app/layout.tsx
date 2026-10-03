@@ -1,15 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { JetBrains_Mono, Space_Grotesk, Syne } from "next/font/google";
 import { Background } from "@/components/layout/Background";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { AppProviders } from "@/components/providers/AppProviders";
+import { CustomCursor } from "@/components/ui/CustomCursor";
 import { siteConfig } from "@/config/site";
 import { palette } from "@/config/ui";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk", display: "swap" });
+const syne = Syne({ subsets: ["latin"], variable: "--font-syne", weight: ["500", "700", "800"], display: "swap" });
+const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-grotesk", display: "swap" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap" });
 
 export const metadata: Metadata = {
@@ -40,19 +41,20 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: palette.obsidian,
+  themeColor: palette.void,
   colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
-      <body className="flex min-h-dvh flex-col overflow-x-hidden">
+    <html lang="fr" className={`${syne.variable} ${grotesk.variable} ${jetbrainsMono.variable}`}>
+      <body className="flex min-h-dvh flex-col">
         <AppProviders>
           <Background />
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 overflow-x-clip">{children}</main>
           <Footer />
+          <CustomCursor />
         </AppProviders>
       </body>
     </html>

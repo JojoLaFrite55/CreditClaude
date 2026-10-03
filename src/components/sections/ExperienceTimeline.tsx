@@ -1,62 +1,83 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { KineticText } from "@/components/ui/KineticText";
+import { Parallax } from "@/components/ui/Parallax";
 import { Reveal } from "@/components/ui/Reveal";
+import { Stagger, StaggerItem } from "@/components/ui/Stagger";
 import { Tag } from "@/components/ui/Tag";
-import { springs } from "@/config/ui";
+import { cn } from "@/lib/cn";
 import type { Experience } from "@/types/content";
 
-export function ExperienceTimeline({ items }: { items: Experience[] }) {
-  const ref = useRef<HTMLOListElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 75%", "end 60%"] });
-  const scaleY = useSpring(scrollYProgress, springs.tilt);
+const layouts = [
+  { body: "lg:col-span-6 lg:col-start-6", year: "lg:col-span-4 lg:col-start-1", speed: 0.35 },
+  { body: "lg:col-span-5 lg:col-start-2", year: "lg:col-span-4 lg:col-start-8 lg:order-last", speed: 0.25 },
+  { body: "lg:col-span-6 lg:col-start-7", year: "lg:col-span-5 lg:col-start-1", speed: 0.4 },
+];
+
+function yearOf(period: string) {
+  return period.match(/\d{4}/)?.[0] ?? period;
+}
+
+function ExperienceRow({ item, index }: { item: Experience; index: number }) {
+  const layout = layouts[index % layouts.length];
+  const ref = useRef<HTMLLIElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const lineScale = useTransform(scrollYProgress, [0.1, 0.6], [reduceMotion ? 1 : 0, 1]);
 
   return (
-    <ol ref={ref} className="relative space-y-12 pl-8 sm:pl-12">
-      <span aria-hidden className="absolute top-2 bottom-2 left-[7px] w-px bg-line sm:left-[11px]" />
-      <motion.span
-        aria-hidden
-        style={{ scaleY }}
-        className="absolute top-2 bottom-2 left-[7px] w-px origin-top bg-gradient-to-b from-accent via-accent to-cta sm:left-[11px]"
-      />
-      {items.map((item) => (
-        <li key={item.company} className="relative">
-          <span
-            aria-hidden
-            className="absolute top-2 -left-8 grid size-4 place-items-center rounded-full border border-accent bg-obsidian sm:-left-12 sm:size-6"
-          >
-            <span className="size-1.5 rounded-full bg-accent sm:size-2" />
-          </span>
-          <Reveal className="glass rounded-2xl p-6 sm:p-8">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <h3 className="font-display text-xl font-semibold">{item.role}</h3>
-                <p className="mt-1 text-accent-soft">{item.company}</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2 sm:flex-col sm:items-end">
-                <span className="font-mono text-xs text-muted">
-                  {item.start} — {item.end}
-                </span>
-                <Tag tone={item.contract === "Alternance" ? "accent" : "cta"}>{item.contract}</Tag>
-              </div>
-            </div>
-            <p className="mt-4 text-sm text-muted italic">{item.context}</p>
-            <ul className="mt-5 space-y-2.5">
-              {item.missions.map((mission) => (
-                <li key={mission} className="flex gap-3 text-sm leading-relaxed text-ink/85">
-                  <span aria-hidden className="mt-2 size-1.5 shrink-0 rotate-45 bg-accent" />
-                  {mission}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {item.tags.map((tag) => (
-                <Tag key={tag}>{tag}</Tag>
-              ))}
-            </div>
-          </Reveal>
-        </li>
+    <li ref={ref} className="relative grid grid-cols-12 gap-x-4 gap-y-8 py-16 sm:py-24">
+      <motion.span aria-hidden style={{ scaleX: lineScale }} className="absolute top-0 left-0 h-px w-full origin-left bg-line" />
+      <Parallax speed={layout.speed} className={cn("col-span-12 select-none", layout.year)}>
+        <span aria-hidden className="block font-display text-[22vw] leading-[0.75] font-extrabold tracking-[-0.07em] text-outline lg:text-[9vw]">
+          {yearOf(item.start)}
+        </span>
+        <span className="mt-4 block font-mono text-[11px] tracking-[0.25em] text-muted uppercase">
+          {item.start} — {item.end}
+        </span>
+      </Parallax>
+
+      <div className={cn("col-span-12 sm:col-span-10 sm:col-start-2", layout.body)}>
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <span className="font-mono text-[11px] tracking-[0.3em] text-accent uppercase">({String(index + 1).padStart(2, "0")})</span>
+          <Tag tone={item.contract === "Alternance" ? "solid" : "accent"}>{item.contract}</Tag>
+        </div>
+        <KineticText
+          as="h3"
+          by="char"
+          stagger={0.012}
+          text={item.company}
+          className="font-display text-[6.8vw] leading-[0.85] font-extrabold tracking-[-0.05em] uppercase sm:text-[6vw] lg:text-[4.2vw]"
+        />
+        <Reveal delay={0.15}>
+          <p className="mt-4 font-display text-xl font-bold tracking-tight text-accent-soft sm:text-2xl">{item.role}</p>
+          <p className="mt-3 max-w-lg text-sm text-muted">{item.context}</p>
+        </Reveal>
+        <Stagger as="ul" className="mt-8 border-t border-line">
+          {item.missions.map((mission, missionIndex) => (
+            <StaggerItem as="li" key={mission} className="grid grid-cols-[2.5rem_1fr] border-b border-line py-3 text-sm leading-relaxed text-ink/85">
+              <span className="font-mono text-[10px] text-muted">{String(missionIndex + 1).padStart(2, "0")}</span>
+              {mission}
+            </StaggerItem>
+          ))}
+        </Stagger>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {item.tags.map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
+        </div>
+      </div>
+    </li>
+  );
+}
+
+export function ExperienceTimeline({ items }: { items: Experience[] }) {
+  return (
+    <ol>
+      {items.map((item, index) => (
+        <ExperienceRow key={item.company} item={item} index={index} />
       ))}
     </ol>
   );

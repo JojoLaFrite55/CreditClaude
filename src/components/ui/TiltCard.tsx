@@ -1,9 +1,10 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useRef, type MouseEvent } from "react";
-import { interaction, springs } from "@/config/ui";
+import { motion, useMotionTemplate, useMotionValue, useTransform } from "framer-motion";
+import { useRef, type PointerEvent } from "react";
+import { interaction, tweens } from "@/config/ui";
 import { cn } from "@/lib/cn";
+import { tweenTo } from "@/lib/motion";
 
 type TiltCardProps = {
   children: React.ReactNode;
@@ -14,42 +15,44 @@ export function TiltCard({ children, className }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
-  const rotateX = useSpring(useTransform(py, [0, 1], [interaction.tiltMaxDeg, -interaction.tiltMaxDeg]), springs.tilt);
-  const rotateY = useSpring(useTransform(px, [0, 1], [-interaction.tiltMaxDeg, interaction.tiltMaxDeg]), springs.tilt);
-  const glareX = useTransform(px, (value) => `${value * 100}%`);
-  const glareY = useTransform(py, (value) => `${value * 100}%`);
-  const glare = useMotionTemplate`radial-gradient(420px circle at ${glareX} ${glareY}, rgba(20,184,166,0.16), transparent 45%)`;
+  const lx = useMotionValue(50);
+  const ly = useMotionValue(50);
+  const rotateX = useTransform(py, [0, 1], [interaction.tiltMaxDeg, -interaction.tiltMaxDeg]);
+  const rotateY = useTransform(px, [0, 1], [-interaction.tiltMaxDeg, interaction.tiltMaxDeg]);
+  const light = useMotionTemplate`radial-gradient(520px circle at ${lx}% ${ly}%, rgba(20,184,166,0.14), transparent 50%)`;
 
-  const handleMove = (event: MouseEvent<HTMLDivElement>) => {
-    const node = ref.current;
-    if (!node) return;
-    const rect = node.getBoundingClientRect();
-    px.set((event.clientX - rect.left) / rect.width);
-    py.set((event.clientY - rect.top) / rect.height);
+  const handleMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse" || !ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const nx = (event.clientX - rect.left) / rect.width;
+    const ny = (event.clientY - rect.top) / rect.height;
+    tweenTo(px, nx, tweens.tilt);
+    tweenTo(py, ny, tweens.tilt);
+    lx.set(nx * 100);
+    ly.set(ny * 100);
   };
 
   const reset = () => {
-    px.set(0.5);
-    py.set(0.5);
+    tweenTo(px, 0.5, tweens.release);
+    tweenTo(py, 0.5, tweens.release);
   };
 
   return (
     <motion.div
       ref={ref}
-      onMouseMove={handleMove}
-      onMouseLeave={reset}
-      style={{ rotateX, rotateY, transformPerspective: 900, transformStyle: "preserve-3d" }}
-      className={cn(
-        "group relative h-full rounded-2xl border border-line bg-surface/70 transition-colors duration-500 hover:border-accent/40",
-        className,
-      )}
+      onPointerMove={handleMove}
+      onPointerLeave={reset}
+      style={{ rotateX, rotateY, transformPerspective: 1100 }}
+      className={cn("group relative h-full border border-line bg-carbon/80 transition-colors duration-700 hover:border-accent/50", className)}
     >
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: glare }}
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+        style={{ background: light }}
       />
-      <div className="relative h-full" style={{ transform: "translateZ(24px)" }}>
+      <span aria-hidden className="absolute -top-px -left-px size-3 border-t border-l border-accent" />
+      <span aria-hidden className="absolute -right-px -bottom-px size-3 border-r border-b border-accent" />
+      <div className="relative h-full">
         {children}
       </div>
     </motion.div>

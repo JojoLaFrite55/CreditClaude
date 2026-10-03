@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContactDetails } from "@/components/sections/ContactDetails";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Container } from "@/components/ui/Container";
+import { Parallax } from "@/components/ui/Parallax";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
@@ -13,16 +14,20 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <Container as="section" className="pt-36 pb-12">
+    <Container as="section" className="pt-36 pb-12 sm:pt-44">
       <SectionHeading
         as="h1"
+        index="(06)"
+        ghost="@"
         eyebrow="Contact"
         title="Travaillons ensemble"
         description="Une alternance, une mission ou simplement une question technique : je réponds rapidement."
       />
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-        <ContactDetails />
-        <Reveal delay={0.1}>
+      <div className="grid grid-cols-12 gap-x-4 gap-y-20">
+        <Parallax speed={0.1} className="col-span-12 lg:col-span-5">
+          <ContactDetails />
+        </Parallax>
+        <Reveal delay={0.1} className="col-span-12 lg:col-span-6 lg:col-start-7 lg:mt-32">
           <ContactForm />
         </Reveal>
       </div>

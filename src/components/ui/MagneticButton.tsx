@@ -1,10 +1,11 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useRef, type MouseEvent } from "react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { useRef, type PointerEvent } from "react";
 import { TransitionLink } from "@/components/transition/TransitionLink";
-import { interaction, springs } from "@/config/ui";
+import { interaction, tweens } from "@/config/ui";
 import { cn } from "@/lib/cn";
+import { tweenTo } from "@/lib/motion";
 
 type Variant = "primary" | "secondary" | "ghost";
 
@@ -30,10 +31,21 @@ type ButtonProps = BaseProps & {
 type MagneticButtonProps = LinkProps | ButtonProps;
 
 const styles: Record<Variant, string> = {
-  primary:
-    "bg-cta text-obsidian shadow-[0_0_0_1px_rgba(245,158,11,0.4),0_10px_40px_-10px_rgba(245,158,11,0.6)] hover:bg-cta-soft",
-  secondary: "border border-accent/40 bg-accent/5 text-accent-soft hover:border-accent hover:bg-accent/10",
-  ghost: "text-ink/80 hover:text-ink hover:bg-surface",
+  primary: "bg-ink text-void",
+  secondary: "border border-ink/30 text-ink",
+  ghost: "text-ink/80",
+};
+
+const fills: Record<Variant, string> = {
+  primary: "bg-accent",
+  secondary: "bg-ink",
+  ghost: "bg-graphite",
+};
+
+const hoverText: Record<Variant, string> = {
+  primary: "group-hover:text-void",
+  secondary: "group-hover:text-void",
+  ghost: "group-hover:text-ink",
 };
 
 export function MagneticButton(props: MagneticButtonProps) {
@@ -41,42 +53,51 @@ export function MagneticButton(props: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const springX = useSpring(x, springs.magnetic);
-  const springY = useSpring(y, springs.magnetic);
   const ratio = interaction.magneticLabelStrength / interaction.magneticStrength;
-  const labelX = useTransform(springX, (value) => value * ratio);
-  const labelY = useTransform(springY, (value) => value * ratio);
+  const labelX = useTransform(x, (value) => value * ratio);
+  const labelY = useTransform(y, (value) => value * ratio);
 
-  const handleMove = (event: MouseEvent<HTMLDivElement>) => {
-    const node = ref.current;
-    if (!node) return;
-    const rect = node.getBoundingClientRect();
-    x.set((event.clientX - (rect.left + rect.width / 2)) * interaction.magneticStrength);
-    y.set((event.clientY - (rect.top + rect.height / 2)) * interaction.magneticStrength);
+  const handleMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse" || !ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    tweenTo(x, (event.clientX - (rect.left + rect.width / 2)) * interaction.magneticStrength);
+    tweenTo(y, (event.clientY - (rect.top + rect.height / 2)) * interaction.magneticStrength);
   };
 
   const reset = () => {
-    x.set(0);
-    y.set(0);
+    tweenTo(x, 0, tweens.release);
+    tweenTo(y, 0, tweens.release);
   };
 
   const classes = cn(
-    "relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-60",
+    "group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full px-7 py-3.5 font-mono text-xs tracking-[0.18em] uppercase disabled:cursor-not-allowed disabled:opacity-50",
     styles[variant],
     className,
   );
 
-  const label = (
-    <motion.span className="inline-flex items-center gap-2" style={{ x: labelX, y: labelY }}>
-      {children}
-    </motion.span>
+  const inner = (
+    <>
+      <span
+        aria-hidden
+        className={cn(
+          "absolute inset-0 translate-y-[101%] rounded-[inherit] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0",
+          fills[variant],
+        )}
+      />
+      <motion.span
+        className={cn("relative inline-flex items-center gap-3 transition-colors duration-500", hoverText[variant])}
+        style={{ x: labelX, y: labelY }}
+      >
+        {children}
+      </motion.span>
+    </>
   );
 
   const renderInner = () => {
     if (props.href === undefined) {
       return (
         <button type={props.type ?? "button"} disabled={props.disabled} onClick={props.onClick} className={classes}>
-          {label}
+          {inner}
         </button>
       );
     }
@@ -89,13 +110,13 @@ export function MagneticButton(props: MagneticButtonProps) {
           target={props.external ? "_blank" : undefined}
           rel={props.external ? "noopener noreferrer" : undefined}
         >
-          {label}
+          {inner}
         </a>
       );
     }
     return (
       <TransitionLink href={props.href} className={classes}>
-        {label}
+        {inner}
       </TransitionLink>
     );
   };
@@ -103,10 +124,10 @@ export function MagneticButton(props: MagneticButtonProps) {
   return (
     <motion.div
       ref={ref}
-      onMouseMove={handleMove}
-      onMouseLeave={reset}
-      style={{ x: springX, y: springY }}
-      whileTap={{ scale: 0.96 }}
+      onPointerMove={handleMove}
+      onPointerLeave={reset}
+      style={{ x, y }}
+      whileTap={{ scale: 0.95 }}
       className="inline-block"
     >
       {renderInner()}

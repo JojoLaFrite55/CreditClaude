@@ -1,14 +1,17 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import type { ChangeEvent, FocusEvent } from "react";
+import { useState, type ChangeEvent, type FocusEvent } from "react";
+import { duration, easing } from "@/config/ui";
 import { cn } from "@/lib/cn";
 
 type FormFieldProps = {
   id: string;
   label: string;
+  index: string;
   value: string;
   error?: string;
+  attempt: number;
   type?: "text" | "email";
   multiline?: boolean;
   autoComplete?: string;
@@ -18,11 +21,13 @@ type FormFieldProps = {
   onBlur: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 };
 
-export function FormField({ id, label, error, multiline = false, type = "text", maxLength, ...rest }: FormFieldProps) {
+export function FormField({ id, label, index, error, attempt, multiline = false, type = "text", maxLength, onBlur, ...rest }: FormFieldProps) {
+  const [focused, setFocused] = useState(false);
   const errorId = `${id}-error`;
+  const filled = rest.value.length > 0;
   const classes = cn(
-    "w-full rounded-xl border bg-obsidian/70 px-4 py-3 text-sm text-ink placeholder:text-muted/50 transition-colors outline-none focus:border-accent focus:ring-2 focus:ring-accent/20",
-    error ? "border-danger/70" : "border-line hover:border-line/40",
+    "peer w-full bg-transparent pt-2 pb-3 font-display text-xl font-bold tracking-tight text-ink outline-none placeholder:text-ink/15 sm:text-2xl",
+    multiline && "resize-none",
   );
   const shared = {
     id,
@@ -31,36 +36,56 @@ export function FormField({ id, label, error, multiline = false, type = "text", 
     "aria-describedby": error ? errorId : undefined,
     className: classes,
     maxLength,
+    onFocus: () => setFocused(true),
+    onBlur: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setFocused(false);
+      onBlur(event);
+    },
     ...rest,
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-baseline justify-between">
-        <label htmlFor={id} className="text-sm font-medium text-ink/90">
+    <motion.div
+      key={error ? `${id}-${attempt}` : id}
+      className="relative"
+      animate={error ? { x: [0, -10, 9, -6, 4, 0] } : { x: 0 }}
+      transition={{ duration: 0.5, ease: easing.out }}
+    >
+      <div className="flex items-baseline justify-between font-mono text-[10px] tracking-[0.25em] uppercase">
+        <label htmlFor={id} className={cn("transition-colors", error ? "text-danger" : focused || filled ? "text-accent" : "text-muted")}>
+          <span className="mr-2 text-ink/30">{index}</span>
           {label}
         </label>
         {multiline && maxLength && (
-          <span className="font-mono text-[11px] text-muted/60">
+          <span className="text-muted/60">
             {rest.value.length}/{maxLength}
           </span>
         )}
       </div>
-      {multiline ? <textarea rows={6} {...shared} className={cn(classes, "resize-y")} /> : <input type={type} {...shared} />}
+      {multiline ? <textarea rows={5} {...shared} /> : <input type={type} {...shared} />}
+      <span aria-hidden className="absolute bottom-0 left-0 h-px w-full bg-line" />
+      <motion.span
+        aria-hidden
+        className={cn("absolute bottom-0 left-0 h-px w-full origin-left", error ? "bg-danger" : "bg-accent")}
+        initial={false}
+        animate={{ scaleX: focused || error ? 1 : 0 }}
+        transition={{ duration: duration.base, ease: easing.out }}
+      />
       <AnimatePresence initial={false}>
         {error && (
           <motion.p
             id={errorId}
             role="alert"
-            initial={{ opacity: 0, height: 0, y: -4 }}
-            animate={{ opacity: 1, height: "auto", y: 0 }}
-            exit={{ opacity: 0, height: 0, y: -4 }}
-            className="text-xs text-danger"
+            className="absolute top-full left-0 mt-2 font-mono text-[11px] text-danger"
+            initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
+            animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
+            exit={{ clipPath: "inset(0% 0% 0% 100%)" }}
+            transition={{ duration: duration.base, ease: easing.expo }}
           >
-            {error}
+            ⚠ {error}
           </motion.p>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }

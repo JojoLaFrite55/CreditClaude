@@ -62,7 +62,7 @@ export function Logo({ className, mode = "hover" }: LogoProps) {
         strokeLinejoin="round"
         variants={loop ? undefined : glyph}
       />
-      <motion.circle cx={28} cy={27} r={1.8} fill="var(--color-cta)" variants={loop ? undefined : node} />
+      <motion.circle cx={28} cy={27} r={1.8} fill="var(--color-accent-soft)" variants={loop ? undefined : node} />
     </motion.svg>
   );
 }

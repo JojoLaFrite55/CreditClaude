@@ -41,8 +41,8 @@ function Topology() {
             width={36}
             height={22}
             rx={6}
-            fill="var(--color-obsidian)"
-            stroke={index === 1 ? "var(--color-cta)" : "var(--color-accent)"}
+            fill="var(--color-void)"
+            stroke={index === 1 ? "var(--color-ink)" : "var(--color-accent)"}
             strokeOpacity={0.8}
           />
           <text
@@ -62,7 +62,7 @@ function Topology() {
 
 function Code({ language, lines }: { language: string; lines: string[] }) {
   return (
-    <div className="h-full overflow-x-auto px-4 py-3 font-mono text-[11px] leading-5">
+    <div data-lenis-prevent className="h-full overflow-x-auto px-4 py-3 font-mono text-[11px] leading-5">
       <span className="mb-1 block text-[10px] tracking-widest text-muted/70 uppercase">{language}</span>
       {lines.map((line, index) => (
         <div key={`${index}-${line}`} className="flex gap-3 whitespace-pre">
@@ -76,8 +76,8 @@ function Code({ language, lines }: { language: string; lines: string[] }) {
 
 export function ProjectPreview({ preview }: { preview: Preview }) {
   return (
-    <div className="relative h-40 overflow-hidden rounded-xl border border-line bg-obsidian/80">
-      <div aria-hidden className="bg-grid absolute inset-0 opacity-40 [mask-image:none]" />
+    <div className="relative h-44 overflow-hidden border-b border-line bg-void">
+      <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-line)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-line)_1px,transparent_1px)] bg-[size:22px_22px] opacity-40" />
       <div className="relative h-full">
         {preview.kind === "topology" ? <Topology /> : <Code language={preview.language} lines={preview.lines} />}
       </div>

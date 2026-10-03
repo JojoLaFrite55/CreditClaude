@@ -34,7 +34,7 @@ type StaggerItemProps = {
   children: React.ReactNode;
   className?: string;
   as?: keyof typeof items;
-  variant?: "fadeUp" | "fadeIn" | "scaleIn";
+  variant?: "fadeUp" | "fadeIn" | "scaleIn" | "clipUp";
 };
 
 export function StaggerItem({ children, className, as = "div", variant = "fadeUp" }: StaggerItemProps) {
