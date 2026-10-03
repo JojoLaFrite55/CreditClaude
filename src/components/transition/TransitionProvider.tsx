@@ -122,7 +122,7 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
             >
               <span className="overflow-hidden">
                 <motion.span
-                  className="block font-display text-[11vw] leading-[0.8] font-extrabold tracking-[-0.06em] text-ink uppercase sm:text-[8vw]"
+                  className="block font-display text-[clamp(2.5rem,7vw,7rem)] leading-[0.9] font-extrabold tracking-[-0.03em] text-ink"
                   initial={{ y: "100%" }}
                   animate={{ y: "0%", transition: { duration: duration.base, ease: easing.out, delay: duration.curtain * 0.45 } }}
                 >

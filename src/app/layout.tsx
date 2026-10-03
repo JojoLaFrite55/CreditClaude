@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono, Space_Grotesk, Syne } from "next/font/google";
+import { Bricolage_Grotesque, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { Background } from "@/components/layout/Background";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
@@ -9,7 +9,7 @@ import { siteConfig } from "@/config/site";
 import { palette } from "@/config/ui";
 import "./globals.css";
 
-const syne = Syne({ subsets: ["latin"], variable: "--font-syne", weight: ["500", "700", "800"], display: "swap" });
+const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display-face", weight: ["500", "700", "800"], display: "swap" });
 const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-grotesk", display: "swap" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap" });
 
@@ -47,7 +47,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${syne.variable} ${grotesk.variable} ${jetbrainsMono.variable}`}>
+    <html lang="fr" className={`${display.variable} ${grotesk.variable} ${jetbrainsMono.variable}`}>
       <body className="flex min-h-dvh flex-col">
         <AppProviders>
           <Background />

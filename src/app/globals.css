@@ -59,7 +59,7 @@
 
 @theme inline {
   --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-syne), var(--font-grotesk), ui-sans-serif, sans-serif;
+  --font-display: var(--font-display-face), var(--font-grotesk), ui-sans-serif, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
@@ -142,20 +142,19 @@
   }
 
   .glitch::after {
-    color: #ff3d6e;
+    color: var(--color-ink);
     transform: translate(2px, 0);
-    mix-blend-mode: screen;
   }
 
   .glitch-host:hover .glitch::before,
   .glitch:hover::before {
-    opacity: 0.9;
+    opacity: 0.6;
     animation: glitch-a 0.42s steps(2, end) infinite;
   }
 
   .glitch-host:hover .glitch::after,
   .glitch:hover::after {
-    opacity: 0.7;
+    opacity: 0.3;
     animation: glitch-b 0.38s steps(2, end) infinite;
   }
 

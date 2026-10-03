@@ -9,7 +9,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { duration, easing, viewport } from "@/config/ui";
 import { exploreCards } from "@/content/home";
 
-const offsets = ["pl-0", "sm:pl-[12%]", "sm:pl-[5%]"];
+const offsets = ["pl-0", "sm:pl-[6%]", "sm:pl-[3%]"];
 
 export function Explore() {
   return (
@@ -38,21 +38,19 @@ export function Explore() {
           >
             <TransitionLink
               href={card.href}
-              data-cursor="label"
-              data-cursor-label="Ouvrir"
               className={`group relative grid grid-cols-12 items-center gap-x-4 py-8 sm:py-10 ${offsets[index % offsets.length]}`}
             >
-              <span aria-hidden className="absolute inset-0 origin-bottom scale-y-0 bg-accent transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100" />
-              <span className="relative col-span-2 font-mono text-xs text-muted transition-colors duration-500 group-hover:text-void sm:col-span-1">{card.index}</span>
-              <span className="relative col-span-10 font-display text-[7cqw] leading-[0.9] font-extrabold tracking-[-0.05em] uppercase transition-[color,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-4 group-hover:text-void sm:col-span-7 sm:text-[4.8cqw]">
+              <span aria-hidden className="absolute inset-0 origin-bottom scale-y-0 bg-graphite transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100" />
+              <span className="relative col-span-2 font-mono text-xs text-muted transition-colors duration-500 sm:col-span-1">{card.index}</span>
+              <span className="relative col-span-10 font-display text-[clamp(1.75rem,4cqw,3.5rem)] leading-none font-extrabold tracking-[-0.03em] transition-[color,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3 group-hover:text-accent-soft sm:col-span-7">
                 {card.title}
               </span>
-              <span className="relative col-span-10 col-start-3 mt-3 max-w-sm text-sm text-muted transition-colors duration-500 group-hover:text-void/80 sm:col-span-3 sm:mt-0">
+              <span className="relative col-span-10 col-start-3 mt-3 max-w-sm text-sm text-muted transition-colors duration-500 sm:col-span-3 sm:mt-0">
                 {card.description}
               </span>
               <span className="relative hidden justify-end sm:col-span-1 sm:flex">
                 <Icon name={card.icon} className="size-5 text-accent transition-all duration-500 group-hover:opacity-0" />
-                <ArrowUpRight className="absolute size-7 -translate-x-2 translate-y-2 text-void opacity-0 transition-all duration-500 group-hover:translate-0 group-hover:opacity-100" />
+                <ArrowUpRight className="absolute size-7 -translate-x-2 translate-y-2 text-accent opacity-0 transition-all duration-500 group-hover:translate-0 group-hover:opacity-100" />
               </span>
             </TransitionLink>
           </motion.li>

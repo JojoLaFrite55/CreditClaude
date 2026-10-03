@@ -11,7 +11,7 @@ import type { CefrLevel, Language, SkillGroup } from "@/types/content";
 
 const levels: CefrLevel[] = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
-const offsets = ["lg:col-start-1", "lg:col-start-4", "lg:col-start-2", "lg:col-start-5"];
+const offsets = ["lg:col-start-1", "lg:col-start-7", "lg:col-start-1", "lg:col-start-7"];
 
 function LanguageMeter({ language }: { language: Language }) {
   const reached = levels.indexOf(language.level);
@@ -20,7 +20,7 @@ function LanguageMeter({ language }: { language: Language }) {
     <div className="grid grid-cols-12 items-end gap-x-4 gap-y-6">
       <div className="col-span-12 sm:col-span-5">
         <p className="font-mono text-[11px] tracking-[0.3em] text-accent uppercase">/ Langues</p>
-        <p className="mt-3 font-display text-5xl font-extrabold tracking-[-0.04em] uppercase">{language.name}</p>
+        <p className="mt-3 font-display text-3xl font-extrabold tracking-[-0.02em]">{language.name}</p>
       </div>
       <motion.div
         className="col-span-12 grid grid-cols-6 sm:col-span-7"
@@ -46,7 +46,7 @@ function LanguageMeter({ language }: { language: Language }) {
             />
             <span
               className={cn(
-                "relative block pt-20 font-display text-2xl font-extrabold sm:text-4xl",
+                "relative block pt-12 font-mono text-sm font-bold sm:text-base",
                 index <= reached ? "text-void" : "text-ink/20",
               )}
             >
@@ -71,8 +71,8 @@ export function SkillsGrid({ groups, languages }: SkillsGridProps) {
         {groups.map((group, index) => (
           <Parallax
             key={group.title}
-            speed={0.05 + (index % 2) * 0.15}
-            className={cn("col-span-12 sm:col-span-6 lg:col-span-8", offsets[index % offsets.length])}
+            speed={0.04 + (index % 2) * 0.08}
+            className={cn("col-span-12 sm:col-span-6 lg:col-span-6", offsets[index % offsets.length])}
           >
             <div className="mb-5 flex items-center gap-3 border-b border-line pb-3">
               <Icon name={group.icon} className="size-4 text-accent" />
@@ -80,7 +80,7 @@ export function SkillsGrid({ groups, languages }: SkillsGridProps) {
               <span className="ml-auto font-mono text-[10px] text-muted">{String(group.items.length).padStart(2, "0")}</span>
             </div>
             <motion.ul
-              className="flex flex-wrap gap-x-2 gap-y-3"
+              className="flex flex-wrap gap-2"
               initial="hidden"
               whileInView="visible"
               viewport={viewport}
@@ -88,14 +88,9 @@ export function SkillsGrid({ groups, languages }: SkillsGridProps) {
             >
               {group.items.map((item) => (
                 <motion.li key={item} variants={variants.clipUp}>
-                  <Magnetic strength={0.4}>
-                    <span
-                      data-cursor="magnetic"
-                      className="glitch-host inline-block border border-line px-4 py-2 font-display text-lg font-bold tracking-tight uppercase transition-colors duration-500 hover:border-accent hover:bg-accent hover:text-void sm:text-2xl"
-                    >
-                      <span data-text={item} className="glitch">
-                        {item}
-                      </span>
+                  <Magnetic strength={0.2}>
+                    <span className="inline-block border border-line px-3 py-1.5 font-mono text-xs tracking-wide text-ink/85 transition-colors duration-500 hover:border-accent hover:text-accent-soft sm:text-[13px]">
+                      {item}
                     </span>
                   </Magnetic>
                 </motion.li>

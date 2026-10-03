@@ -39,7 +39,7 @@ export function Background() {
           <WebGLScene />
         </motion.div>
       )}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-[90] overflow-hidden opacity-[0.11] mix-blend-overlay">
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-[90] overflow-hidden opacity-[0.07] mix-blend-overlay">
         <div className="noise absolute -inset-[20%] animate-grain" />
       </div>
     </>

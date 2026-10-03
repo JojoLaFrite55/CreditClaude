@@ -5,7 +5,7 @@ import { Tag } from "@/components/ui/Tag";
 import { cn } from "@/lib/cn";
 import type { Diploma } from "@/types/content";
 
-const layouts = ["lg:col-span-7 lg:col-start-1", "lg:col-span-6 lg:col-start-6 lg:mt-32"];
+const layouts = ["lg:col-span-6 lg:col-start-1", "lg:col-span-5 lg:col-start-8 lg:mt-20"];
 
 export function EducationList({ items }: { items: Diploma[] }) {
   return (
@@ -21,7 +21,7 @@ export function EducationList({ items }: { items: Diploma[] }) {
               as="h3"
               by="char"
               text={diploma.title}
-              className="mt-6 font-display text-[12cqw] leading-[0.82] font-extrabold tracking-[-0.06em] uppercase sm:text-[7.5cqw] lg:text-[5.4cqw]"
+              className="mt-5 font-display text-[clamp(2.25rem,4.6cqw,4rem)] leading-[0.95] font-extrabold tracking-[-0.03em]"
             />
             <Reveal delay={0.2}>
               <p className="mt-5 max-w-md text-ink/80">{diploma.speciality}</p>

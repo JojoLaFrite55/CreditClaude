@@ -8,25 +8,19 @@ type SectionHeadingProps = {
   description?: string;
   index?: string;
   as?: "h1" | "h2";
-  ghost?: string;
   className?: string;
 };
 
-export function SectionHeading({ eyebrow, title, description, index, as = "h2", ghost, className }: SectionHeadingProps) {
+export function SectionHeading({ eyebrow, title, description, index, as = "h2", className }: SectionHeadingProps) {
   const primary = as === "h1";
 
   return (
-    <header className={cn("relative mb-16 grid grid-cols-12 gap-x-4 sm:mb-24", className)}>
-      {ghost && (
-        <span
-          aria-hidden
-          className="text-outline pointer-events-none absolute -top-[0.35em] right-0 font-display text-[28cqw] leading-none font-extrabold tracking-[-0.06em] uppercase opacity-40 select-none sm:text-[18cqw]"
-        >
-          {ghost}
-        </span>
-      )}
-      <Reveal variant="fadeIn" className="col-span-12 mb-6 flex items-center gap-4 font-mono text-[11px] tracking-[0.3em] text-accent uppercase sm:col-span-3 sm:col-start-1 sm:mb-0 sm:flex-col sm:items-start sm:pt-4">
-        {index && <span className="text-ink/40">{index}</span>}
+    <header className={cn("mb-14 grid grid-cols-12 gap-x-4 sm:mb-20", className)}>
+      <Reveal
+        variant="fadeIn"
+        className="col-span-12 mb-5 flex items-center gap-3 font-mono text-[11px] tracking-[0.25em] text-accent uppercase sm:col-span-3 sm:mb-0 sm:flex-col sm:items-start sm:gap-1 sm:pt-3"
+      >
+        {index && <span className="text-ink/35">{index}</span>}
         <span>{eyebrow}</span>
       </Reveal>
       <div className="col-span-12 sm:col-span-9">
@@ -35,12 +29,12 @@ export function SectionHeading({ eyebrow, title, description, index, as = "h2", 
           by="char"
           text={title}
           className={cn(
-            "font-display leading-[0.9] font-extrabold break-words tracking-[-0.055em] text-ink uppercase",
-            primary ? "text-[6.6cqw] sm:text-[6cqw] lg:text-[5.2cqw]" : "text-[6.6cqw] sm:text-[7cqw] lg:text-[5.6cqw]",
+            "font-display leading-[0.95] font-extrabold tracking-[-0.035em] text-ink",
+            primary ? "text-[clamp(2.4rem,6cqw,5.5rem)]" : "text-[clamp(2rem,4.6cqw,4.25rem)]",
           )}
         />
         {description && (
-          <Reveal delay={0.25} className="mt-8 max-w-xl sm:ml-[18%]">
+          <Reveal delay={0.25} className="mt-6 max-w-xl">
             <p className="text-base leading-relaxed text-pretty text-muted sm:text-lg">{description}</p>
           </Reveal>
         )}

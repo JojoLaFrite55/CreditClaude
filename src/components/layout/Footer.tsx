@@ -12,7 +12,7 @@ export function Footer() {
       <Container className="grid grid-cols-12 gap-x-4 gap-y-10 pt-14 pb-6">
         <div className="col-span-12 space-y-3 sm:col-span-5 lg:col-span-4">
           <p className="font-mono text-[11px] tracking-[0.3em] text-accent uppercase">[ contact ]</p>
-          <AnimatedLink href={`mailto:${profile.email}`} className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+          <AnimatedLink href={`mailto:${profile.email}`} className="font-display text-xl font-bold tracking-tight sm:text-2xl">
             {profile.email}
           </AnimatedLink>
           <div>
@@ -41,7 +41,7 @@ export function Footer() {
           as="div"
           by="char"
           text={profile.lastName}
-          className="font-display text-[10.5cqw] leading-[0.78] font-extrabold tracking-[-0.07em] whitespace-nowrap text-ink/[0.08] uppercase lg:text-[9.6cqw]"
+          className="font-display text-[clamp(1.5rem,9.4cqw,10rem)] leading-[0.85] font-extrabold tracking-[-0.04em] whitespace-nowrap text-ink/[0.07] uppercase"
           stagger={0.02}
         />
       </Container>

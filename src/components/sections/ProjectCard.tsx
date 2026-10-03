@@ -14,7 +14,7 @@ const statusTone = {
 export function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <TiltCard>
-      <article className="flex h-full flex-col" data-cursor="label" data-cursor-label="Lab">
+      <article className="flex h-full flex-col">
         <ProjectPreview preview={project.preview} />
         <div className="flex flex-1 flex-col gap-5 p-5 sm:p-6">
           <div className="flex items-center justify-between gap-3 font-mono text-[10px] tracking-[0.25em] text-muted uppercase">
@@ -27,7 +27,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
               <Tag tone={statusTone[project.status]}>{statusLabels[project.status]}</Tag>
             </span>
           </div>
-          <h3 className="font-display text-3xl leading-[0.9] font-extrabold tracking-[-0.04em] uppercase sm:text-4xl">{project.title}</h3>
+          <h3 className="font-display text-2xl leading-tight font-extrabold tracking-[-0.02em]">{project.title}</h3>
           <p className="text-sm leading-relaxed text-muted">{project.summary}</p>
           <ul className="mt-auto flex flex-wrap gap-1.5 pt-2">
             {project.tags.map((tag) => (

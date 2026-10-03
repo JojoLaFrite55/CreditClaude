@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { BrandLink } from "@/components/layout/BrandLink";
 import { LocalClock } from "@/components/layout/LocalClock";
 import { TransitionLink } from "@/components/transition/TransitionLink";
-import { GlitchText } from "@/components/ui/GlitchText";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { navigation } from "@/config/site";
 import { duration, easing } from "@/config/ui";
@@ -65,11 +64,11 @@ export function Navbar() {
                   <TransitionLink
                     href={item.href}
                     aria-current={active ? "page" : undefined}
-                    className="glitch-host group flex items-baseline gap-1.5 py-1 font-mono text-xs tracking-[0.16em] uppercase"
+                    className="group flex items-baseline gap-1.5 py-1 font-mono text-xs tracking-[0.16em] uppercase"
                   >
                     <span className="text-[9px] text-accent">0{index + 1}</span>
                     <span className={cn("relative", active ? "text-ink" : "text-ink/55 transition-colors group-hover:text-ink")}>
-                      <GlitchText text={item.label} />
+                      {item.label}
                       {active && (
                         <motion.span
                           layoutId="nav-active"
@@ -139,7 +138,7 @@ export function Navbar() {
                     >
                       <span
                         className={cn(
-                          "font-display text-[10vw] leading-none font-extrabold tracking-[-0.05em] uppercase sm:text-[7vw]",
+                          "font-display text-[clamp(2rem,9vw,4rem)] leading-none font-extrabold tracking-[-0.03em]",
                           isActive(pathname, item.href) ? "text-accent" : "text-ink",
                         )}
                       >

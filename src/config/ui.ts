@@ -37,9 +37,9 @@ export const tweens = {
 } as const satisfies Record<string, Transition>;
 
 export const interaction = {
-  magneticStrength: 0.35,
+  magneticStrength: 0.25,
   magneticLabelStrength: 0.15,
-  tiltMaxDeg: 10,
+  tiltMaxDeg: 5,
   typingSpeedMs: 42,
   typingPauseMs: 520,
   typingStartDelayMs: 1400,

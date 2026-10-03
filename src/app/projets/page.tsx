@@ -18,7 +18,6 @@ export default function ProjetsPage() {
         <SectionHeading
           as="h1"
           index="(05)"
-          ghost="Labs"
           eyebrow="Labs & réalisations"
           title="Projets"
           description="Infrastructures, scripts et maquettes réseau : ce que je construis, ce que j'ai terminé et ce qui arrive."

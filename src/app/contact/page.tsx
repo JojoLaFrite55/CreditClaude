@@ -18,7 +18,6 @@ export default function ContactPage() {
       <SectionHeading
         as="h1"
         index="(06)"
-        ghost="@"
         eyebrow="Contact"
         title="Travaillons ensemble"
         description="Une alternance, une mission ou simplement une question technique : je réponds rapidement."

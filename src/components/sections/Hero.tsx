@@ -18,9 +18,9 @@ export function Hero() {
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const factor = reduceMotion ? 0 : 1;
-  const slow = useTransform(scrollYProgress, [0, 1], [0, 140 * factor]);
-  const fast = useTransform(scrollYProgress, [0, 1], [0, -220 * factor]);
-  const drift = useTransform(scrollYProgress, [0, 1], [0, -120 * factor]);
+  const slow = useTransform(scrollYProgress, [0, 1], [0, 80 * factor]);
+  const fast = useTransform(scrollYProgress, [0, 1], [0, -90 * factor]);
+  const drift = useTransform(scrollYProgress, [0, 1], [0, -60 * factor]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
@@ -38,16 +38,16 @@ export function Hero() {
           )}
         </motion.div>
 
-        <h1 className="relative col-span-12 mt-10 font-display leading-[0.8] font-extrabold tracking-[-0.065em] uppercase sm:mt-6">
+        <h1 className="relative col-span-12 mt-10 font-display leading-[0.85] font-extrabold tracking-[-0.045em] uppercase sm:mt-6">
           <span className="sr-only">{profile.fullName}</span>
           <motion.span aria-hidden style={{ y: drift }} className="block">
-            <KineticText as="span" by="char" text={profile.firstName} immediate delay={0.3} className="block text-[19cqw] text-ink sm:text-[19cqw]" />
+            <KineticText as="span" by="char" text={profile.firstName} immediate delay={0.3} className="block text-[clamp(4.5rem,16cqw,15rem)] text-ink" />
           </motion.span>
-          <motion.span aria-hidden style={{ y: fast }} className="relative z-10 -mt-[2cqw] block pl-[2cqw] sm:-mt-[3.5cqw] sm:pl-[16cqw]">
-            <KineticText as="span" by="char" text={middleName ?? ""} immediate delay={0.5} className="block text-[10cqw] text-accent sm:text-[9cqw]" />
+          <motion.span aria-hidden style={{ y: fast }} className="relative z-10 -mt-[2cqw] block pl-[2cqw] sm:-mt-[1cqw] sm:pl-[14cqw]">
+            <KineticText as="span" by="char" text={middleName ?? ""} immediate delay={0.5} className="block text-[clamp(2.4rem,8.6cqw,8rem)] text-accent" />
           </motion.span>
           <motion.span aria-hidden style={{ y: slow }} className="-mt-[1cqw] block text-right">
-            <KineticText as="span" by="char" text={lastName ?? ""} immediate delay={0.7} className="text-outline block text-[9.6cqw] sm:text-[9.6cqw]" />
+            <KineticText as="span" by="char" text={lastName ?? ""} immediate delay={0.7} className="text-outline block text-[clamp(2.1rem,8.6cqw,8rem)]" />
           </motion.span>
         </h1>
 
@@ -62,7 +62,7 @@ export function Hero() {
               text={profile.tagline}
               delay={1.2}
               immediate
-              className="max-w-md font-display text-2xl leading-[1.05] font-bold tracking-tight text-ink sm:text-3xl"
+              className="max-w-md font-display text-xl leading-[1.15] font-semibold tracking-tight text-ink sm:text-2xl"
             />
             <Reveal delay={1.5} className="flex flex-wrap items-center gap-3 pt-3">
               <MagneticButton href="/projets">

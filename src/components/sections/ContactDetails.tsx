@@ -54,13 +54,13 @@ export function ContactDetails() {
       <div>
         <p className="mb-4 font-mono text-[10px] tracking-[0.3em] text-accent uppercase">/ E-mail</p>
         <div className="flex items-start gap-3">
-          <a href={`mailto:${profile.email}`} data-cursor="label" data-cursor-label="Mail" className="group block min-w-0">
+          <a href={`mailto:${profile.email}`} className="group block min-w-0">
             <KineticText
               as="span"
               by="char"
               stagger={0.015}
               text={profile.email}
-              className="block font-display text-[4.8cqw] leading-[0.95] font-extrabold tracking-[-0.05em] break-all transition-colors duration-500 group-hover:text-accent sm:text-[3.4cqw] lg:text-[1.8cqw]"
+              className="block font-display text-[clamp(1.2rem,4.6cqw,2rem)] leading-[1.05] font-bold tracking-[-0.02em] transition-colors duration-500 group-hover:text-accent lg:text-[clamp(1.2rem,2.1cqw,2rem)]"
             />
           </a>
           <CopyButton value={profile.email} label="E-mail" />

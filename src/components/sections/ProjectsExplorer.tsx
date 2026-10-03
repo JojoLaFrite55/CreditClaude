@@ -3,7 +3,6 @@
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { ProjectCard } from "@/components/sections/ProjectCard";
-import { GlitchText } from "@/components/ui/GlitchText";
 import { duration, easing, tweens } from "@/config/ui";
 import { cn } from "@/lib/cn";
 import type { Project, ProjectFilter } from "@/types/content";
@@ -15,11 +14,11 @@ type ProjectsExplorerProps = {
 
 const placements = [
   "lg:col-span-5 lg:col-start-1",
-  "lg:col-span-4 lg:col-start-7 lg:mt-40",
+  "lg:col-span-4 lg:col-start-7 lg:mt-20",
   "lg:col-span-4 lg:col-start-2",
-  "lg:col-span-5 lg:col-start-7 lg:mt-16",
+  "lg:col-span-5 lg:col-start-7 lg:mt-10",
   "lg:col-span-4 lg:col-start-1",
-  "lg:col-span-4 lg:col-start-8 lg:mt-24",
+  "lg:col-span-4 lg:col-start-8 lg:mt-12",
 ];
 
 export function ProjectsExplorer({ projects, filters }: ProjectsExplorerProps) {
@@ -50,11 +49,11 @@ export function ProjectsExplorer({ projects, filters }: ProjectsExplorerProps) {
               aria-controls="projects-grid"
               onClick={() => setActive(filter.value)}
               className={cn(
-                "glitch-host relative flex items-start gap-1 font-display text-2xl font-extrabold tracking-[-0.03em] uppercase transition-colors sm:text-3xl",
+                "relative flex items-start gap-1 font-display text-xl font-bold tracking-[-0.02em] transition-colors sm:text-2xl",
                 selected ? "text-ink" : "text-ink/25 hover:text-ink/70",
               )}
             >
-              <GlitchText text={filter.label} />
+              {filter.label}
               <sup className="font-mono text-[10px] font-normal tracking-normal text-accent">{counts[filter.value] ?? 0}</sup>
               {selected && (
                 <motion.span layoutId="project-filter" transition={tweens.layout} className="absolute -bottom-1.5 left-0 h-[3px] w-full bg-accent" />

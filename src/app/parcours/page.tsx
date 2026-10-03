@@ -26,7 +26,6 @@ export default function ParcoursPage() {
           index="(02)"
           eyebrow="CV & Expériences"
           title="Parcours professionnel"
-          ghost="CV"
           description="Trois expériences en entreprise, dont deux en alternance, du support utilisateur au déploiement d'infrastructures."
         />
         <Reveal className="sm:ml-[25%]">

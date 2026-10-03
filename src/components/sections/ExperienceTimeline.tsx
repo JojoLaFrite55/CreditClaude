@@ -28,10 +28,10 @@ function ExperienceRow({ item, index }: { item: Experience; index: number }) {
   const lineScale = useTransform(scrollYProgress, [0.1, 0.6], [reduceMotion ? 1 : 0, 1]);
 
   return (
-    <li ref={ref} className="relative grid grid-cols-12 gap-x-4 gap-y-8 py-16 sm:py-24">
+    <li ref={ref} className="relative grid grid-cols-12 gap-x-4 gap-y-8 py-14 sm:py-20">
       <motion.span aria-hidden style={{ scaleX: lineScale }} className="absolute top-0 left-0 h-px w-full origin-left bg-line" />
       <Parallax speed={layout.speed} className={cn("col-span-12 select-none", layout.year)}>
-        <span aria-hidden className="block font-display text-[22cqw] leading-[0.75] font-extrabold tracking-[-0.07em] text-outline lg:text-[9cqw]">
+        <span aria-hidden className="block font-display text-[clamp(3.5rem,8cqw,7rem)] leading-[0.8] font-extrabold tracking-[-0.04em] text-outline">
           {yearOf(item.start)}
         </span>
         <span className="mt-4 block font-mono text-[11px] tracking-[0.25em] text-muted uppercase">
@@ -49,10 +49,10 @@ function ExperienceRow({ item, index }: { item: Experience; index: number }) {
           by="char"
           stagger={0.012}
           text={item.company}
-          className="font-display text-[6.8cqw] leading-[0.85] font-extrabold tracking-[-0.05em] uppercase sm:text-[6cqw] lg:text-[4.2cqw]"
+          className="font-display text-[clamp(1.9rem,3.6cqw,3.25rem)] leading-[0.95] font-extrabold tracking-[-0.03em]"
         />
         <Reveal delay={0.15}>
-          <p className="mt-4 font-display text-xl font-bold tracking-tight text-accent-soft sm:text-2xl">{item.role}</p>
+          <p className="mt-3 font-display text-lg font-semibold tracking-tight text-accent-soft sm:text-xl">{item.role}</p>
           <p className="mt-3 max-w-lg text-sm text-muted">{item.context}</p>
         </Reveal>
         <Stagger as="ul" className="mt-8 border-t border-line">
