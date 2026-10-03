@@ -31,7 +31,7 @@ function ExperienceRow({ item, index }: { item: Experience; index: number }) {
     <li ref={ref} className="relative grid grid-cols-12 gap-x-4 gap-y-8 py-16 sm:py-24">
       <motion.span aria-hidden style={{ scaleX: lineScale }} className="absolute top-0 left-0 h-px w-full origin-left bg-line" />
       <Parallax speed={layout.speed} className={cn("col-span-12 select-none", layout.year)}>
-        <span aria-hidden className="block font-display text-[22vw] leading-[0.75] font-extrabold tracking-[-0.07em] text-outline lg:text-[9vw]">
+        <span aria-hidden className="block font-display text-[22cqw] leading-[0.75] font-extrabold tracking-[-0.07em] text-outline lg:text-[9cqw]">
           {yearOf(item.start)}
         </span>
         <span className="mt-4 block font-mono text-[11px] tracking-[0.25em] text-muted uppercase">
@@ -49,7 +49,7 @@ function ExperienceRow({ item, index }: { item: Experience; index: number }) {
           by="char"
           stagger={0.012}
           text={item.company}
-          className="font-display text-[6.8vw] leading-[0.85] font-extrabold tracking-[-0.05em] uppercase sm:text-[6vw] lg:text-[4.2vw]"
+          className="font-display text-[6.8cqw] leading-[0.85] font-extrabold tracking-[-0.05em] uppercase sm:text-[6cqw] lg:text-[4.2cqw]"
         />
         <Reveal delay={0.15}>
           <p className="mt-4 font-display text-xl font-bold tracking-tight text-accent-soft sm:text-2xl">{item.role}</p>

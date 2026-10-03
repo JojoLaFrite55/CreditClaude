@@ -14,7 +14,7 @@ export function CallToAction({ title, description }: CallToActionProps) {
   return (
     <Container as="section" className="relative grid grid-cols-12 gap-x-4 py-24 sm:py-36">
       <Parallax speed={0.12} className="col-span-12 lg:col-span-7">
-        <KineticText as="h2" text={title} className="font-display text-[5.2vw] leading-[0.95] font-extrabold tracking-[-0.05em] text-balance uppercase sm:text-[5vw] lg:text-[3.8vw]" />
+        <KineticText as="h2" text={title} className="font-display text-[5.2cqw] leading-[0.95] font-extrabold tracking-[-0.05em] text-balance uppercase sm:text-[5cqw] lg:text-[3.8cqw]" />
       </Parallax>
       <div className="col-span-12 mt-10 flex flex-col justify-end gap-8 sm:col-span-8 sm:col-start-5 lg:col-span-4 lg:col-start-9 lg:mt-48">
         <Reveal>

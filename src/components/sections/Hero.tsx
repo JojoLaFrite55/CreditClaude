@@ -41,13 +41,13 @@ export function Hero() {
         <h1 className="relative col-span-12 mt-10 font-display leading-[0.8] font-extrabold tracking-[-0.065em] uppercase sm:mt-6">
           <span className="sr-only">{profile.fullName}</span>
           <motion.span aria-hidden style={{ y: drift }} className="block">
-            <KineticText as="span" by="char" text={profile.firstName} immediate delay={0.3} className="block text-[19vw] text-ink sm:text-[19vw]" />
+            <KineticText as="span" by="char" text={profile.firstName} immediate delay={0.3} className="block text-[19cqw] text-ink sm:text-[19cqw]" />
           </motion.span>
-          <motion.span aria-hidden style={{ y: fast }} className="relative z-10 -mt-[2vw] block pl-[2vw] sm:-mt-[3.5vw] sm:pl-[16vw]">
-            <KineticText as="span" by="char" text={middleName ?? ""} immediate delay={0.5} className="block text-[10vw] text-accent sm:text-[9vw]" />
+          <motion.span aria-hidden style={{ y: fast }} className="relative z-10 -mt-[2cqw] block pl-[2cqw] sm:-mt-[3.5cqw] sm:pl-[16cqw]">
+            <KineticText as="span" by="char" text={middleName ?? ""} immediate delay={0.5} className="block text-[10cqw] text-accent sm:text-[9cqw]" />
           </motion.span>
-          <motion.span aria-hidden style={{ y: slow }} className="-mt-[1vw] block text-right">
-            <KineticText as="span" by="char" text={lastName ?? ""} immediate delay={0.7} className="text-outline block text-[9.6vw] sm:text-[9.6vw]" />
+          <motion.span aria-hidden style={{ y: slow }} className="-mt-[1cqw] block text-right">
+            <KineticText as="span" by="char" text={lastName ?? ""} immediate delay={0.7} className="text-outline block text-[9.6cqw] sm:text-[9.6cqw]" />
           </motion.span>
         </h1>
 
@@ -75,7 +75,7 @@ export function Hero() {
           </div>
 
           <motion.div
-            className="col-span-12 sm:col-span-6 lg:col-span-5 lg:col-start-8 lg:-mt-24"
+            className="col-span-12 sm:col-span-6 lg:col-span-5 lg:col-start-8"
             initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
             animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
             transition={{ duration: duration.reveal, ease: easing.expo, delay: 1.3 }}

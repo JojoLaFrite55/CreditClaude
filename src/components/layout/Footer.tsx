@@ -41,7 +41,7 @@ export function Footer() {
           as="div"
           by="char"
           text={profile.lastName}
-          className="font-display text-[10.5vw] leading-[0.78] font-extrabold tracking-[-0.07em] whitespace-nowrap text-ink/[0.08] uppercase lg:text-[9.6vw]"
+          className="font-display text-[10.5cqw] leading-[0.78] font-extrabold tracking-[-0.07em] whitespace-nowrap text-ink/[0.08] uppercase lg:text-[9.6cqw]"
           stagger={0.02}
         />
       </Container>

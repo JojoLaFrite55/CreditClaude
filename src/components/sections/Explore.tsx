@@ -44,7 +44,7 @@ export function Explore() {
             >
               <span aria-hidden className="absolute inset-0 origin-bottom scale-y-0 bg-accent transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100" />
               <span className="relative col-span-2 font-mono text-xs text-muted transition-colors duration-500 group-hover:text-void sm:col-span-1">{card.index}</span>
-              <span className="relative col-span-10 font-display text-[7vw] leading-[0.9] font-extrabold tracking-[-0.05em] uppercase transition-[color,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-4 group-hover:text-void sm:col-span-7 sm:text-[4.8vw]">
+              <span className="relative col-span-10 font-display text-[7cqw] leading-[0.9] font-extrabold tracking-[-0.05em] uppercase transition-[color,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-4 group-hover:text-void sm:col-span-7 sm:text-[4.8cqw]">
                 {card.title}
               </span>
               <span className="relative col-span-10 col-start-3 mt-3 max-w-sm text-sm text-muted transition-colors duration-500 group-hover:text-void/80 sm:col-span-3 sm:mt-0">

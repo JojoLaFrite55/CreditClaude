@@ -60,7 +60,7 @@ export function ContactDetails() {
               by="char"
               stagger={0.015}
               text={profile.email}
-              className="block font-display text-[4.8vw] leading-[0.95] font-extrabold tracking-[-0.05em] break-all transition-colors duration-500 group-hover:text-accent sm:text-[3.4vw] lg:text-[1.8vw]"
+              className="block font-display text-[4.8cqw] leading-[0.95] font-extrabold tracking-[-0.05em] break-all transition-colors duration-500 group-hover:text-accent sm:text-[3.4cqw] lg:text-[1.8cqw]"
             />
           </a>
           <CopyButton value={profile.email} label="E-mail" />

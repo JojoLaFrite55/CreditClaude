@@ -27,7 +27,7 @@ export function Highlights() {
               text={item.value}
               className={cn(
                 "font-display leading-[0.85] font-extrabold tracking-[-0.05em] uppercase",
-                index === 0 ? "text-[14vw] sm:text-[8vw] lg:text-[6vw]" : "text-[11vw] sm:text-[6vw] lg:text-[4.2vw]",
+                index === 0 ? "text-[14cqw] sm:text-[8cqw] lg:text-[6cqw]" : "text-[11cqw] sm:text-[6cqw] lg:text-[4.2cqw]",
                 index % 2 === 1 && "text-outline-accent",
               )}
             />

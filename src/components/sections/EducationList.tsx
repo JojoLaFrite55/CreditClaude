@@ -21,7 +21,7 @@ export function EducationList({ items }: { items: Diploma[] }) {
               as="h3"
               by="char"
               text={diploma.title}
-              className="mt-6 font-display text-[12vw] leading-[0.82] font-extrabold tracking-[-0.06em] uppercase sm:text-[7.5vw] lg:text-[5.4vw]"
+              className="mt-6 font-display text-[12cqw] leading-[0.82] font-extrabold tracking-[-0.06em] uppercase sm:text-[7.5cqw] lg:text-[5.4cqw]"
             />
             <Reveal delay={0.2}>
               <p className="mt-5 max-w-md text-ink/80">{diploma.speciality}</p>

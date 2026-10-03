@@ -20,7 +20,7 @@ export function SectionHeading({ eyebrow, title, description, index, as = "h2", 
       {ghost && (
         <span
           aria-hidden
-          className="text-outline pointer-events-none absolute -top-[0.35em] right-0 font-display text-[28vw] leading-none font-extrabold tracking-[-0.06em] uppercase opacity-40 select-none sm:text-[18vw]"
+          className="text-outline pointer-events-none absolute -top-[0.35em] right-0 font-display text-[28cqw] leading-none font-extrabold tracking-[-0.06em] uppercase opacity-40 select-none sm:text-[18cqw]"
         >
           {ghost}
         </span>
@@ -36,7 +36,7 @@ export function SectionHeading({ eyebrow, title, description, index, as = "h2", 
           text={title}
           className={cn(
             "font-display leading-[0.9] font-extrabold break-words tracking-[-0.055em] text-ink uppercase",
-            primary ? "text-[6.6vw] sm:text-[7.4vw] lg:text-[6.2vw]" : "text-[6.6vw] sm:text-[7vw] lg:text-[5.6vw]",
+            primary ? "text-[6.6cqw] sm:text-[6cqw] lg:text-[5.2cqw]" : "text-[6.6cqw] sm:text-[7cqw] lg:text-[5.6cqw]",
           )}
         />
         {description && (
