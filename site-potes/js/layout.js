@@ -43,3 +43,28 @@ burger.addEventListener("click", () => {
   burger.setAttribute("aria-expanded", String(open));
   burger.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
 });
+
+const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+let progress = 0;
+const summon = () => import("./enfer.js").then((module) => module.openHell());
+
+addEventListener("keydown", (event) => {
+  const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+  progress = key === KONAMI[progress] ? progress + 1 : key === KONAMI[0] ? 1 : 0;
+  if (progress === KONAMI.length) {
+    progress = 0;
+    summon();
+  }
+});
+
+let taps = 0;
+let tapTimer = 0;
+document.querySelector(".site-footer .brand").addEventListener("click", () => {
+  taps += 1;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(() => (taps = 0), 2500);
+  if (taps >= 6) {
+    taps = 0;
+    summon();
+  }
+});

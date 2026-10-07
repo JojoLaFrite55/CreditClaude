@@ -39,3 +39,7 @@ il ne fonctionne pas en double-cliquant sur `index.html`, il faut passer par un 
 ## Déployer sur Vercel
 
 Importer le dépôt, puis dans les réglages du projet : **Root Directory** = `site-potes`, **Framework Preset** = `Other`, aucune commande de build.
+
+## Easter egg
+
+Konami code (haut haut bas bas gauche droite gauche droite B A) ou six clics sur le logo du pied de page. Échap pour fuir. Le code est dans `js/enfer.js`, la vidéo dans `assets/enfer/`.
