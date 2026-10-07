@@ -10,18 +10,19 @@ export const NAV = [
   { label: "Memes", href: "memes.html", page: "memes" },
 ];
 
-export const HEADS = [
+const PHOTOS = [
   "assets/heads/tete-1.png",
   "assets/heads/tete-2.png",
   "assets/heads/tete-3.png",
   "assets/heads/tete-4.png",
-];
-
-export const POLICE = [
   "assets/police/policier-1.png",
   "assets/police/policier-2.png",
   "assets/police/policier-3.png",
 ];
+
+export const HEADS = PHOTOS;
+
+export const POLICE = PHOTOS;
 
 export const BACKGROUNDS = [
   { id: "ocean", label: "Océan", a: "#0f4c75", b: "#3282b8" },
