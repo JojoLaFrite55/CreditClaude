@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Excuses et horoscope — LE QG</title>
+  <meta name="description" content="Le générateur d'excuses de mauvaise foi et l'horoscope du jour de la bande.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Excuses et horoscope</h1>
+      <p>Le générateur d'excuses de mauvaise foi et l'horoscope du jour de la bande.</p>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" type="button" role="tab" data-tab="excuse" aria-selected="true">Excuses</button>
+      <button class="tab" type="button" role="tab" data-tab="horo" aria-selected="false">Horoscope</button>
+      <button class="btn btn-small btn-secondary" id="sound" type="button" style="margin-left:auto">Son : activé</button>
+    </div>
+    <section data-panel="excuse" class="tool-panel" style="max-width:720px">
+      <div class="field"><label for="kind">Situation</label>
+        <select id="kind"><option value="retard">Je suis en retard</option><option value="message">Je n'ai pas répondu</option><option value="sous">Je n'ai pas de sous</option></select></div>
+      <blockquote class="quote" id="excuse"></blockquote>
+      <div class="btn-row"><button class="btn" id="new-excuse" type="button">Nouvelle excuse</button><button class="btn btn-secondary" id="copy-excuse" type="button">Copier</button></div>
+    </section>
+    <section data-panel="horo" class="tool-panel hidden" style="max-width:720px">
+      <div class="field"><label for="sign">Signe</label><select id="sign"></select></div>
+      <dl class="stars" id="stars"></dl>
+      <div class="horo" id="horo"></div>
+      <p class="muted">Rigoureusement non scientifique. Change chaque jour.</p>
+    </section>
+  </main>
+  <script type="module" src="js/tools/excuses.js"></script>
+</body>
+</html>

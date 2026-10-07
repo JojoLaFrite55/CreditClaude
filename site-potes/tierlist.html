@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tier list — LE QG</title>
+  <meta name="description" content="Classe la bande de S à D. Glisse les têtes, ou touche une tête puis une ligne sur mobile.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Tier list</h1>
+      <p>Classe la bande de S à D. Glisse les têtes, ou touche une tête puis une ligne sur mobile.</p>
+    </div>
+    <div class="field" style="max-width:420px;margin-bottom:16px"><label for="tier-title">Titre de la tier list</label><input type="text" id="tier-title" value="Les meilleurs potes" maxlength="40"></div>
+    <div class="tier-board" id="board"></div>
+    <section class="tier-pool">
+      <h2>Les potes</h2>
+      <div class="tier-items pool" id="pool" data-drop="true"></div>
+      <div class="btn-row" style="margin-top:14px">
+        <label class="btn btn-small btn-secondary" for="file">Ajouter des images</label>
+        <input type="file" id="file" accept="image/*" multiple hidden>
+        <button class="btn btn-small btn-secondary" id="reset" type="button">Tout remettre</button>
+        <button class="btn btn-small" id="export" type="button">Télécharger l'image</button>
+        <button class="btn btn-small btn-secondary" id="sound" type="button">Son : activé</button>
+      </div>
+      <p class="muted" style="margin-top:10px">Les images que tu ajoutes restent sur ton ordinateur : rien n'est envoyé nulle part.</p>
+    </section>
+  </main>
+  <script type="module" src="js/tools/tierlist.js"></script>
+</body>
+</html>

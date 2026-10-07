@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roulette de la bande — LE QG</title>
+  <meta name="description" content="Qui paie la tournée ? Qui choisit le film ? La roue décide.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Roulette de la bande</h1>
+      <p>Qui paie la tournée ? Qui choisit le film ? La roue décide.</p>
+    </div>
+    <div class="tool-grid">
+      <div class="stage"><canvas id="wheel" aria-label="Roue de la chance" style="cursor:pointer"></canvas></div>
+      <div class="tool-panel">
+        <h2>Les choix</h2>
+        <div class="field"><label for="options">Un choix par ligne (24 maximum)</label><textarea id="options"></textarea></div>
+        <label><input type="checkbox" id="remove"> Retirer le gagnant après le tirage</label>
+        <div class="btn-row">
+          <button class="btn" id="spin" type="button">Lancer la roue</button>
+          <button class="btn btn-secondary" id="shuffle" type="button">Mélanger</button>
+          <button class="btn btn-secondary" id="sound" type="button">Son : activé</button>
+        </div>
+        <p class="big-result" id="result">—</p>
+        <ul class="history" id="history" aria-label="Derniers tirages"></ul>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/roulette.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Affiches — LE QG</title>
+  <meta name="description" content="Avis de recherche, employé du mois, certificat de nullité : fabrique l'affiche et télécharge-la.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Affiches</h1>
+      <p>Avis de recherche, employé du mois, certificat de nullité : fabrique l'affiche et télécharge-la.</p>
+    </div>
+    <div class="tool-grid">
+      <div class="stage"><canvas id="poster" aria-label="Aperçu de l'affiche"></canvas></div>
+      <div class="tool-panel">
+        <h2>Personnalise</h2>
+        <div class="field"><label for="template">Modèle d'affiche</label>
+          <select id="template"><option value="wanted">Avis de recherche</option><option value="employee">Employé du mois</option><option value="certificate">Certificat de nullité</option><option value="pasdispo">Indisponible</option></select></div>
+        <fieldset class="field"><span>Tête</span><div class="models" id="models"></div></fieldset>
+        <div class="field"><label for="name">Nom</label><input type="text" id="name" maxlength="40" autocomplete="off"></div>
+        <div class="field"><label for="extra" id="extra-label">Texte</label><input type="text" id="extra" maxlength="80" autocomplete="off"></div>
+        <div class="btn-row">
+          <button class="btn" id="download" type="button">Télécharger l'affiche</button>
+          <button class="btn btn-secondary" id="sound" type="button">Son : activé</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/affiches.js"></script>
+</body>
+</html>

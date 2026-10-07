@@ -3,27 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jeux — LE QG</title>
-  <meta name="description" content="Les jeux du QG.">
+  <title>Outils — LE QG</title>
+  <meta name="description" content="Les outils du QG.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
 </head>
-<body data-page="jeux">
+<body data-page="outils">
   <main class="wrap">
     <div class="page-head">
-      <h1>Jeux</h1>
+      <h1>Outils</h1>
       <p>Les jeux du QG. Gratuits, sans pub, jouables directement dans le navigateur. Les records sont gardés sur ton appareil.</p>
     </div>
-    <div class="grid" id="games"></div>
+    <div class="grid" id="tools"></div>
   </main>
   <script type="module">
     import "./js/layout.js";
-    import { GAMES } from "./js/data.js";
+    import { TOOLS } from "./js/data.js";
 
-    const root = document.getElementById("games");
+    const root = document.getElementById("tools");
 
     const make = (item) => {
       const card = document.createElement("a");
@@ -40,7 +40,7 @@
       return card;
     };
 
-    GAMES.forEach((game) => root.append(make(game)));
+    TOOLS.forEach((game) => root.append(make(game)));
 
   </script>
 </body>

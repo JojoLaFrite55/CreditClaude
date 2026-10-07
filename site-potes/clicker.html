@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tête Clicker — LE QG</title>
+  <meta name="description" content="Clique sur la tête, gagne des likes, deviens une légende.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Tête Clicker</h1>
+      <p>Clique sur la tête, gagne des likes, deviens une légende.</p>
+    </div>
+    <div class="clicker">
+      <section class="clicker-main" id="clicker-stage">
+        <div class="clicker-count"><strong id="likes">0</strong><span>likes</span></div>
+        <p class="muted"><span id="persec">0</span> / seconde · <span id="perclick">1</span> par clic <span class="boost hidden" id="boost"></span></p>
+        <button class="big-head" id="big" type="button" aria-label="Cliquer sur la tête"></button>
+        <div class="btn-row" style="justify-content:center">
+          <button class="btn btn-small btn-secondary" id="change" type="button">Changer de tête</button>
+          <button class="btn btn-small btn-secondary" id="reset" type="button">Réinitialiser</button>
+          <button class="btn btn-small btn-secondary" id="sound" type="button">Son : activé</button>
+        </div>
+        <button class="golden hidden" id="golden" type="button" aria-label="Tête dorée : bonus">★</button>
+      </section>
+      <section>
+        <h2>Améliorations</h2>
+        <ul class="upgrades" id="upgrades"></ul>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="js/games/clicker.js"></script>
+</body>
+</html>

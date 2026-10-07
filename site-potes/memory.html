@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memory de la bande — LE QG</title>
+  <meta name="description" content="Retrouve les paires de têtes en un minimum de coups.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Memory de la bande</h1>
+      <p>Retrouve les paires de têtes en un minimum de coups.</p>
+    </div>
+    <div class="memory">
+      <div class="memory-bar">
+        <div class="hud-item light"><span>Coups</span><strong id="moves">0</strong></div>
+        <div class="hud-item light"><span>Temps</span><strong id="time">0</strong></div>
+        <div class="hud-item light"><span>Record</span><strong id="best">—</strong></div>
+        <label class="field memory-level"><span>Niveau</span>
+          <select id="level"><option value="easy">Facile (6 paires)</option><option value="normal" selected>Normal (8 paires)</option><option value="hard">Difficile (10 paires)</option></select>
+        </label>
+        <button class="btn btn-small btn-secondary" id="restart" type="button">Nouvelle partie</button>
+        <button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button>
+      </div>
+      <div class="memory-board" id="board"></div>
+      <p class="memory-result hidden" id="result"></p>
+    </div>
+  </main>
+  <script type="module" src="js/games/memory.js"></script>
+</body>
+</html>
