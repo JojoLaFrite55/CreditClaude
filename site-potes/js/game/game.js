@@ -3,13 +3,15 @@ import { loadHeads, loadPolice } from "../faces.js";
 import { createAudio } from "./audio.js";
 import { Effects } from "./effects.js";
 import { Enemy } from "./enemy.js";
+import { Mine } from "./mines.js";
 import { PLAYER, Player } from "./player.js";
 import { loadSave, persist } from "./save.js";
 import { BORDER_Y, H, TOWERS, W, createBackground } from "./scene.js";
 import { createShop } from "./shop.js";
 import { TURRET_SLOTS, Turret } from "./turret.js";
+import { VEHICLE_TYPES, Vehicle } from "./vehicle.js";
 import { bossStats, isBossWave, musicLevel, waveConfig } from "./waves.js";
-import { ORDER, TURRETS, TURRET_WEAPON, WEAPONS } from "./weapons.js";
+import { MINE_UPGRADES, ORDER, TURRETS, TURRET_WEAPON, WEAPONS } from "./weapons.js";
 
 const $ = (id) => document.getElementById(id);
 const canvas = $("game-canvas");
@@ -29,8 +31,11 @@ const BEST_KEY = "qg-jules-best";
 const NOTES = {
   2: "Gilets pare-balles en approche",
   3: "Éclaireurs rapides repérés",
+  4: "Véhicules légers en approche",
+  5: "Motards ultra-rapides",
   6: "Gilets renforcés",
-  11: "Blindage lourd",
+  7: "Drones et camions de troupes",
+  10: "Blindés lourds",
 };
 
 const readBest = () => {
@@ -53,6 +58,8 @@ const game = {
   enemies: [],
   bullets: [],
   turrets: [],
+  mines: [],
+  mineQueue: [],
   boss: null,
   minionTimer: 0,
   toSpawn: 0,
@@ -143,6 +150,23 @@ const shop = createShop(panels.shop, save, {
     audio.click();
     updateHud();
   },
+  upgradeMine(key) {
+    const upgrade = MINE_UPGRADES[key];
+    const level = save.mines[key];
+    const price = upgrade.prices[level];
+    const locked = key !== "count" && save.mines.count === 0;
+    if (level >= upgrade.values.length - 1 || locked || save.money < price) {
+      audio.denied();
+      return;
+    }
+    save.money -= price;
+    save.mines[key] += 1;
+    persist(save);
+    audio.init();
+    audio.buy();
+    audio.mineLay();
+    updateHud();
+  },
   buyTurret(index) {
     const turret = TURRETS[index];
     if (save.turrets !== index || save.money < turret.price) {
@@ -192,6 +216,8 @@ function resetGame() {
     comboTimer: 0,
     enemies: [],
     bullets: [],
+    mines: [],
+    mineQueue: [],
     boss: null,
     minionTimer: 0,
     toSpawn: 0,
@@ -230,8 +256,66 @@ function spawnBoss() {
   updateBossBar();
 }
 
+const mineStats = () => ({
+  count: MINE_UPGRADES.count.values[save.mines.count],
+  damage: MINE_UPGRADES.damage.values[save.mines.damage],
+  radius: MINE_UPGRADES.radius.values[save.mines.radius],
+  rearm: MINE_UPGRADES.rearm.values[save.mines.rearm],
+});
+
+function layMines() {
+  const { count } = mineStats();
+  let laid = false;
+  while (game.mines.length < count) {
+    game.mines.push(new Mine(game.mines));
+    laid = true;
+  }
+  if (laid) audio.mineLay();
+}
+
+function detonate(mine) {
+  const stats = mineStats();
+  const index = game.mines.indexOf(mine);
+  if (index === -1) return;
+  game.mines.splice(index, 1);
+  if (stats.rearm > 0) game.mineQueue.push(stats.rearm);
+  effects.explosion(mine.x, mine.y, stats.radius * 0.85);
+  audio.explosion(stats.radius);
+  game.shake = Math.max(game.shake, 6 + stats.radius / 14);
+  for (const enemy of [...game.enemies]) {
+    const cy = enemy.y - enemy.height * 0.35;
+    const dist = Math.hypot(enemy.x - mine.x, cy - mine.y) - enemy.halfW * 0.5;
+    if (dist > stats.radius) continue;
+    const falloff = 1 - 0.35 * Math.max(0, Math.min(1, dist / stats.radius));
+    hitEnemy(enemy, { dmg: stats.damage * falloff, x: enemy.x, y: cy, mine: true });
+  }
+}
+
+function updateMines(dt) {
+  const stats = mineStats();
+  for (const mine of [...game.mines]) {
+    mine.update(dt);
+    if (!mine.armed) continue;
+    const hit = game.enemies.some(
+      (enemy) => enemy.y >= mine.y - 6 && enemy.y <= mine.y + 70 && Math.abs(enemy.x - mine.x) <= 20 + enemy.halfW * 0.65,
+    );
+    if (hit) detonate(mine);
+  }
+  for (let i = game.mineQueue.length - 1; i >= 0; i--) {
+    game.mineQueue[i] -= dt;
+    if (game.mineQueue[i] <= 0) {
+      game.mineQueue.splice(i, 1);
+      if (game.mines.length < stats.count) {
+        game.mines.push(new Mine(game.mines));
+        audio.mineLay();
+      }
+    }
+  }
+}
+
 function startWave() {
   game.wave += 1;
+  layMines();
   game.cfg = waveConfig(game.wave);
   game.spawnTimer = 1;
   game.banner = 2.8;
@@ -290,22 +374,40 @@ function toMenu() {
   showPanel("menu");
 }
 
+function pickType() {
+  const { cfg } = game;
+  let roll = Math.random();
+  const table = [
+    ["drone", cfg.droneChance],
+    ["truck", cfg.truckChance],
+    ["armored", cfg.armoredChance],
+    ["jeep", cfg.jeepChance],
+    ["moto", cfg.motoChance],
+    ["runner", cfg.runnerChance],
+    ["vest", cfg.vestChance],
+  ];
+  for (const [type, chance] of table) {
+    if (roll < chance) return type;
+    roll -= chance;
+  }
+  return "normal";
+}
+
 function spawn(forcedType) {
   const { cfg } = game;
-  const roll = Math.random();
-  let type = forcedType ?? "normal";
-  if (!forcedType) {
-    if (roll < cfg.runnerChance) type = "runner";
-    else if (roll < cfg.runnerChance + cfg.vestChance) type = "vest";
-  }
+  const type = forcedType ?? pickType();
   let x = 0;
   for (let i = 0; i < 8; i++) {
-    x = 50 + Math.random() * (W - 100);
-    if (!game.enemies.some((enemy) => enemy.y < 70 && Math.abs(enemy.baseX - x) < 72)) break;
+    x = 70 + Math.random() * (W - 140);
+    if (!game.enemies.some((enemy) => enemy.y < 90 && Math.abs(enemy.baseX - x) < 72 + enemy.halfW * 0.5)) break;
+  }
+  const head = heads[Math.floor(Math.random() * heads.length)];
+  if (VEHICLE_TYPES.includes(type)) {
+    game.enemies.push(new Vehicle(type, head, x, game.wave, Math.random));
+    return;
   }
   const hp = type === "vest" ? cfg.vestHp : 1;
   const speed = cfg.speed * (0.88 + Math.random() * 0.24);
-  const head = heads[Math.floor(Math.random() * heads.length)];
   game.enemies.push(new Enemy(type, head, x, speed, hp, Math.random));
 }
 
@@ -367,14 +469,23 @@ function killEnemy(enemy) {
     game.flashRed = 0;
     effects.blood(enemy.x, cy, 140, 2.4);
     effects.blood(enemy.x, cy - 40, 80, 1.8);
-    effects.flyingHead(enemy.head, enemy.x, enemy.y - enemy.height + enemy.headH / 2, enemy.headH);
+    effects.flyingHead(enemy.head, enemy.headCenter().x, enemy.headCenter().y, enemy.headH);
     effects.text(enemy.x, cy - 30, `BOSS VAINCU  +${gained}`, "#ffd54a", 34);
     game.shake = 22;
     audio.bossDie();
     updateBossBar();
+  } else if (enemy.isVehicle) {
+    const hc = enemy.headCenter();
+    effects.explosion(enemy.x, cy, enemy.blast);
+    effects.blood(hc.x, hc.y, 22, 0.9);
+    effects.flyingHead(enemy.head, hc.x, hc.y, enemy.headH);
+    effects.text(enemy.x, cy - 24, `+${gained}`, "#ffd54a", 24 + mult * 2);
+    audio.explosion(enemy.blast);
+    game.shake = Math.max(game.shake, 8 + enemy.blast / 10);
   } else {
+    const hc = enemy.headCenter();
     effects.blood(enemy.x, cy, enemy.type === "vest" ? 46 : 34, enemy.type === "vest" ? 1.25 : 1);
-    effects.flyingHead(enemy.head, enemy.x, enemy.y - enemy.height + enemy.headH / 2, enemy.headH);
+    effects.flyingHead(enemy.head, hc.x, hc.y, enemy.headH);
     effects.text(enemy.x, cy - 10, `+${gained}`, mult > 1 ? "#ffd54a" : "#ffffff", 20 + mult * 2);
     if (mult > 1 && game.combo % 3 === 0) effects.text(enemy.x, cy - 36, `COMBO x${mult}`, "#ff6b6b", 18);
     audio.kill(game.combo);
@@ -408,8 +519,9 @@ function hitEnemy(enemy, bullet) {
     return;
   }
   effects.sparks(bullet.x, Math.min(enemy.y - enemy.height * 0.35, bullet.y + 6));
-  effects.blood(bullet.x, bullet.y, 4, 0.4);
-  if (enemy.type === "vest") audio.ricochet();
+  if (bullet.mine) return;
+  if (!enemy.isVehicle) effects.blood(bullet.x, bullet.y, 4, 0.4);
+  if (enemy.type === "vest" || enemy.isVehicle) audio.ricochet();
   else audio.hit();
   game.shake = Math.max(game.shake, 2.5);
 }
@@ -535,6 +647,19 @@ function update(dt) {
   }
 
   for (const enemy of game.enemies) enemy.update(dt, game.time);
+  for (const enemy of [...game.enemies]) {
+    if (enemy.type === "truck" && !enemy.unloaded && enemy.y > 170) {
+      enemy.unloaded = true;
+      effects.text(enemy.x, enemy.y - enemy.height - 10, "TROUPES !", "#ff9a4d", 24);
+      audio.danger();
+      for (let i = 0; i < 3; i++) {
+        const trooper = new Enemy("normal", heads[Math.floor(Math.random() * heads.length)], enemy.x + (i - 1) * 46, game.cfg.speed, 1, Math.random);
+        trooper.y = enemy.y - 40;
+        game.enemies.push(trooper);
+      }
+    }
+  }
+  updateMines(dt);
   updateBullets(dt);
 
   let danger = 0;
@@ -618,6 +743,7 @@ function draw() {
   g.drawImage(background, 0, 0, W, H);
   effects.drawSplat(g);
   searchlights();
+  for (const mine of game.mines) mine.draw(g, game.time);
   const sorted = [...game.enemies].sort((a, b) => a.y - b.y);
   for (const enemy of sorted) enemy.draw(g);
   g.lineCap = "round";
@@ -734,6 +860,10 @@ $("btn-again").addEventListener("click", play);
 $("btn-restart").addEventListener("click", play);
 $("btn-resume").addEventListener("click", resume);
 $("btn-pause").addEventListener("click", () => (game.state === "paused" ? resume() : pause()));
+$("btn-full").addEventListener("click", () => {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else $("shell").requestFullscreen?.();
+});
 $("btn-menu").addEventListener("click", toMenu);
 $("btn-menu-over").addEventListener("click", toMenu);
 $("btn-shop-menu").addEventListener("click", () => openShop("menu"));
@@ -767,6 +897,12 @@ window.__jeu = {
   },
   save,
   player,
+  spawnType(type) {
+    spawn(type);
+  },
+  get mines() {
+    return game.mines;
+  },
   jumpToWave(wave) {
     game.wave = wave - 1;
     game.enemies = [];

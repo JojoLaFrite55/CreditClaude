@@ -1,9 +1,10 @@
 import { TURRET_WEAPON } from "./weapons.js";
+import { H, W } from "./scene.js";
 
 export const TURRET_SLOTS = [
-  { x: 112, y: 592 },
-  { x: 848, y: 592 },
-  { x: 480, y: 606 },
+  { x: 140, y: H - 48 },
+  { x: W - 140, y: H - 48 },
+  { x: W / 2, y: H - 34 },
 ];
 
 const wrap = (angle) => Math.atan2(Math.sin(angle), Math.cos(angle));

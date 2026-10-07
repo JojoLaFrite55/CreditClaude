@@ -51,6 +51,10 @@ export class Enemy {
     if (this.flash > 0) this.flash -= dt;
   }
 
+  headCenter() {
+    return { x: this.x, y: this.y - this.height + this.headH / 2 };
+  }
+
   contains(px, py) {
     return Math.abs(px - this.x) <= this.halfW && py >= this.y - this.height && py <= this.y;
   }

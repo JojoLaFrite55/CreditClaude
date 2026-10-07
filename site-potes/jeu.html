@@ -31,6 +31,7 @@
         <div class="hud-item hud-best"><span>Record</span><strong id="hud-best">000000</strong></div>
         <div class="hud-actions">
           <button class="hud-btn js-sound" type="button" aria-pressed="true">Son : activé</button>
+          <button class="hud-btn" id="btn-full" type="button">Plein écran</button>
           <button class="hud-btn" id="btn-pause" type="button">Pause</button>
         </div>
       </div>
@@ -50,7 +51,7 @@
         <div class="panel">
           <p class="eyebrow">Zone A · Zone B</p>
           <h2>Kill all the Jules</h2>
-          <p class="muted">Tu es le garde-frontière. Des intrus arrivent par vagues depuis la Zone B, avec un boss géant toutes les 5 vagues. S'il en touche la frontière, c'est perdu.</p>
+          <p class="muted">Tu es le garde-frontière. Des intrus arrivent par vagues depuis la Zone B, avec des véhicules, des drones et un boss géant toutes les 5 vagues. S'il en touche la frontière, c'est perdu.</p>
           <ul class="keys">
             <li><kbd>←</kbd><kbd>→</kbd> ou <kbd>Q</kbd><kbd>D</kbd> <span>se déplacer</span></li>
             <li><kbd>Espace</kbd> <span>tirer (maintenu = tir continu)</span></li>
@@ -107,13 +108,14 @@
           <div class="shop-head">
             <div>
               <p class="eyebrow">Arsenal</p>
-              <h2>Armes et tourelles</h2>
+              <h2>Armes, tourelles et mines</h2>
             </div>
             <div class="wallet"><span>Argent</span><strong data-wallet>0 $</strong></div>
           </div>
           <div class="tabs" role="tablist">
             <button class="tab" type="button" role="tab" data-tab="weapons" aria-selected="true">Armes</button>
             <button class="tab" type="button" role="tab" data-tab="turrets" aria-selected="false">Tourelles</button>
+            <button class="tab" type="button" role="tab" data-tab="mines" aria-selected="false">Mines</button>
           </div>
           <ul class="items" data-list></ul>
           <div class="panel-actions">

@@ -9,6 +9,7 @@ export class Effects {
     this.particles = [];
     this.heads = [];
     this.texts = [];
+    this.rings = [];
     this.splat = document.createElement("canvas");
     this.splat.width = W * scale;
     this.splat.height = H * scale;
@@ -21,6 +22,7 @@ export class Effects {
     this.particles.length = 0;
     this.heads.length = 0;
     this.texts.length = 0;
+    this.rings.length = 0;
     this.splatCtx.clearRect(0, 0, W, H);
   }
 
@@ -49,6 +51,65 @@ export class Effects {
       g.ellipse(sx, sy, 3 + Math.random() * 11 * power, 2 + Math.random() * 7 * power, Math.random() * Math.PI, 0, Math.PI * 2);
       g.fill();
     }
+  }
+
+  explosion(x, y, size = 80) {
+    const count = Math.round(20 + size * 0.5);
+    const palette = ["#fff2a8", "#ffd24d", "#ffb02e", "#ff6a1a", "#c0300a"];
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * size * 3.2;
+      this.particles.push({
+        kind: "fire",
+        x: x + Math.cos(angle) * size * 0.12,
+        y: y + Math.sin(angle) * size * 0.12,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 40,
+        r: 4 + Math.random() * size * 0.1,
+        life: 0,
+        max: 0.35 + Math.random() * 0.5,
+        color: palette[Math.floor(Math.random() * palette.length)],
+      });
+    }
+    for (let i = 0; i < Math.round(count * 0.5); i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * size * 1.4;
+      this.particles.push({
+        kind: "smoke",
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 70,
+        r: 5 + Math.random() * size * 0.12,
+        life: 0,
+        max: 0.8 + Math.random() * 0.9,
+        color: "#2a2a2e",
+      });
+    }
+    for (let i = 0; i < Math.round(count * 0.4); i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 150 + Math.random() * size * 4;
+      this.particles.push({
+        kind: "spark",
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 120,
+        r: 1.2 + Math.random() * 1.8,
+        life: 0,
+        max: 0.3 + Math.random() * 0.5,
+        color: "#ffd54a",
+      });
+    }
+    this.rings.push({ x, y, r: size * 0.3, max: size * 1.15, life: 0 });
+    const g = this.splatCtx;
+    const scorch = g.createRadialGradient(x, y + 8, 2, x, y + 8, size * 0.8);
+    scorch.addColorStop(0, "rgba(10,10,12,0.75)");
+    scorch.addColorStop(1, "rgba(10,10,12,0)");
+    g.fillStyle = scorch;
+    g.beginPath();
+    g.ellipse(x, y + 8, size * 0.8, size * 0.5, 0, 0, Math.PI * 2);
+    g.fill();
   }
 
   sparks(x, y) {
@@ -95,9 +156,18 @@ export class Effects {
         this.particles.splice(i, 1);
         continue;
       }
-      p.vy += (p.kind === "blood" ? 720 : 520) * dt;
+      p.vy += (p.kind === "blood" ? 720 : p.kind === "fire" ? -90 : p.kind === "smoke" ? -50 : 520) * dt;
+      if (p.kind === "fire" || p.kind === "smoke") {
+        p.vx *= 1 - dt * 2.2;
+        p.vy *= 1 - dt * 1.2;
+      }
       p.x += p.vx * dt;
       p.y += p.vy * dt;
+    }
+    for (let i = this.rings.length - 1; i >= 0; i--) {
+      const ring = this.rings[i];
+      ring.life += dt;
+      if (ring.life > 0.45) this.rings.splice(i, 1);
     }
     for (let i = this.heads.length - 1; i >= 0; i--) {
       const h = this.heads[i];
@@ -138,11 +208,22 @@ export class Effects {
   drawParticles(g) {
     for (const p of this.particles) {
       const alpha = 1 - p.life / p.max;
-      g.globalAlpha = Math.max(0, alpha);
+      const grow = p.kind === "blood" ? 0.6 + alpha * 0.4 : p.kind === "smoke" ? 1 + (1 - alpha) * 1.8 : p.kind === "fire" ? 0.6 + alpha * 0.8 : 1;
+      g.globalAlpha = Math.max(0, p.kind === "smoke" ? alpha * 0.55 : alpha);
       g.fillStyle = p.color;
       g.beginPath();
-      g.arc(p.x, p.y, p.r * (p.kind === "blood" ? 0.6 + alpha * 0.4 : 1), 0, Math.PI * 2);
+      g.arc(p.x, p.y, p.r * grow, 0, Math.PI * 2);
       g.fill();
+    }
+    g.globalAlpha = 1;
+    for (const ring of this.rings) {
+      const t = ring.life / 0.45;
+      g.globalAlpha = Math.max(0, 1 - t) * 0.8;
+      g.strokeStyle = "#fff0c0";
+      g.lineWidth = 5 * (1 - t) + 1;
+      g.beginPath();
+      g.arc(ring.x, ring.y, ring.r + (ring.max - ring.r) * t, 0, Math.PI * 2);
+      g.stroke();
     }
     g.globalAlpha = 1;
     for (const h of this.heads) {

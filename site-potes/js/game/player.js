@@ -1,9 +1,9 @@
-import { W } from "./scene.js";
+import { H, W } from "./scene.js";
 import { drawHead, limb, shadow } from "./sprites.js";
 
 export const PLAYER = {
-  feetY: 622,
-  speed: 400,
+  feetY: H - 18,
+  speed: 470,
   cooldown: 0.17,
   legH: 22,
   torsoH: 32,

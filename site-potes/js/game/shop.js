@@ -1,4 +1,4 @@
-import { ORDER, TURRETS, WEAPONS } from "./weapons.js";
+import { MINE_KEYS, MINE_UPGRADES, ORDER, TURRETS, WEAPONS } from "./weapons.js";
 
 const fmt = (value) => value.toLocaleString("fr-FR");
 
@@ -47,10 +47,39 @@ export function createShop(root, save, actions) {
       </li>`;
   };
 
+  const mineCard = (key) => {
+    const upgrade = MINE_UPGRADES[key];
+    const level = save.mines[key];
+    const max = upgrade.values.length - 1;
+    const maxed = level >= max;
+    const price = upgrade.prices[level];
+    const locked = key !== "count" && save.mines.count === 0;
+    const pips = Array.from({ length: max }, (_, index) => `<i class="${index < level ? "on" : ""}"></i>`).join("");
+    const current = upgrade.format(upgrade.values[level]);
+    const next = maxed ? "" : ` → ${upgrade.format(upgrade.values[level + 1])}`;
+    let button = `<button class="btn btn-small" data-mine="${key}"${save.money >= price ? "" : " disabled"}>Améliorer · ${fmt(price ?? 0)} $</button>`;
+    if (maxed) button = `<button class="btn btn-small" disabled>Niveau max</button>`;
+    else if (locked) button = `<button class="btn btn-small" disabled>Achète des mines d'abord</button>`;
+    return `
+      <li class="item${level > 0 ? " is-active" : ""}">
+        <div class="item-main">
+          <h3>${upgrade.name}</h3>
+          <p>${upgrade.desc}</p>
+          <div class="pips">${pips}</div>
+          <div class="chips"><span>${current}${next}</span></div>
+        </div>
+        <div class="item-action">${button}</div>
+      </li>`;
+  };
+
   const render = () => {
     wallet.textContent = `${fmt(save.money)} $`;
     tabs.forEach((button) => button.setAttribute("aria-selected", String(button.dataset.tab === tab)));
-    list.innerHTML = tab === "weapons" ? ORDER.map(weaponCard).join("") : TURRETS.map(turretCard).join("");
+    const scroll = list.scrollTop;
+    if (tab === "weapons") list.innerHTML = ORDER.map(weaponCard).join("");
+    else if (tab === "turrets") list.innerHTML = TURRETS.map(turretCard).join("");
+    else list.innerHTML = MINE_KEYS.map(mineCard).join("");
+    list.scrollTop = scroll;
   };
 
   tabs.forEach((button) =>
@@ -67,6 +96,7 @@ export function createShop(root, save, actions) {
     if (target.dataset.buy) actions.buyWeapon(target.dataset.buy);
     else if (target.dataset.equip) actions.equip(target.dataset.equip);
     else if (target.dataset.turret !== undefined) actions.buyTurret(Number(target.dataset.turret));
+    else if (target.dataset.mine) actions.upgradeMine(target.dataset.mine);
     render();
   });
 

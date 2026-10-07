@@ -1,6 +1,8 @@
-export const W = 960;
-export const H = 640;
-export const BORDER_Y = 490;
+export const W = 1280;
+export const H = 800;
+const BASE_H = 640;
+const DY = H - BASE_H;
+export const BORDER_Y = 490 + DY;
 
 function rng(seed) {
   let a = seed;
@@ -20,7 +22,7 @@ function farLand(g, rand) {
   g.fillStyle = grad;
   g.fillRect(0, 0, W, BORDER_Y);
 
-  for (let i = 0; i < 26; i++) {
+  for (let i = 0; i < Math.round(26 * (W * BORDER_Y) / (960 * 490)); i++) {
     const x = rand() * W;
     const y = rand() * BORDER_Y;
     g.fillStyle = `rgba(70, 60, 40, ${0.08 + rand() * 0.1})`;
@@ -30,7 +32,7 @@ function farLand(g, rand) {
   }
 
   g.lineCap = "round";
-  for (let i = 0; i < 1500; i++) {
+  for (let i = 0; i < Math.round(1500 * (W * BORDER_Y) / (960 * 490)); i++) {
     const x = rand() * W;
     const y = rand() * BORDER_Y;
     const height = 3 + rand() * 7;
@@ -42,7 +44,7 @@ function farLand(g, rand) {
     g.stroke();
   }
 
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < Math.round(18 * (W * BORDER_Y) / (960 * 490)); i++) {
     const x = rand() * W;
     const y = 40 + rand() * (BORDER_Y - 160);
     const size = 10 + rand() * 18;
@@ -219,14 +221,14 @@ function sign(g, x, y, label, arrow, color) {
 }
 
 function asphalt(g, rand) {
-  const grad = g.createLinearGradient(0, 510, 0, H);
+  const grad = g.createLinearGradient(0, 510, 0, BASE_H);
   grad.addColorStop(0, "#23262d");
   grad.addColorStop(1, "#12141a");
   g.fillStyle = grad;
-  g.fillRect(0, 510, W, H - 510);
-  for (let i = 0; i < 700; i++) {
+  g.fillRect(0, 510, W, BASE_H - 510);
+  for (let i = 0; i < 900; i++) {
     g.fillStyle = `rgba(255,255,255,${rand() * 0.04})`;
-    g.fillRect(rand() * W, 510 + rand() * (H - 510), 2, 2);
+    g.fillRect(rand() * W, 510 + rand() * (BASE_H - 510), 2, 2);
   }
   g.strokeStyle = "rgba(255,255,255,0.35)";
   g.lineWidth = 3;
@@ -250,7 +252,7 @@ function asphalt(g, rand) {
     g.fillStyle = "#454a53";
     g.fillRect(x, 536, 120, 6);
   }
-  for (const x of [190, 770]) {
+  for (const x of [W * 0.2, W * 0.8]) {
     const glow = g.createRadialGradient(x, 575, 6, x, 575, 190);
     glow.addColorStop(0, "rgba(255, 224, 150, 0.2)");
     glow.addColorStop(1, "rgba(255, 224, 150, 0)");
@@ -273,17 +275,20 @@ export function createBackground(scale) {
   g.scale(scale, scale);
   const rand = rng(1337);
   farLand(g, rand);
+  g.save();
+  g.translate(0, DY);
   sandStrip(g, rand);
   fence(g, rand);
   asphalt(g, rand);
   tower(g, 48, { a: "#ff8a1f", b: "#3b1d00" });
   tower(g, W - 48, { a: "#00c9b1", b: "#ffffff" });
-  sign(g, 170, 452, "ZONE B", "↑", "#d9690f");
-  sign(g, W - 170, 452, "ZONE A", "↓", "#00917f");
+  sign(g, 220, 452, "ZONE B", "↑", "#d9690f");
+  sign(g, W - 220, 452, "ZONE A", "↓", "#00917f");
+  g.restore();
   return canvas;
 }
 
 export const TOWERS = [
-  { x: 48, y: 368 },
-  { x: W - 48, y: 368 },
+  { x: 48, y: 368 + DY },
+  { x: W - 48, y: 368 + DY },
 ];

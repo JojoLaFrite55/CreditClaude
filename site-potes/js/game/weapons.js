@@ -110,3 +110,36 @@ export const TURRET_WEAPON = {
 };
 
 export const COINS = { normal: 5, runner: 8, vest: 15 };
+
+export const MINE_UPGRADES = {
+  count: {
+    name: "Champ de mines",
+    desc: "Nombre de mines posées au début de chaque vague.",
+    values: [0, 3, 5, 7, 10, 14],
+    prices: [400, 700, 1100, 1700, 2600],
+    format: (value) => (value ? `${value} mines` : "Aucune"),
+  },
+  damage: {
+    name: "Charge explosive",
+    desc: "Dégâts infligés par chaque explosion.",
+    values: [4, 6, 9, 13, 18, 25],
+    prices: [500, 900, 1500, 2400, 3800],
+    format: (value) => `${value} dégâts`,
+  },
+  radius: {
+    name: "Rayon de souffle",
+    desc: "Taille de la zone touchée par l'explosion.",
+    values: [55, 70, 85, 100, 120, 145],
+    prices: [400, 700, 1100, 1700, 2600],
+    format: (value) => `${value} px`,
+  },
+  rearm: {
+    name: "Repose automatique",
+    desc: "Délai pour reposer une mine explosée pendant la vague.",
+    values: [0, 12, 9, 6, 4, 2],
+    prices: [800, 1400, 2200, 3500, 5500],
+    format: (value) => (value ? `${value} s` : "Au début de la vague"),
+  },
+};
+
+export const MINE_KEYS = ["count", "damage", "radius", "rearm"];

@@ -279,6 +279,18 @@ export function createAudio() {
       noise(0.8, 0.5, "lowpass", 600, 60, 0.5);
       [523, 659, 784, 1047, 1319].forEach((freq, index) => tone("triangle", freq, freq, 0.3, 0.14, 1.1 + index * 0.1));
     },
+    explosion(size = 80) {
+      const k = Math.min(1.6, size / 80);
+      noise(0.9 * k, 0.9, "lowpass", 3200, 80);
+      noise(0.14, 0.7, "highpass", 3400, 3400);
+      tone("sine", 95, 26, 0.9 * k, 1);
+      tone("sawtooth", 180, 34, 0.5 * k, 0.3);
+      noise(0.5 * k, 0.45, "lowpass", 700, 70, 0.18);
+    },
+    mineLay() {
+      tone("square", 1400, 1400, 0.04, 0.06);
+      tone("square", 1800, 1800, 0.04, 0.06, 0.07);
+    },
     breach() {
       for (let i = 0; i < 3; i++) {
         tone("sawtooth", 520, 920, 0.3, 0.18, i * 0.6);
