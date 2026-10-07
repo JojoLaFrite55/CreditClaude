@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>… — LE QG</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/sacrifice.css">
+</head>
+<body>
+  <div class="gate" id="gate">
+    <p class="gate-title">Tu n'aurais pas dû venir.</p>
+    <button class="sac-btn" id="enter" type="button">Descendre à la cave</button>
+    <a class="sac-link" href="index.html">Remonter</a>
+  </div>
+
+  <main class="scene" id="scene" aria-live="polite">
+    <p class="hint" id="hint"></p>
+
+    <section class="altar" id="altar">
+      <div class="pool" id="pool"></div>
+      <button class="goat-big" id="goat" type="button" aria-label="La chèvre">🐐</button>
+    </section>
+
+    <section class="draw hidden" id="draw">
+      <canvas id="pent" width="760" height="760" aria-label="Pentagramme à remplir de sang"></canvas>
+    </section>
+
+    <div class="meters">
+      <div class="meter"><span>Sang</span><i><b id="blood"></b></i></div>
+      <div class="meter hidden" id="pent-meter"><span>Pentagramme</span><i><b id="progress"></b></i></div>
+    </div>
+    <a class="sac-link back" href="index.html">Fuir</a>
+  </main>
+
+  <div class="knife" id="knife" aria-hidden="true">🔪</div>
+  <canvas class="fx" id="fx"></canvas>
+  <div class="finale-text" id="finale-text" aria-hidden="true"></div>
+  <script type="module" src="js/sacrifice.js"></script>
+</body>
+</html>

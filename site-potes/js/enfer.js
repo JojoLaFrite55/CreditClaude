@@ -27,7 +27,7 @@ const PENTAGRAM = `<svg class="hell-pentagram" viewBox="-110 -110 220 220" fill=
 
 let sound = null;
 
-function createDrone() {
+export function createDrone() {
   let level = 0.7;
   const AC = window.AudioContext || window.webkitAudioContext;
   const ctx = new AC();
@@ -209,7 +209,7 @@ function loadCss() {
   document.head.append(link);
 }
 
-export function openHell() {
+export function openHell(options = {}) {
   if (document.querySelector(".hell")) return;
   loadCss();
   const root = document.createElement("div");
@@ -328,6 +328,7 @@ export function openHell() {
     document.documentElement.style.overflow = "";
     root.classList.remove("on");
     setTimeout(() => root.remove(), 900);
+    options.onClose?.();
   };
   const onKey = (event) => {
     if (event.key === "Escape") close();

@@ -492,3 +492,30 @@ h3 {
     scroll-behavior: auto !important;
   }
 }
+
+.goat {
+  position: fixed;
+  left: 18px;
+  bottom: 14px;
+  z-index: 40;
+  font-size: 34px;
+  line-height: 1;
+  text-decoration: none;
+  filter: grayscale(0.4);
+  opacity: 0.85;
+  animation: goat-wobble 4s ease-in-out infinite;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.goat:hover,
+.goat:focus-visible {
+  transform: scale(1.5) rotate(-8deg);
+  filter: none;
+  outline: 0;
+}
+
+@keyframes goat-wobble {
+  0%, 85%, 100% { transform: none; }
+  90% { transform: rotate(-12deg); }
+  95% { transform: rotate(10deg); }
+}
