@@ -9,7 +9,6 @@ const altar = $("altar");
 const drawSection = $("draw");
 const pent = $("pent");
 const fx = $("fx");
-const knife = $("knife");
 const bloodBar = $("blood");
 const progressBar = $("progress");
 const pentMeter = $("pent-meter");
@@ -18,7 +17,6 @@ const scene = $("scene");
 
 const HITS_NEEDED = 7;
 const HIT_LINES = ["Elle crie.", "Encore.", "Le sol est tout rouge.", "Ne t'arrête pas.", "Elle ne bouge presque plus.", "Un dernier coup."];
-const fine = matchMedia("(pointer: fine)").matches;
 const state = { stage: "gate", hits: 0, reserve: 0, drawing: false, last: null, filled: 0, drone: null, ctx: null, squelchAt: 0 };
 
 const g = pent.getContext("2d");
@@ -198,13 +196,6 @@ function frame(now) {
 }
 requestAnimationFrame(frame);
 
-addEventListener("pointermove", (event) => {
-  if (!fine) return;
-  knife.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
-});
-addEventListener("pointerdown", () => knife.classList.add("down"));
-addEventListener("pointerup", () => knife.classList.remove("down"));
-
 function startScene() {
   state.drone = createDrone();
   state.drone.level(0.4);
@@ -212,7 +203,6 @@ function startScene() {
   state.noise = noiseBuffer(state.ctx);
   if (state.ctx.state === "suspended") state.ctx.resume();
   gate.classList.add("hidden");
-  if (fine) knife.style.display = "block";
   state.stage = "kill";
   hint.textContent = `Elle t'attend sur l'autel. Frappe-la. (0/${HITS_NEEDED})`;
   bloodBar.style.width = "0%";
@@ -220,8 +210,54 @@ function startScene() {
 
 $("enter").addEventListener("click", startScene);
 
-function hit(x, y) {
+const svgRoot = goat.querySelector("svg");
+const wounds = svgRoot.querySelector("#wounds");
+const NS = "http://www.w3.org/2000/svg";
+
+function addWound(x, y) {
+  const point = svgRoot.createSVGPoint();
+  point.x = x;
+  point.y = y;
+  const local = point.matrixTransform(svgRoot.getScreenCTM().inverse());
+  const group = document.createElementNS(NS, "g");
+  const glow = document.createElementNS(NS, "ellipse");
+  glow.setAttribute("cx", local.x);
+  glow.setAttribute("cy", local.y);
+  glow.setAttribute("rx", 16 + Math.random() * 12);
+  glow.setAttribute("ry", 10 + Math.random() * 8);
+  glow.setAttribute("fill", "#5a0000");
+  glow.setAttribute("opacity", "0.9");
+  const core = document.createElementNS(NS, "ellipse");
+  core.setAttribute("cx", local.x);
+  core.setAttribute("cy", local.y);
+  core.setAttribute("rx", 7 + Math.random() * 6);
+  core.setAttribute("ry", 4 + Math.random() * 4);
+  core.setAttribute("fill", "#c40d0d");
+  group.append(glow, core);
+  const drips = 2 + Math.floor(Math.random() * 3);
+  for (let i = 0; i < drips; i++) {
+    const drip = document.createElementNS(NS, "path");
+    const dx = local.x + (Math.random() - 0.5) * 26;
+    const length = 40 + Math.random() * 90;
+    drip.setAttribute("d", `M${dx} ${local.y} q${(Math.random() - 0.5) * 6} ${length / 2} 0 ${length}`);
+    drip.setAttribute("stroke", i % 2 ? "#8b0000" : "#c40d0d");
+    drip.setAttribute("stroke-width", 3 + Math.random() * 3);
+    drip.setAttribute("stroke-linecap", "round");
+    drip.setAttribute("fill", "none");
+    drip.setAttribute("class", "wound-drip");
+    drip.style.transformOrigin = `${dx}px ${local.y}px`;
+    group.append(drip);
+  }
+  wounds.append(group);
+}
+
+function hit(x, y, onBody = true) {
   if (state.stage !== "kill") return;
+  if (!onBody) {
+    audio.tone("sawtooth", 300, 120, 0.08, 0.05);
+    return;
+  }
+  addWound(x, y);
   state.hits += 1;
   goat.classList.remove("hit");
   void goat.offsetWidth;
@@ -242,12 +278,12 @@ function hit(x, y) {
   } else hint.textContent = `${HIT_LINES[state.hits - 1]} (${state.hits}/${HITS_NEEDED})`;
 }
 
-goat.addEventListener("pointerdown", (event) => hit(event.clientX, event.clientY));
+goat.addEventListener("pointerdown", (event) => hit(event.clientX, event.clientY, !!event.target.closest("#goat-body")));
 goat.addEventListener("keydown", (event) => {
   if (event.key !== "Enter" && event.key !== " ") return;
   event.preventDefault();
   const rect = goat.getBoundingClientRect();
-  hit(rect.left + rect.width * (0.3 + Math.random() * 0.4), rect.top + rect.height * (0.3 + Math.random() * 0.4));
+  hit(rect.left + rect.width * (0.42 + Math.random() * 0.3), rect.top + rect.height * (0.38 + Math.random() * 0.2));
 });
 
 function renderPentagram() {
@@ -274,6 +310,7 @@ function renderPentagram() {
 
 function startDrawing() {
   state.stage = "draw";
+  stains.length = 0;
   altar.classList.add("hidden");
   drawSection.classList.remove("hidden");
   pentMeter.classList.remove("hidden");
@@ -391,7 +428,6 @@ function finale() {
     drips.length = 0;
     stains.length = 0;
     particles.length = 0;
-    knife.style.display = "none";
     document.body.classList.remove("finale");
     blackout = 0;
     openHell({ onClose: () => (location.href = "index.html") });
