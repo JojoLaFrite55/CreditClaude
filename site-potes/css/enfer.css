@@ -187,3 +187,57 @@
     animation: none;
   }
 }
+
+.hell-tint,
+.hell-heads,
+.hell-pentagram,
+.hell-runes,
+.hell-embers,
+.hell-menu {
+  transition: opacity 0.6s ease;
+}
+
+.hell video {
+  transition: filter 0.6s ease;
+}
+
+.hell.cinema {
+  background: #000;
+  animation: none;
+}
+
+.hell.cinema video {
+  object-fit: contain;
+  filter: none;
+}
+
+.hell.cinema .hell-tint,
+.hell.cinema .hell-heads,
+.hell.cinema .hell-pentagram,
+.hell.cinema .hell-runes,
+.hell.cinema .hell-embers,
+.hell.cinema .hell-menu {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hell-cinema-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+.hell.cinema .hell-cinema-bar {
+  opacity: 1;
+  pointer-events: auto;
+}

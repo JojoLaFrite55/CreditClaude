@@ -28,6 +28,7 @@ const PENTAGRAM = `<svg class="hell-pentagram" viewBox="-110 -110 220 220" fill=
 let sound = null;
 
 function createDrone() {
+  let level = 0.7;
   const AC = window.AudioContext || window.webkitAudioContext;
   const ctx = new AC();
   const master = ctx.createGain();
@@ -190,7 +191,11 @@ function createDrone() {
       }, 1500);
     },
     mute(value) {
-      master.gain.setTargetAtTime(value ? 0 : 0.7, ctx.currentTime, 0.1);
+      master.gain.setTargetAtTime(value ? 0 : level, ctx.currentTime, 0.1);
+    },
+    level(value) {
+      level = value;
+      master.gain.setTargetAtTime(value, ctx.currentTime, 0.2);
     },
   };
 }
@@ -225,10 +230,15 @@ export function openHell() {
       <h2 class="hell-title">Le QG des Enfers</h2>
       <p class="hell-sub">ᛋᚨᛏᚨᚾ ᛋᛖ ᚱᛖᛋᛏᛖ ᚨᚢ ᛈᛖᛏᛁᛏ ᛗᛁᛚᛁᛖᚢ</p>
       <div class="hell-actions">
-        <a class="hell-btn" href="jeu.html">Jouer damné</a>
+        <button class="hell-btn" type="button" data-cinema>Jouer damné</button>
         <button class="hell-btn" type="button" data-mute>Couper le son</button>
         <button class="hell-btn" type="button" data-exit>Fuir</button>
       </div>
+    </div>
+    <div class="hell-cinema-bar">
+      <button class="hell-btn" type="button" data-back>Retour au menu</button>
+      <a class="hell-btn" href="jeu.html">Aller jouer</a>
+      <button class="hell-btn" type="button" data-exit2>Fuir</button>
     </div>`;
   document.body.append(root);
   document.documentElement.style.overflow = "hidden";
@@ -324,8 +334,22 @@ export function openHell() {
   };
   addEventListener("keydown", onKey);
   root.querySelector("[data-exit]").addEventListener("click", close);
-  const muteBtn = root.querySelector("[data-mute]");
+  root.querySelector("[data-exit2]").addEventListener("click", close);
+  root.querySelector("[data-cinema]").addEventListener("click", () => {
+    root.classList.add("cinema");
+    video.currentTime = 0;
+    video.muted = muted;
+    video.volume = 1;
+    video.play().catch(() => {});
+    sound?.level(muted ? 0 : 0.12);
+  });
+  root.querySelector("[data-back]").addEventListener("click", () => {
+    root.classList.remove("cinema");
+    video.volume = 0.55;
+    sound?.level(0.7);
+  });
   let muted = false;
+  const muteBtn = root.querySelector("[data-mute]");
   muteBtn.addEventListener("click", () => {
     muted = !muted;
     sound?.mute(muted);
