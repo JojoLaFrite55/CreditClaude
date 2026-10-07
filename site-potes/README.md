@@ -28,7 +28,9 @@ il ne fonctionne pas en double-cliquant sur `index.html`, il faut passer par un 
 - Têtes des intrus : `assets/heads/tete-1.png` à `tete-4.png` (PNG à fond transparent).
 - Têtes du policier : dossier `assets/police/` + tableau `POLICE` dans `js/data.js`.
 - Memes de la galerie, jeux listés, nom du site : `js/data.js`.
-- Réglages de difficulté : `js/game/waves.js`.
+- Réglages de difficulté et boss : `js/game/waves.js`.
+- Armes, prix et tourelles : `js/game/weapons.js`.
+- Sauvegarde (argent, armes débloquées) : stockée dans le navigateur, effaçable avec `localStorage.removeItem("qg-jules-save")`.
 
 ## Déployer sur Vercel
 

@@ -47,7 +47,7 @@ export const GAMES = [
   {
     slug: "kill-all-the-jules",
     title: "Kill all the Jules",
-    text: "Défends la frontière entre la Zone A et la Zone B. Des intrus arrivent par vagues : vise, tire, ne les laisse pas passer.",
+    text: "Défends la frontière entre la Zone A et la Zone B. Vagues d'intrus, boss géant, arsenal et tourelles à débloquer.",
     href: "jeu.html",
     image: "assets/jeu-apercu.jpg",
     badge: "Nouveau",

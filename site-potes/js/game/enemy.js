@@ -1,10 +1,12 @@
 import { W } from "./scene.js";
 import { drawHead, limb, shadow } from "./sprites.js";
+import { COINS } from "./weapons.js";
 
 export const TYPES = {
   normal: { scale: 0.9, speedMul: 1, points: 10 },
   vest: { scale: 1, speedMul: 0.85, points: 30 },
   runner: { scale: 0.78, speedMul: 1.5, points: 20 },
+  boss: { scale: 3, speedMul: 1, points: 2000 },
 };
 
 const SHIRTS = ["#c0392b", "#2980b9", "#8e44ad", "#d35400", "#16a085", "#7f8c8d", "#d4ac0d"];
@@ -22,6 +24,9 @@ export class Enemy {
     this.hp = hp;
     this.maxHp = hp;
     this.points = config.points;
+    this.coins = COINS[type] ?? 0;
+    this.isBoss = type === "boss";
+    this.raged = false;
     this.scale = config.scale;
     this.phase = rand() * 6.28;
     this.wobble = rand() * 6.28;
@@ -41,7 +46,8 @@ export class Enemy {
   update(dt, time) {
     this.y += this.speed * dt;
     this.phase += dt * (this.speed / 8);
-    this.x = Math.min(W - 30, Math.max(30, this.baseX + Math.sin(time * this.wobbleSpeed + this.wobble) * this.wobbleAmp));
+    const margin = this.halfW + 12;
+    this.x = Math.min(W - margin, Math.max(margin, this.baseX + Math.sin(time * this.wobbleSpeed + this.wobble) * this.wobbleAmp));
     if (this.flash > 0) this.flash -= dt;
   }
 
@@ -54,6 +60,15 @@ export class Enemy {
     const hipY = this.y - this.legH;
     const shoulderY = hipY - this.torsoH + 4 * s;
     const swing = Math.sin(this.phase);
+    if (this.isBoss) {
+      const pulse = 0.5 + 0.5 * Math.sin(performance.now() / (this.raged ? 110 : 260));
+      const cy = this.y - this.height * 0.55;
+      const aura = g.createRadialGradient(this.x, cy, 20, this.x, cy, this.height * 0.8);
+      aura.addColorStop(0, `rgba(255, 40, 40, ${(this.raged ? 0.34 : 0.2) + pulse * 0.12})`);
+      aura.addColorStop(1, "rgba(255, 40, 40, 0)");
+      g.fillStyle = aura;
+      g.fillRect(this.x - this.height, cy - this.height, this.height * 2, this.height * 2);
+    }
     shadow(g, this.x, this.y, 16 * s);
     limb(g, this.x - 6 * s, hipY, this.x - 6 * s + swing * 8 * s, this.y, 7 * s, this.pants);
     limb(g, this.x + 6 * s, hipY, this.x + 6 * s - swing * 8 * s, this.y, 7 * s, this.pants);

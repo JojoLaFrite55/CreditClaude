@@ -4,8 +4,12 @@ import { createAudio } from "./audio.js";
 import { Effects } from "./effects.js";
 import { Enemy } from "./enemy.js";
 import { PLAYER, Player } from "./player.js";
+import { loadSave, persist } from "./save.js";
 import { BORDER_Y, H, TOWERS, W, createBackground } from "./scene.js";
-import { musicLevel, waveConfig } from "./waves.js";
+import { createShop } from "./shop.js";
+import { TURRET_SLOTS, Turret } from "./turret.js";
+import { bossStats, isBossWave, musicLevel, waveConfig } from "./waves.js";
+import { ORDER, TURRETS, TURRET_WEAPON, WEAPONS } from "./weapons.js";
 
 const $ = (id) => document.getElementById(id);
 const canvas = $("game-canvas");
@@ -19,6 +23,7 @@ const audio = createAudio();
 const background = createBackground(scale);
 const effects = new Effects(scale);
 const player = new Player(cop);
+const save = loadSave();
 
 const BEST_KEY = "qg-jules-best";
 const NOTES = {
@@ -41,11 +46,15 @@ const game = {
   time: 0,
   score: 0,
   kills: 0,
+  earned: 0,
   wave: 0,
   combo: 0,
   comboTimer: 0,
   enemies: [],
   bullets: [],
+  turrets: [],
+  boss: null,
+  minionTimer: 0,
   toSpawn: 0,
   spawnTimer: 0,
   cfg: waveConfig(1),
@@ -67,9 +76,14 @@ const hud = {
   kills: $("hud-kills"),
   wave: $("hud-wave"),
   best: $("hud-best"),
+  money: $("hud-money"),
+  weapon: $("hud-weapon"),
 };
+const bossBar = { root: $("boss-bar"), fill: $("boss-fill"), label: $("boss-label") };
+const panels = { menu: $("ui-menu"), pause: $("ui-pause"), over: $("ui-over"), shop: $("ui-shop") };
+let shopFrom = "menu";
 
-const panels = { menu: $("ui-menu"), pause: $("ui-pause"), over: $("ui-over") };
+const fmt = (value) => value.toLocaleString("fr-FR");
 
 function showPanel(name) {
   for (const [key, element] of Object.entries(panels)) element.classList.toggle("hidden", key !== name);
@@ -80,6 +94,16 @@ function updateHud() {
   hud.kills.textContent = String(game.kills);
   hud.wave.textContent = String(Math.max(1, game.wave));
   hud.best.textContent = String(game.best).padStart(6, "0");
+  hud.money.textContent = `${fmt(save.money)} $`;
+  hud.weapon.textContent = WEAPONS[save.weapon].name;
+}
+
+function updateBossBar() {
+  const boss = game.boss;
+  bossBar.root.classList.toggle("hidden", !boss);
+  if (!boss) return;
+  bossBar.fill.style.width = `${Math.max(0, (boss.hp / boss.maxHp) * 100)}%`;
+  bossBar.label.textContent = boss.raged ? "BOSS — ENRAGÉ" : "BOSS";
 }
 
 function updateSoundLabels() {
@@ -90,16 +114,86 @@ function updateSoundLabels() {
   });
 }
 
+function syncTurrets() {
+  while (game.turrets.length < save.turrets) game.turrets.push(new Turret(TURRET_SLOTS[game.turrets.length]));
+  game.turrets.length = Math.min(game.turrets.length, save.turrets);
+}
+
+const shop = createShop(panels.shop, save, {
+  click: () => audio.click(),
+  buyWeapon(id) {
+    const weapon = WEAPONS[id];
+    if (save.owned.includes(id) || save.money < weapon.price) {
+      audio.denied();
+      return;
+    }
+    save.money -= weapon.price;
+    save.owned.push(id);
+    save.weapon = id;
+    persist(save);
+    audio.init();
+    audio.buy();
+    updateHud();
+  },
+  equip(id) {
+    if (!save.owned.includes(id)) return;
+    save.weapon = id;
+    persist(save);
+    audio.init();
+    audio.click();
+    updateHud();
+  },
+  buyTurret(index) {
+    const turret = TURRETS[index];
+    if (save.turrets !== index || save.money < turret.price) {
+      audio.denied();
+      return;
+    }
+    save.money -= turret.price;
+    save.turrets += 1;
+    persist(save);
+    audio.init();
+    audio.buy();
+    audio.deploy();
+    syncTurrets();
+    updateHud();
+  },
+});
+
+function openShop(from) {
+  shopFrom = from;
+  shop.render();
+  audio.init();
+  audio.click();
+  showPanel("shop");
+}
+
+function closeShop() {
+  audio.click();
+  showPanel(shopFrom);
+}
+
+function earn(amount, x, y) {
+  if (amount <= 0) return;
+  save.money += amount;
+  game.earned += amount;
+  effects.text(x, y + 22, `+${amount} $`, "#ffd54a", 14);
+  audio.coin();
+}
+
 function resetGame() {
   Object.assign(game, {
     time: 0,
     score: 0,
     kills: 0,
+    earned: 0,
     wave: 0,
     combo: 0,
     comboTimer: 0,
     enemies: [],
     bullets: [],
+    boss: null,
+    minionTimer: 0,
     toSpawn: 0,
     spawnTimer: 0,
     breakTimer: 0,
@@ -111,19 +205,46 @@ function resetGame() {
   });
   player.reset();
   effects.reset();
+  game.turrets = [];
+  syncTurrets();
+  updateBossBar();
   startWave();
   updateHud();
+}
+
+function spawnBoss() {
+  const stats = bossStats(game.wave);
+  const head = heads[Math.floor(Math.random() * heads.length)];
+  const boss = new Enemy("boss", head, W / 2, stats.speed, stats.hp, Math.random);
+  boss.wobbleAmp = 150;
+  boss.wobbleSpeed = 0.32;
+  boss.coins = stats.coins;
+  boss.points = stats.points;
+  boss.baseX = W / 2;
+  game.enemies.push(boss);
+  game.boss = boss;
+  game.minionTimer = 3.5;
+  game.flashRed = 0.6;
+  game.shake = 10;
+  audio.bossIntro();
+  updateBossBar();
 }
 
 function startWave() {
   game.wave += 1;
   game.cfg = waveConfig(game.wave);
-  game.toSpawn = game.cfg.count;
   game.spawnTimer = 1;
-  game.banner = 2.4;
-  game.note = NOTES[game.wave] ?? "";
+  game.banner = 2.8;
   audio.wave();
   audio.setLevel(musicLevel(game.wave));
+  if (isBossWave(game.wave)) {
+    game.toSpawn = 0;
+    game.note = "ALERTE — BOSS GÉANT";
+    spawnBoss();
+  } else {
+    game.toSpawn = game.cfg.count;
+    game.note = NOTES[game.wave] ?? "";
+  }
   updateHud();
 }
 
@@ -144,6 +265,7 @@ function pause() {
   input.left = input.right = input.fire = false;
   audio.stopMusic();
   audio.click();
+  persist(save);
   showPanel("pause");
 }
 
@@ -162,15 +284,20 @@ function toMenu() {
   audio.click();
   game.enemies = [];
   game.bullets = [];
+  game.boss = null;
+  persist(save);
+  updateBossBar();
   showPanel("menu");
 }
 
-function spawn() {
+function spawn(forcedType) {
   const { cfg } = game;
   const roll = Math.random();
-  let type = "normal";
-  if (roll < cfg.runnerChance) type = "runner";
-  else if (roll < cfg.runnerChance + cfg.vestChance) type = "vest";
+  let type = forcedType ?? "normal";
+  if (!forcedType) {
+    if (roll < cfg.runnerChance) type = "runner";
+    else if (roll < cfg.runnerChance + cfg.vestChance) type = "vest";
+  }
   let x = 0;
   for (let i = 0; i < 8; i++) {
     x = 50 + Math.random() * (W - 100);
@@ -182,16 +309,52 @@ function spawn() {
   game.enemies.push(new Enemy(type, head, x, speed, hp, Math.random));
 }
 
+function makeBullet(x, y, theta, weapon, from) {
+  return {
+    x,
+    y,
+    px: x,
+    py: y,
+    vx: Math.cos(theta) * weapon.speed,
+    vy: Math.sin(theta) * weapon.speed,
+    dmg: weapon.damage,
+    pierce: weapon.pierce ?? 0,
+    range: weapon.range ?? 1400,
+    dist: 0,
+    hit: new Set(),
+    tracer: weapon.tracer ?? "#fff4aa",
+    big: weapon.damage >= 5,
+    from,
+  };
+}
+
 function shoot() {
+  const weapon = WEAPONS[save.weapon];
   const m = player.muzzle;
-  game.bullets.push({ x: m.x, y: m.y, prev: m.y, vy: -950 });
-  player.cool = PLAYER.cooldown;
-  player.flash = 0.06;
-  player.recoil = 1;
-  audio.shoot();
+  for (let i = 0; i < weapon.pellets; i++) {
+    const dev =
+      weapon.pellets > 1
+        ? (i / (weapon.pellets - 1) - 0.5) * weapon.spread * 2 + (Math.random() - 0.5) * 0.05
+        : (Math.random() - 0.5) * weapon.spread * 2;
+    game.bullets.push(makeBullet(m.x, m.y, -Math.PI / 2 + dev, weapon, "player"));
+  }
+  player.cool = weapon.cooldown;
+  player.flash = Math.min(0.08, weapon.cooldown * 0.7);
+  player.recoil = weapon.recoil;
+  game.shake = Math.max(game.shake, weapon.recoil > 2 ? 3 : 0);
+  audio.gun(weapon.id);
+}
+
+function turretFire(turret, angle) {
+  const m = turret.muzzle;
+  game.bullets.push(makeBullet(m.x, m.y, angle + (Math.random() - 0.5) * 0.03, TURRET_WEAPON, "turret"));
+  audio.gun("turret");
 }
 
 function killEnemy(enemy) {
+  const index = game.enemies.indexOf(enemy);
+  if (index === -1) return;
+  game.enemies.splice(index, 1);
   game.comboTimer = 1.6;
   game.combo += 1;
   const mult = Math.min(5, 1 + Math.floor(game.combo / 3));
@@ -199,26 +362,55 @@ function killEnemy(enemy) {
   game.score += gained;
   game.kills += 1;
   const cy = enemy.y - enemy.height * 0.6;
-  effects.blood(enemy.x, cy, enemy.type === "vest" ? 46 : 34, enemy.type === "vest" ? 1.25 : 1);
-  effects.flyingHead(enemy.head, enemy.x, enemy.y - enemy.height + enemy.headH / 2, enemy.headH);
-  effects.text(enemy.x, cy - 10, `+${gained}`, mult > 1 ? "#ffd54a" : "#ffffff", 20 + mult * 2);
-  if (mult > 1 && game.combo % 3 === 0) effects.text(enemy.x, cy - 36, `COMBO x${mult}`, "#ff6b6b", 18);
-  audio.kill(game.combo);
-  game.shake = Math.max(game.shake, enemy.type === "vest" ? 7 : 5);
-  game.enemies.splice(game.enemies.indexOf(enemy), 1);
+  if (enemy.isBoss) {
+    game.boss = null;
+    game.flashRed = 0;
+    effects.blood(enemy.x, cy, 140, 2.4);
+    effects.blood(enemy.x, cy - 40, 80, 1.8);
+    effects.flyingHead(enemy.head, enemy.x, enemy.y - enemy.height + enemy.headH / 2, enemy.headH);
+    effects.text(enemy.x, cy - 30, `BOSS VAINCU  +${gained}`, "#ffd54a", 34);
+    game.shake = 22;
+    audio.bossDie();
+    updateBossBar();
+  } else {
+    effects.blood(enemy.x, cy, enemy.type === "vest" ? 46 : 34, enemy.type === "vest" ? 1.25 : 1);
+    effects.flyingHead(enemy.head, enemy.x, enemy.y - enemy.height + enemy.headH / 2, enemy.headH);
+    effects.text(enemy.x, cy - 10, `+${gained}`, mult > 1 ? "#ffd54a" : "#ffffff", 20 + mult * 2);
+    if (mult > 1 && game.combo % 3 === 0) effects.text(enemy.x, cy - 36, `COMBO x${mult}`, "#ff6b6b", 18);
+    audio.kill(game.combo);
+    game.shake = Math.max(game.shake, enemy.type === "vest" ? 7 : 5);
+  }
+  earn(enemy.coins, enemy.x, cy);
   updateHud();
 }
 
 function hitEnemy(enemy, bullet) {
-  enemy.hp -= 1;
+  enemy.hp -= bullet.dmg;
   enemy.flash = 0.09;
   if (enemy.hp <= 0) {
     killEnemy(enemy);
     return;
   }
+  if (enemy.isBoss) {
+    effects.blood(bullet.x, bullet.y, 7, 0.7);
+    effects.sparks(bullet.x, bullet.y);
+    audio.bossHit();
+    game.shake = Math.max(game.shake, 2);
+    if (!enemy.raged && enemy.hp <= enemy.maxHp / 2) {
+      enemy.raged = true;
+      enemy.speed *= 1.6;
+      game.flashRed = 0.4;
+      game.shake = 12;
+      effects.text(enemy.x, enemy.y - enemy.height - 12, "ENRAGÉ !", "#ff4d4d", 30);
+      audio.bossRoar();
+    }
+    updateBossBar();
+    return;
+  }
   effects.sparks(bullet.x, Math.min(enemy.y - enemy.height * 0.35, bullet.y + 6));
   effects.blood(bullet.x, bullet.y, 4, 0.4);
-  audio.hit();
+  if (enemy.type === "vest") audio.ricochet();
+  else audio.hit();
   game.shake = Math.max(game.shake, 2.5);
 }
 
@@ -244,13 +436,50 @@ function finish() {
       game.best = game.score;
     }
   }
+  persist(save);
   $("over-score").textContent = String(game.score);
   $("over-kills").textContent = String(game.kills);
   $("over-wave").textContent = String(game.wave);
+  $("over-earned").textContent = `+${fmt(game.earned)} $`;
+  $("over-wallet").textContent = `${fmt(save.money)} $`;
   $("over-record").classList.toggle("hidden", !record);
   updateHud();
   audio.over();
   showPanel("over");
+}
+
+function segmentHits(bullet, enemy) {
+  for (let i = 0; i <= 4; i++) {
+    const t = i / 4;
+    if (enemy.contains(bullet.px + (bullet.x - bullet.px) * t, bullet.py + (bullet.y - bullet.py) * t)) return true;
+  }
+  return false;
+}
+
+function updateBullets(dt) {
+  for (let i = game.bullets.length - 1; i >= 0; i--) {
+    const bullet = game.bullets[i];
+    bullet.px = bullet.x;
+    bullet.py = bullet.y;
+    bullet.x += bullet.vx * dt;
+    bullet.y += bullet.vy * dt;
+    bullet.dist += Math.hypot(bullet.vx, bullet.vy) * dt;
+    if (bullet.y < -40 || bullet.x < -40 || bullet.x > W + 40 || bullet.dist > bullet.range) {
+      game.bullets.splice(i, 1);
+      continue;
+    }
+    const targets = game.enemies.filter((enemy) => !bullet.hit.has(enemy) && segmentHits(bullet, enemy)).sort((a, b) => b.y - a.y);
+    if (!targets.length) continue;
+    if (bullet.pierce > 0) {
+      for (const enemy of targets.slice(0, bullet.pierce + 1)) {
+        bullet.hit.add(enemy);
+        hitEnemy(enemy, bullet);
+      }
+    } else {
+      game.bullets.splice(i, 1);
+      hitEnemy(targets[0], bullet);
+    }
+  }
 }
 
 function update(dt) {
@@ -269,6 +498,7 @@ function update(dt) {
 
   player.update(dt, (input.right ? 1 : 0) - (input.left ? 1 : 0));
   if (input.fire && player.cool <= 0) shoot();
+  for (const turret of game.turrets) turret.update(dt, game.enemies, turretFire);
 
   if (game.comboTimer > 0) {
     game.comboTimer -= dt;
@@ -286,10 +516,18 @@ function update(dt) {
         game.toSpawn -= 1;
         game.spawnTimer = game.cfg.gap * (0.8 + Math.random() * 0.4);
       }
+    } else if (game.boss) {
+      game.minionTimer -= dt;
+      if (game.minionTimer <= 0) {
+        spawn(game.boss.raged && Math.random() < 0.5 ? "runner" : "normal");
+        game.minionTimer = game.boss.raged ? 2.1 : 3.4;
+      }
     } else if (game.enemies.length === 0) {
       const bonus = 100 * game.wave;
+      const cash = 20 * game.wave;
       game.score += bonus;
       effects.text(W / 2, 250, `VAGUE ${game.wave} TERMINÉE  +${bonus}`, "#7dffb0", 26);
+      earn(cash, W / 2, 240);
       audio.clear();
       game.breakTimer = 2.6;
       updateHud();
@@ -297,27 +535,7 @@ function update(dt) {
   }
 
   for (const enemy of game.enemies) enemy.update(dt, game.time);
-
-  for (let i = game.bullets.length - 1; i >= 0; i--) {
-    const bullet = game.bullets[i];
-    bullet.prev = bullet.y;
-    bullet.y += bullet.vy * dt;
-    if (bullet.y < -30) {
-      game.bullets.splice(i, 1);
-      continue;
-    }
-    let target = null;
-    for (const enemy of game.enemies) {
-      if (Math.abs(bullet.x - enemy.x) > enemy.halfW) continue;
-      if (bullet.y <= enemy.y && bullet.prev >= enemy.y - enemy.height) {
-        if (!target || enemy.y > target.y) target = enemy;
-      }
-    }
-    if (target) {
-      game.bullets.splice(i, 1);
-      hitEnemy(target, bullet);
-    }
-  }
+  updateBullets(dt);
 
   let danger = 0;
   for (const enemy of game.enemies) {
@@ -370,22 +588,24 @@ function overlays() {
   }
   if (game.banner > 0 && game.state === "playing") {
     const t = game.banner;
-    const alpha = Math.min(1, t / 0.5, (2.4 - t) / 0.3);
+    const alpha = Math.min(1, t / 0.5, (2.8 - t) / 0.3);
+    const boss = isBossWave(game.wave);
     g.save();
     g.globalAlpha = Math.max(0, alpha);
     g.textAlign = "center";
     g.font = '800 64px "Inter", system-ui, sans-serif';
     g.lineWidth = 8;
     g.strokeStyle = "rgba(0,0,0,0.7)";
-    g.strokeText(`VAGUE ${game.wave}`, W / 2, 170);
-    g.fillStyle = "#ffffff";
-    g.fillText(`VAGUE ${game.wave}`, W / 2, 170);
+    const title = boss ? `VAGUE ${game.wave} · BOSS` : `VAGUE ${game.wave}`;
+    g.strokeText(title, W / 2, 190);
+    g.fillStyle = boss ? "#ff5a5a" : "#ffffff";
+    g.fillText(title, W / 2, 190);
     if (game.note) {
       g.font = '600 22px "Inter", system-ui, sans-serif';
       g.lineWidth = 5;
-      g.strokeText(game.note, W / 2, 206);
+      g.strokeText(game.note, W / 2, 226);
       g.fillStyle = "#ffd54a";
-      g.fillText(game.note, W / 2, 206);
+      g.fillText(game.note, W / 2, 226);
     }
     g.restore();
   }
@@ -402,16 +622,21 @@ function draw() {
   for (const enemy of sorted) enemy.draw(g);
   g.lineCap = "round";
   for (const bullet of game.bullets) {
-    const grad = g.createLinearGradient(bullet.x, bullet.y, bullet.x, bullet.y + 34);
-    grad.addColorStop(0, "rgba(255, 244, 170, 1)");
+    const length = bullet.big ? 70 : 34;
+    const speed = Math.hypot(bullet.vx, bullet.vy);
+    const tx = bullet.x - (bullet.vx / speed) * length;
+    const ty = bullet.y - (bullet.vy / speed) * length;
+    const grad = g.createLinearGradient(bullet.x, bullet.y, tx, ty);
+    grad.addColorStop(0, bullet.tracer);
     grad.addColorStop(1, "rgba(255, 170, 40, 0)");
     g.strokeStyle = grad;
-    g.lineWidth = 3.5;
+    g.lineWidth = bullet.big ? 5 : 3.2;
     g.beginPath();
     g.moveTo(bullet.x, bullet.y);
-    g.lineTo(bullet.x, bullet.y + 34);
+    g.lineTo(tx, ty);
     g.stroke();
   }
+  for (const turret of game.turrets) turret.draw(g);
   effects.drawParticles(g);
   player.draw(g);
   effects.drawTexts(g);
@@ -424,7 +649,6 @@ function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000);
   last = now;
   if (game.state !== "paused") update(dt);
-  else game.time += 0;
   draw();
   requestAnimationFrame(frame);
 }
@@ -433,6 +657,15 @@ const KEYS = {
   left: ["arrowleft", "q", "a"],
   right: ["arrowright", "d"],
 };
+
+function selectSlot(slot) {
+  const id = ORDER[slot];
+  if (!id || !save.owned.includes(id) || save.weapon === id) return;
+  save.weapon = id;
+  persist(save);
+  audio.click();
+  updateHud();
+}
 
 addEventListener("keydown", (event) => {
   if (event.repeat && event.key !== " ") return;
@@ -447,6 +680,8 @@ addEventListener("keydown", (event) => {
     audio.init();
     audio.toggleMute();
     updateSoundLabels();
+  } else if (/^[1-6]$/.test(key) && game.state === "playing") {
+    selectSlot(Number(key) - 1);
   }
   if ([" ", "arrowleft", "arrowright", "arrowup", "arrowdown"].includes(key) && (game.state === "playing" || game.state === "breach")) {
     event.preventDefault();
@@ -466,8 +701,13 @@ addEventListener("blur", () => {
 });
 
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) pause();
+  if (document.hidden) {
+    pause();
+    persist(save);
+  }
 });
+
+addEventListener("beforeunload", () => persist(save));
 
 const hold = (id, key) => {
   const element = $(id);
@@ -496,6 +736,10 @@ $("btn-resume").addEventListener("click", resume);
 $("btn-pause").addEventListener("click", () => (game.state === "paused" ? resume() : pause()));
 $("btn-menu").addEventListener("click", toMenu);
 $("btn-menu-over").addEventListener("click", toMenu);
+$("btn-shop-menu").addEventListener("click", () => openShop("menu"));
+$("btn-shop-pause").addEventListener("click", () => openShop("pause"));
+$("btn-shop-over").addEventListener("click", () => openShop("over"));
+$("btn-shop-back").addEventListener("click", closeShop);
 document.querySelectorAll(".js-sound").forEach((button) =>
   button.addEventListener("click", () => {
     audio.init();
@@ -518,9 +762,21 @@ window.__jeu = {
   get kills() {
     return game.kills;
   },
+  get boss() {
+    return game.boss;
+  },
+  save,
   player,
+  jumpToWave(wave) {
+    game.wave = wave - 1;
+    game.enemies = [];
+    game.boss = null;
+    game.breakTimer = 0;
+    startWave();
+  },
 };
 
+syncTurrets();
 updateHud();
 updateSoundLabels();
 showPanel("menu");

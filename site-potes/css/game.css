@@ -280,3 +280,170 @@ kbd {
     font-size: 22px;
   }
 }
+
+.stats-2 {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 8px;
+}
+
+.hud-money strong {
+  color: #ffd54a;
+}
+
+.hud-weapon strong {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.boss-bar {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(70%, 520px);
+  pointer-events: none;
+  z-index: 3;
+  text-align: center;
+}
+
+.boss-bar span {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  color: #ff6b6b;
+  text-shadow: 0 1px 4px #000;
+  margin-bottom: 4px;
+}
+
+.boss-track {
+  height: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 1px;
+}
+
+.boss-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #ff2d2d, #ff7a45);
+  transition: width 0.12s linear;
+}
+
+.panel-wide {
+  width: min(100%, 640px);
+}
+
+.shop-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.wallet {
+  text-align: right;
+}
+
+.wallet span {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.wallet strong {
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  padding: 8px 18px;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tab[aria-selected="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  max-height: min(46vh, 360px);
+  overflow: auto;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+}
+
+.item.is-active {
+  border-color: var(--ink);
+  background: var(--soft);
+}
+
+.item h3 {
+  font-size: 15px;
+}
+
+.item p {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.chips span {
+  font-size: 11px;
+  padding: 1px 8px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.item-action .btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .hud-weapon {
+    display: none;
+  }
+
+  .boss-bar {
+    top: 54px;
+  }
+
+  .item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

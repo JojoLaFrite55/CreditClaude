@@ -1,3 +1,5 @@
+export const BOSS_EVERY = 5;
+
 export function waveConfig(wave) {
   return {
     count: Math.round(7 + 3.2 * (wave - 1)),
@@ -9,7 +11,21 @@ export function waveConfig(wave) {
   };
 }
 
+export const isBossWave = (wave) => wave % BOSS_EVERY === 0;
+
+export function bossStats(wave) {
+  const index = Math.floor(wave / BOSS_EVERY);
+  return {
+    index,
+    hp: Math.round(60 + 40 * (index - 1)),
+    speed: 17 + 2 * (index - 1),
+    coins: 250 + 150 * (index - 1),
+    points: 2000 * index,
+  };
+}
+
 export function musicLevel(wave) {
+  if (isBossWave(wave)) return 3;
   if (wave < 3) return 0;
   if (wave < 6) return 1;
   return 2;

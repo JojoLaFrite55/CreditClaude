@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Kill all the Jules — LE QG</title>
-  <meta name="description" content="Défends la frontière. Un jeu d'arcade en 2D.">
+  <meta name="description" content="Défends la frontière. Un jeu d'arcade en 2D avec boss, arsenal et tourelles.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,11 +26,18 @@
         <div class="hud-item"><span>Score</span><strong id="hud-score">000000</strong></div>
         <div class="hud-item"><span>Éliminés</span><strong id="hud-kills">0</strong></div>
         <div class="hud-item"><span>Vague</span><strong id="hud-wave">1</strong></div>
+        <div class="hud-item hud-money"><span>Argent</span><strong id="hud-money">0 $</strong></div>
+        <div class="hud-item hud-weapon"><span>Arme</span><strong id="hud-weapon">Pistolet</strong></div>
         <div class="hud-item hud-best"><span>Record</span><strong id="hud-best">000000</strong></div>
         <div class="hud-actions">
           <button class="hud-btn js-sound" type="button" aria-pressed="true">Son : activé</button>
           <button class="hud-btn" id="btn-pause" type="button">Pause</button>
         </div>
+      </div>
+
+      <div class="boss-bar hidden" id="boss-bar" aria-hidden="true">
+        <span id="boss-label">BOSS</span>
+        <div class="boss-track"><div class="boss-fill" id="boss-fill"></div></div>
       </div>
 
       <div class="touch" aria-hidden="true">
@@ -43,14 +50,16 @@
         <div class="panel">
           <p class="eyebrow">Zone A · Zone B</p>
           <h2>Kill all the Jules</h2>
-          <p class="muted">Tu es le garde-frontière. Des intrus arrivent par vagues depuis la Zone B. S'il en touche la frontière, c'est perdu.</p>
+          <p class="muted">Tu es le garde-frontière. Des intrus arrivent par vagues depuis la Zone B, avec un boss géant toutes les 5 vagues. S'il en touche la frontière, c'est perdu.</p>
           <ul class="keys">
             <li><kbd>←</kbd><kbd>→</kbd> ou <kbd>Q</kbd><kbd>D</kbd> <span>se déplacer</span></li>
             <li><kbd>Espace</kbd> <span>tirer (maintenu = tir continu)</span></li>
+            <li><kbd>1</kbd>–<kbd>6</kbd> <span>changer d'arme</span></li>
             <li><kbd>Échap</kbd> <span>pause</span> · <kbd>M</kbd> <span>son</span></li>
           </ul>
           <div class="panel-actions">
             <button class="btn" id="btn-play" type="button">Jouer</button>
+            <button class="btn btn-secondary" id="btn-shop-menu" type="button">Arsenal</button>
             <button class="btn btn-secondary js-sound" type="button" aria-pressed="true">Son : activé</button>
           </div>
         </div>
@@ -62,6 +71,7 @@
           <h2>Pause</h2>
           <div class="panel-actions stack">
             <button class="btn" id="btn-resume" type="button">Reprendre</button>
+            <button class="btn btn-secondary" id="btn-shop-pause" type="button">Arsenal</button>
             <button class="btn btn-secondary" id="btn-restart" type="button">Recommencer</button>
             <button class="btn btn-secondary js-sound" type="button" aria-pressed="true">Son : activé</button>
             <button class="btn btn-secondary" id="btn-menu" type="button">Menu principal</button>
@@ -79,10 +89,35 @@
             <div><dt>Éliminés</dt><dd id="over-kills">0</dd></div>
             <div><dt>Vague</dt><dd id="over-wave">1</dd></div>
           </dl>
+          <dl class="stats stats-2">
+            <div><dt>Gagné</dt><dd id="over-earned">+0 $</dd></div>
+            <div><dt>Portefeuille</dt><dd id="over-wallet">0 $</dd></div>
+          </dl>
           <div class="panel-actions stack">
             <button class="btn" id="btn-again" type="button">Rejouer</button>
+            <button class="btn btn-secondary" id="btn-shop-over" type="button">Arsenal</button>
             <button class="btn btn-secondary" id="btn-menu-over" type="button">Menu principal</button>
             <a class="btn btn-secondary" href="jeux.html">Retour aux jeux</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay hidden" id="ui-shop">
+        <div class="panel panel-wide">
+          <div class="shop-head">
+            <div>
+              <p class="eyebrow">Arsenal</p>
+              <h2>Armes et tourelles</h2>
+            </div>
+            <div class="wallet"><span>Argent</span><strong data-wallet>0 $</strong></div>
+          </div>
+          <div class="tabs" role="tablist">
+            <button class="tab" type="button" role="tab" data-tab="weapons" aria-selected="true">Armes</button>
+            <button class="tab" type="button" role="tab" data-tab="turrets" aria-selected="false">Tourelles</button>
+          </div>
+          <ul class="items" data-list></ul>
+          <div class="panel-actions">
+            <button class="btn" id="btn-shop-back" type="button">Retour</button>
           </div>
         </div>
       </div>
