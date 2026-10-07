@@ -304,3 +304,22 @@ body.finale .draw canvas {
     cursor: auto !important;
   }
 }
+
+.stage-wrap {
+  width: min(100%, 720px, calc(100svh - 190px));
+  align-self: center;
+  position: relative;
+}
+
+.stage {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #000;
+  touch-action: none;
+  box-shadow: 0 0 60px rgba(120, 0, 0, 0.35);
+}
+
+body.finale .stage {
+  filter: contrast(1.25) saturate(1.5);
+}
