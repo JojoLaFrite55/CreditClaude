@@ -1,4 +1,3 @@
-Dépose ici les têtes du policier (PNG à fond transparent), puis ajoute leurs chemins
-dans le tableau POLICE de js/data.js, par exemple :
-  export const POLICE = ["assets/police/policier-1.png", "assets/police/policier-2.png"];
-Une de ces têtes est tirée au hasard à chaque rechargement de la page du jeu.
+Têtes du policier (PNG à fond transparent). Une est tirée au hasard à chaque rechargement
+de la page du jeu. Pour en ajouter, dépose le fichier ici puis ajoute son chemin dans le
+tableau POLICE de js/data.js.

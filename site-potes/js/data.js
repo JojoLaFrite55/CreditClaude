@@ -17,7 +17,11 @@ export const HEADS = [
   "assets/heads/tete-4.png",
 ];
 
-export const POLICE = [];
+export const POLICE = [
+  "assets/police/policier-1.png",
+  "assets/police/policier-2.png",
+  "assets/police/policier-3.png",
+];
 
 export const BACKGROUNDS = [
   { id: "ocean", label: "Océan", a: "#0f4c75", b: "#3282b8" },
