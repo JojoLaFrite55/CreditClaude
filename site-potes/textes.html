@@ -25,11 +25,12 @@
         <label class="field" style="flex:1;min-width:200px"><span>Type de texte</span>
           <select id="type">
             <option value="insulte">Insulte de pote</option><option value="compliment">Compliment douteux</option><option value="surnom">Surnom</option><option value="pseudo">Pseudo de gamer</option>
-            <option value="drague">Phrase de drague nulle</option><option value="prediction">Prédiction</option><option value="relance">SMS de relance</option><option value="debat">Débat absurde</option>
+            <option value="drague">Phrase de drague nulle</option><option value="prediction">Prédiction</option><option value="relance">SMS de relance</option><option value="debat">Débat absurde</option><option value="menace">Menace de pote</option><option value="motivation">Motivation foireuse</option><option value="toast">Toast</option><option value="trophee">Trophée</option>
           </select></label>
         <label class="field" style="flex:1;min-width:200px"><span>Pour (facultatif)</span><input type="text" id="who" maxlength="30" autocomplete="off" placeholder="Prénom du pote"></label>
       </div>
       <blockquote class="quote" id="output"></blockquote>
+      <p class="muted" id="count"></p>
       <div class="btn-row"><button class="btn" id="new" type="button">Générer</button><button class="btn btn-secondary" id="copy" type="button">Copier</button><button class="btn btn-secondary" id="sound" type="button">Son : activé</button></div>
       <ul class="history" id="history" aria-label="Derniers textes"></ul>
     </div>
