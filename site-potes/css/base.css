@@ -253,9 +253,9 @@ h3 {
   margin: 0;
   background: #fff;
   aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  padding: 18px;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
   border: 1px solid var(--line);
 }
 
@@ -264,8 +264,10 @@ h3 {
 }
 
 .hero-media img {
-  max-height: 100%;
-  width: auto;
+  position: absolute;
+  inset: 18px;
+  width: calc(100% - 36px);
+  height: calc(100% - 36px);
   object-fit: contain;
 }
 
