@@ -18,7 +18,11 @@ const PHOTOS = [
   "assets/police/policier-1.png",
   "assets/police/policier-2.png",
   "assets/police/policier-3.png",
+  "assets/heads/tete-5.png",
+  "assets/heads/tete-6.png",
 ];
+
+export const MEME_EXTRAS = ["assets/memes/soixante-sept.png"];
 
 export const HEADS = PHOTOS;
 

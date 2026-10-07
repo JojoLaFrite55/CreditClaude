@@ -1,9 +1,9 @@
 import "./layout.js";
 import { BACKGROUNDS, MEMES } from "./data.js";
-import { loadHeads } from "./faces.js";
+import { loadMemeModels } from "./faces.js";
 import { downloadCanvas, renderMeme } from "./meme-core.js";
 
-const heads = await loadHeads();
+const heads = await loadMemeModels();
 
 const preview = document.getElementById("preview");
 const topInput = document.getElementById("top");

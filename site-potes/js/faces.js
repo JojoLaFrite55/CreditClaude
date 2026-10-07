@@ -1,4 +1,4 @@
-import { HEADS, POLICE } from "./data.js";
+import { HEADS, MEME_EXTRAS, POLICE } from "./data.js";
 
 const loadImage = (src) =>
   new Promise((resolve) => {
@@ -84,6 +84,11 @@ function cartoonFace(index) {
 export async function loadHeads() {
   const loaded = (await Promise.all(HEADS.map(loadImage))).map((image, index) => image ?? cartoonFace(index));
   return loaded;
+}
+
+export async function loadMemeModels() {
+  const [heads, extras] = await Promise.all([loadHeads(), Promise.all(MEME_EXTRAS.map(loadImage))]);
+  return [...heads, ...extras.filter(Boolean)];
 }
 
 export async function loadPolice() {
