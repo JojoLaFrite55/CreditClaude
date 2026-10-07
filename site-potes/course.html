@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Course de têtes — LE QG</title>
+  <meta name="description" content="Parie ton argent fictif sur une tête et regarde la course. Quitte ou double.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Course de têtes</h1>
+      <p>Parie ton argent fictif sur une tête et regarde la course. Quitte ou double.</p>
+    </div>
+    <div class="race">
+      <div class="race-stage"><canvas id="cv" aria-label="Piste de course"></canvas></div>
+      <div class="race-panel">
+        <div class="memory-bar">
+          <div class="hud-item light"><span>Cagnotte</span><strong><span id="money">100</span> $</strong></div>
+          <div class="hud-item light"><span>Record</span><strong id="best">100</strong></div>
+          <button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button>
+        </div>
+        <div class="bets" id="bets"></div>
+        <div class="field"><label for="stake">Mise</label><input type="number" id="stake" min="1" value="10" style="width:100%;padding:12px 14px;font:inherit;border:1px solid var(--line)"></div>
+        <div class="btn-row"><button class="btn" id="go" type="button">Partez !</button><button class="btn btn-secondary" id="allin" type="button">Tapis</button></div>
+        <p class="race-log" id="log">Choisis un coureur et ta mise.</p>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/games/course.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Puissance 4 — LE QG</title>
+  <meta name="description" content="Aligne quatre têtes avant l'ordinateur, ou affronte un pote.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Puissance 4</h1>
+      <p>Aligne quatre têtes avant l'ordinateur, ou affronte un pote.</p>
+    </div>
+    <div class="p4">
+      <div class="memory-bar">
+        <label class="field"><span>Mode</span><select id="mode"><option value="ai">Contre l'ordinateur</option><option value="two">À deux</option></select></label>
+        <label class="field"><span>Niveau</span><select id="level"><option value="easy">Facile</option><option value="normal" selected>Normal</option><option value="hard">Difficile</option></select></label>
+        <button class="btn btn-small btn-secondary" id="swap" type="button">Changer de têtes</button>
+        <button class="btn btn-small btn-secondary" id="restart" type="button">Nouvelle partie</button>
+        <button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button>
+      </div>
+      <p class="p4-score"><span>Joueur 1 : <strong id="score1">0</strong></span><span>Joueur 2 : <strong id="score2">0</strong></span></p>
+      <div class="p4-stage"><canvas id="cv" aria-label="Plateau de Puissance 4"></canvas></div>
+      <p class="p4-status" id="status"></p>
+    </div>
+  </main>
+  <script type="module" src="js/games/puissance4.js"></script>
+</body>
+</html>

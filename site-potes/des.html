@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dés et pile ou face — LE QG</title>
+  <meta name="description" content="Lance jusqu'à dix dés, ou tranche à pile ou face.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Dés et pile ou face</h1>
+      <p>Lance jusqu'à dix dés, ou tranche à pile ou face.</p>
+    </div>
+    <div class="tool-grid">
+      <div class="tool-panel">
+        <h2>Dés</h2>
+        <div class="btn-row">
+          <label class="field"><span>Type</span><select id="kind"><option value="6">D6</option><option value="4">D4</option><option value="8">D8</option><option value="10">D10</option><option value="12">D12</option><option value="20">D20</option><option value="100">D100</option></select></label>
+          <label class="field"><span>Quantité</span><input type="text" id="qty" value="2" inputmode="numeric" style="width:90px;padding:12px 14px;font:inherit;border:1px solid var(--line)"></label>
+        </div>
+        <div class="dice" id="dice"></div>
+        <p class="big-result" id="total">—</p>
+        <div class="btn-row"><button class="btn" id="roll" type="button">Lancer</button><button class="btn btn-secondary" id="sound" type="button">Son : activé</button></div>
+      </div>
+      <div class="tool-panel">
+        <h2>Pile ou face</h2>
+        <div class="coin-scene"><div class="coin" id="coin"><div class="coin-side front" id="coin-face"></div><div class="coin-side back">PILE</div></div></div>
+        <p class="big-result" id="coin-result">—</p>
+        <div class="btn-row"><button class="btn" id="flip" type="button">Lancer la pièce</button></div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/des.js"></script>
+</body>
+</html>

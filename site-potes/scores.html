@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tableau des scores — LE QG</title>
+  <meta name="description" content="Garde les points de la soirée : jeux de société, blind test, belote.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Tableau des scores</h1>
+      <p>Garde les points de la soirée : jeux de société, blind test, belote.</p>
+    </div>
+    <div class="tool-panel">
+      <div class="field"><label for="game-title">Nom de la partie</label><input type="text" id="game-title" maxlength="40" value="Soirée du vendredi"></div>
+      <form class="btn-row" id="add-form"><input type="text" id="player-name" maxlength="20" placeholder="Nom du joueur" autocomplete="off" style="flex:1;min-width:160px;padding:12px 14px;font:inherit;border:1px solid var(--line)"><button class="btn" type="submit">Ajouter</button></form>
+      <ul class="scoreboard" id="players"></ul>
+      <div class="btn-row">
+        <button class="btn btn-secondary btn-small" id="reset-scores" type="button">Remettre les scores à zéro</button>
+        <button class="btn btn-secondary btn-small" id="clear-all" type="button">Tout effacer</button>
+        <button class="btn btn-secondary btn-small" id="sound" type="button">Son : activé</button>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/scores.js"></script>
+</body>
+</html>

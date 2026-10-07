@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Réflexes et clics — LE QG</title>
+  <meta name="description" content="Teste ton temps de réaction, puis ton nombre de clics par seconde.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Réflexes et clics</h1>
+      <p>Teste ton temps de réaction, puis ton nombre de clics par seconde.</p>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" type="button" role="tab" data-tab="reflexes" aria-selected="true">Réflexes</button>
+      <button class="tab" type="button" role="tab" data-tab="cps" aria-selected="false">Clics par seconde</button>
+      <button class="btn btn-small btn-secondary" id="sound" type="button" style="margin-left:auto">Son : activé</button>
+    </div>
+    <section data-panel="reflexes" class="reflex-panel">
+      <button class="rpad idle" id="rpad" type="button"><span id="rtext">Clique pour commencer</span></button>
+      <p class="muted">Meilleur temps : <strong id="rbest">—</strong></p>
+      <ul class="history" id="rlist"></ul>
+    </section>
+    <section data-panel="cps" class="reflex-panel hidden">
+      <button class="rpad idle" id="cpad" type="button"><span>Clique le plus vite possible</span></button>
+      <p class="muted">Temps : <strong id="ctime">10,0</strong> s · Clics : <strong id="ccount">0</strong> · Record : <strong id="cbest">—</strong></p>
+    </section>
+  </main>
+  <script type="module" src="js/games/reflexes.js"></script>
+</body>
+</html>

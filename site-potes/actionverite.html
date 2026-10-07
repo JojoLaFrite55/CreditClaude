@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Action ou vérité — LE QG</title>
+  <meta name="description" content="Une carte, un gage ou une question gênante. Tout le monde joue.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Action ou vérité</h1>
+      <p>Une carte, un gage ou une question gênante. Tout le monde joue.</p>
+    </div>
+    <div class="tool-panel" style="max-width:640px;margin-inline:auto">
+      <div class="dare-card" id="card" data-type="">
+        <p class="eyebrow" id="kicker">Pioche une carte</p>
+        <p class="dare-text" id="prompt">Action ou vérité ?</p>
+      </div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn" id="truth" type="button">Vérité</button>
+        <button class="btn" id="dare" type="button">Action</button>
+        <button class="btn btn-secondary" id="random" type="button">Au hasard</button>
+        <button class="btn btn-secondary" id="sound" type="button">Son : activé</button>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/actionverite.js"></script>
+</body>
+</html>

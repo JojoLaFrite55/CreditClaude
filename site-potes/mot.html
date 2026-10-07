@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mot-Tête — LE QG</title>
+  <meta name="description" content="Un Wordle en français : trouve le mot de cinq lettres en six essais.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Mot-Tête</h1>
+      <p>Un Wordle en français : trouve le mot de cinq lettres en six essais.</p>
+    </div>
+    <div class="wordle">
+      <div class="memory-bar">
+        <label class="field memory-level" style="margin-left:0"><span>Mode</span>
+          <select id="mode"><option value="daily">Mot du jour</option><option value="free">Partie libre</option></select></label>
+        <button class="btn btn-small btn-secondary" id="again" type="button">Rejouer</button>
+        <button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button>
+      </div>
+      <div class="wgrid" id="wgrid"></div>
+      <p class="winfo" id="winfo"></p>
+      <div class="wkeys" id="wkeys"></div>
+    </div>
+  </main>
+  <script type="module" src="js/games/mot.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tirage d'équipes — LE QG</title>
+  <meta name="description" content="Colle les noms, choisis le nombre d'équipes, le sort s'occupe du reste.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Tirage d'équipes</h1>
+      <p>Colle les noms, choisis le nombre d'équipes, le sort s'occupe du reste.</p>
+    </div>
+    <div class="tool-grid">
+      <div class="tool-panel">
+        <div class="field"><label for="names">Un nom par ligne</label><textarea id="names"></textarea></div>
+        <div class="field"><label for="count">Nombre d'équipes</label><input type="text" id="count" value="2" inputmode="numeric"></div>
+        <div class="btn-row">
+          <button class="btn" id="split" type="button">Tirer les équipes</button>
+          <button class="btn btn-secondary" id="copy" type="button">Copier</button>
+          <button class="btn btn-secondary" id="sound" type="button">Son : activé</button>
+        </div>
+      </div>
+      <div class="teams" id="teams"></div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/equipes.js"></script>
+</body>
+</html>
