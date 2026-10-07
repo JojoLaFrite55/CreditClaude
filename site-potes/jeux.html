@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jeux — LE QG</title>
+  <meta name="description" content="Les jeux du QG.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap">
+    <div class="page-head">
+      <h1>Jeux</h1>
+      <p>Les jeux du QG. Gratuits, sans pub, jouables directement dans le navigateur.</p>
+    </div>
+    <div class="grid" id="games"></div>
+  </main>
+  <script type="module">
+    import "./js/layout.js";
+    import { GAMES } from "./js/data.js";
+
+    const root = document.getElementById("games");
+
+    GAMES.forEach((game) => {
+      const card = document.createElement("a");
+      card.className = "card";
+      card.href = game.href;
+      card.innerHTML = `
+        <div class="media">
+          <span class="badge">${game.badge}</span>
+          <img src="${game.image}" alt="Aperçu de ${game.title}" loading="lazy">
+        </div>
+        <h3>${game.title}</h3>
+        <p class="muted">${game.text}</p>
+        <div class="tags">${game.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div>
+        <div class="card-actions"><span class="btn btn-small">Jouer</span></div>`;
+      root.append(card);
+    });
+
+    const soon = document.createElement("div");
+    soon.className = "card placeholder";
+    soon.innerHTML = `
+      <div class="media"><span class="badge light">Bientôt</span><span>Prochain jeu en préparation</span></div>
+      <h3>À venir</h3>
+      <p class="muted">Un autre jeu est en route. Propose tes idées à la bande.</p>`;
+    root.append(soon);
+  </script>
+</body>
+</html>

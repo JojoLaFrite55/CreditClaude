@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memes — LE QG</title>
+  <meta name="description" content="Galerie et générateur de memes du QG.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="memes">
+  <main class="wrap">
+    <div class="page-head">
+      <h1>Memes</h1>
+      <p>Pique un meme dans la galerie ou fabrique le tien, puis envoie-le dans le groupe.</p>
+    </div>
+
+    <section id="generateur" class="generator">
+      <div class="generator-preview">
+        <canvas id="preview" width="720" height="720" aria-label="Aperçu du meme"></canvas>
+      </div>
+      <div class="generator-form">
+        <h2>Générateur</h2>
+        <fieldset>
+          <legend>Modèle</legend>
+          <div class="models" id="models"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Fond</legend>
+          <div class="swatches" id="swatches"></div>
+        </fieldset>
+        <label class="field">
+          <span>Texte du haut</span>
+          <input id="top" type="text" maxlength="60" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Texte du bas</span>
+          <input id="bottom" type="text" maxlength="60" autocomplete="off">
+        </label>
+        <div class="cta-row">
+          <button class="btn" id="download" type="button">Télécharger le meme</button>
+          <button class="btn btn-secondary" id="shuffle" type="button">Au hasard</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Galerie</h2></div>
+      <div class="grid" id="gallery"></div>
+    </section>
+  </main>
+  <script type="module" src="js/memes-page.js"></script>
+</body>
+</html>

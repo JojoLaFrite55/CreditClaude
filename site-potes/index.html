@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LE QG — jeux et memes entre potes</title>
+  <meta name="description" content="Le site privé de la bande : des jeux et des memes pour troller les potes.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body data-page="home">
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Entre potes</p>
+          <h1>Le QG de la bande.</h1>
+          <p class="lead">Des jeux, des memes et de la mauvaise foi. Rien à acheter, tout à troller.</p>
+          <div class="cta-row">
+            <a class="btn" href="jeu.html">Kill all the Jules</a>
+            <a class="btn btn-secondary" href="memes.html">Voir les memes</a>
+          </div>
+        </div>
+        <div class="hero-media" id="collage" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="section wrap">
+      <div class="section-head">
+        <h2>Catégories</h2>
+      </div>
+      <div class="collection-list">
+        <a class="collection-card" href="jeux.html">
+          <div class="media"><img src="assets/jeu-apercu.jpg" alt="Aperçu du jeu Kill all the Jules" loading="lazy"></div>
+          <h3>Jeux</h3>
+          <p class="muted">Des petits jeux pour se défier entre nous.</p>
+        </a>
+        <a class="collection-card" href="memes.html">
+          <div class="media"><canvas id="meme-cover" aria-label="Aperçu d'un meme"></canvas></div>
+          <h3>Memes</h3>
+          <p class="muted">Une galerie et un générateur pour troller les potes.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="section wrap">
+      <div class="section-head">
+        <h2>Derniers memes</h2>
+        <a class="link-underline" style="position:relative" href="memes.html">Tout voir</a>
+      </div>
+      <div class="grid" id="featured"></div>
+    </section>
+  </main>
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>

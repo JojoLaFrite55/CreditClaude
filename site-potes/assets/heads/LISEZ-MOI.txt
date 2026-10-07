@@ -1,0 +1,3 @@
+Dépose ici les 4 têtes des intrus, en PNG à fond transparent :
+  tete-1.png  tete-2.png  tete-3.png  tete-4.png
+Tant que ces fichiers sont absents, des visages dessinés les remplacent.

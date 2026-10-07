@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kill all the Jules — LE QG</title>
+  <meta name="description" content="Défends la frontière. Un jeu d'arcade en 2D.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap game-page">
+    <div class="page-head game-head">
+      <h1>Kill all the Jules</h1>
+      <p>Défends la frontière entre la Zone A et la Zone B. Ne laisse aucun intrus la franchir.</p>
+    </div>
+
+    <div class="game-shell" id="shell">
+      <canvas id="game-canvas" aria-label="Zone de jeu"></canvas>
+
+      <div class="hud" aria-live="off">
+        <div class="hud-item"><span>Score</span><strong id="hud-score">000000</strong></div>
+        <div class="hud-item"><span>Éliminés</span><strong id="hud-kills">0</strong></div>
+        <div class="hud-item"><span>Vague</span><strong id="hud-wave">1</strong></div>
+        <div class="hud-item hud-best"><span>Record</span><strong id="hud-best">000000</strong></div>
+        <div class="hud-actions">
+          <button class="hud-btn js-sound" type="button" aria-pressed="true">Son : activé</button>
+          <button class="hud-btn" id="btn-pause" type="button">Pause</button>
+        </div>
+      </div>
+
+      <div class="touch" aria-hidden="true">
+        <button id="t-left" type="button">◀</button>
+        <button id="t-fire" type="button">TIRER</button>
+        <button id="t-right" type="button">▶</button>
+      </div>
+
+      <div class="overlay" id="ui-menu">
+        <div class="panel">
+          <p class="eyebrow">Zone A · Zone B</p>
+          <h2>Kill all the Jules</h2>
+          <p class="muted">Tu es le garde-frontière. Des intrus arrivent par vagues depuis la Zone B. S'il en touche la frontière, c'est perdu.</p>
+          <ul class="keys">
+            <li><kbd>←</kbd><kbd>→</kbd> ou <kbd>Q</kbd><kbd>D</kbd> <span>se déplacer</span></li>
+            <li><kbd>Espace</kbd> <span>tirer (maintenu = tir continu)</span></li>
+            <li><kbd>Échap</kbd> <span>pause</span> · <kbd>M</kbd> <span>son</span></li>
+          </ul>
+          <div class="panel-actions">
+            <button class="btn" id="btn-play" type="button">Jouer</button>
+            <button class="btn btn-secondary js-sound" type="button" aria-pressed="true">Son : activé</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay hidden" id="ui-pause">
+        <div class="panel">
+          <p class="eyebrow">En pause</p>
+          <h2>Pause</h2>
+          <div class="panel-actions stack">
+            <button class="btn" id="btn-resume" type="button">Reprendre</button>
+            <button class="btn btn-secondary" id="btn-restart" type="button">Recommencer</button>
+            <button class="btn btn-secondary js-sound" type="button" aria-pressed="true">Son : activé</button>
+            <button class="btn btn-secondary" id="btn-menu" type="button">Menu principal</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay hidden" id="ui-over">
+        <div class="panel">
+          <p class="eyebrow">Brèche détectée</p>
+          <h2>Frontière franchie</h2>
+          <p class="record hidden" id="over-record">Nouveau record !</p>
+          <dl class="stats">
+            <div><dt>Score</dt><dd id="over-score">0</dd></div>
+            <div><dt>Éliminés</dt><dd id="over-kills">0</dd></div>
+            <div><dt>Vague</dt><dd id="over-wave">1</dd></div>
+          </dl>
+          <div class="panel-actions stack">
+            <button class="btn" id="btn-again" type="button">Rejouer</button>
+            <button class="btn btn-secondary" id="btn-menu-over" type="button">Menu principal</button>
+            <a class="btn btn-secondary" href="jeux.html">Retour aux jeux</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/game/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+.generator {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+  padding-bottom: 48px;
+}
+
+.generator-preview {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  position: sticky;
+  top: 90px;
+}
+
+.generator-preview canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.generator-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.generator-form h2 {
+  font-size: 24px;
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+legend,
+.field span {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.models,
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.model,
+.swatch {
+  position: relative;
+  cursor: pointer;
+}
+
+.model input,
+.swatch input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.model img,
+.model canvas {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  padding: 6px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+}
+
+.swatch span {
+  display: block;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+
+.model input:checked + img,
+.model input:checked + canvas {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+.swatch input:checked + span {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--ink);
+}
+
+.model input:focus-visible + img,
+.model input:focus-visible + canvas,
+.swatch input:focus-visible + span {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  font: inherit;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 0;
+}
+
+.field input:focus {
+  outline: 0;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+@media (max-width: 860px) {
+  .generator {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .generator-preview {
+    position: static;
+  }
+}
