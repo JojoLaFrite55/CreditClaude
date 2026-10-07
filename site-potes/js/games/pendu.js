@@ -17,13 +17,13 @@ const catEl = document.getElementById("category");
 const streakEl = document.getElementById("streak");
 const bestEl = document.getElementById("best");
 const parts = [...document.querySelectorAll("[data-part]")];
-const state = { word: "", found: new Set(), wrong: new Set(), over: false, streak: 0 };
+const state = { word: "", found: new Set(), wrong: new Set(), over: false, lost: false, streak: 0 };
 bestEl.textContent = getBest("pendu");
 
 const norm = (text) => text.normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 function render() {
-  wordEl.textContent = [...state.word].map((l) => (state.found.has(l) ? l : "_")).join(" ");
+  wordEl.textContent = [...state.word].map((l) => (state.found.has(l) || state.lost ? l : "_")).join(" ");
   parts.forEach((part, i) => part.classList.toggle("on", i < state.wrong.size));
   keysEl.querySelectorAll("button").forEach((button) => {
     const l = button.dataset.l;
@@ -55,9 +55,9 @@ function guess(letter) {
     sfx.win();
   } else if (state.wrong.size >= MAX) {
     state.over = true;
+    state.lost = true;
     state.streak = 0;
-    wordEl.textContent = [...state.word].join(" ");
-    statusEl.textContent = "Perdu ! Voilà le mot.";
+    statusEl.textContent = `Perdu ! Le mot était ${state.word}.`;
     sfx.lose();
   } else statusEl.textContent = `${MAX - state.wrong.size} erreur${MAX - state.wrong.size > 1 ? "s" : ""} restante${MAX - state.wrong.size > 1 ? "s" : ""}`;
   streakEl.textContent = state.streak;
@@ -70,6 +70,7 @@ function next() {
   state.found = new Set();
   state.wrong = new Set();
   state.over = false;
+  state.lost = false;
   catEl.textContent = category;
   statusEl.textContent = `${MAX} erreurs maximum`;
   render();
