@@ -1,5 +1,6 @@
 import { downloadCanvas } from "../meme-core.js";
 import { createSfx, loadMemeModels, mountSoundButton } from "../arcade/kit.js";
+import { PRESETS } from "./tierdata.js";
 
 const sfx = createSfx();
 mountSoundButton(document.getElementById("sound"), sfx);
@@ -40,12 +41,17 @@ function dataUrl(image) {
   return image.src;
 }
 
-function makeItem(src) {
-  const img = document.createElement("img");
-  img.src = src;
-  img.alt = "";
+function makeItem(src, text = "") {
+  const img = document.createElement(text ? "div" : "img");
+  if (text) {
+    img.textContent = text;
+    img.dataset.text = text;
+  } else {
+    img.src = src;
+    img.alt = "";
+  }
   img.draggable = true;
-  img.className = "tier-item";
+  img.className = text ? "tier-item tier-chip" : "tier-item";
   img.addEventListener("dragstart", (event) => {
     dragged = img;
     event.dataTransfer?.setData("text/plain", "tete");
@@ -66,7 +72,46 @@ function makeItem(src) {
   return img;
 }
 
-models.forEach((image) => pool.append(makeItem(dataUrl(image))));
+const presetSelect = document.getElementById("preset");
+PRESETS.forEach((preset) => presetSelect.append(new Option(preset.label, preset.id)));
+
+function loadPreset(id) {
+  const preset = PRESETS.find((item) => item.id === id) ?? PRESETS[0];
+  board.querySelectorAll(".tier-item").forEach((item) => item.remove());
+  pool.innerHTML = "";
+  selected = null;
+  title.value = preset.title;
+  if (preset.items) preset.items.forEach((text) => pool.append(makeItem("", text)));
+  else models.forEach((image) => pool.append(makeItem(dataUrl(image))));
+}
+
+presetSelect.addEventListener("change", () => {
+  sfx.init();
+  sfx.click();
+  loadPreset(presetSelect.value);
+});
+
+const customForm = document.getElementById("custom-form");
+const customInput = document.getElementById("custom-item");
+customForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const text = customInput.value.trim().slice(0, 40);
+  if (!text) return;
+  pool.append(makeItem("", text));
+  customInput.value = "";
+  sfx.init();
+  sfx.pop();
+});
+
+document.getElementById("random-fill").addEventListener("click", () => {
+  sfx.init();
+  sfx.pop();
+  const items = [...pool.querySelectorAll(".tier-item")];
+  const zones = [...board.querySelectorAll(".tier-items")];
+  items.forEach((item) => zones[Math.floor(Math.random() * zones.length)].append(item));
+});
+
+loadPreset("potes");
 
 function bindZone(zone) {
   zone.addEventListener("dragover", (event) => {
@@ -142,6 +187,32 @@ document.getElementById("export").addEventListener("click", async () => {
     g.fillRect(ROW, y, W - ROW, ROW - 4);
     row.querySelectorAll(".tier-item").forEach((img, i) => {
       const size = ROW - 20;
+      if (img.dataset.text) {
+        const x = ROW + 10 + i * (size + 8);
+        g.fillStyle = "#f4f4f4";
+        g.fillRect(x, y + 8, size, size);
+        g.fillStyle = "#111";
+        g.textAlign = "center";
+        let fontSize = 20;
+        let lines = [];
+        for (; fontSize >= 11; fontSize -= 1) {
+          g.font = `700 ${fontSize}px "Inter", sans-serif`;
+          lines = [];
+          let line = "";
+          for (const word of img.dataset.text.split(" ")) {
+            const next = line ? `${line} ${word}` : word;
+            if (g.measureText(next).width > size - 10 && line) {
+              lines.push(line);
+              line = word;
+            } else line = next;
+          }
+          lines.push(line);
+          if (lines.length * fontSize * 1.15 <= size - 8 && lines.every((l) => g.measureText(l).width <= size - 10)) break;
+        }
+        const startY = y + 8 + (size - lines.length * fontSize * 1.15) / 2 + fontSize * 0.9;
+        lines.forEach((l, k) => g.fillText(l, x + size / 2, startY + k * fontSize * 1.15));
+        return;
+      }
       const ratio = img.naturalWidth / img.naturalHeight || 1;
       const w = Math.min(size, size * ratio);
       const h = w / ratio;

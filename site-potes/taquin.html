@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taquin — LE QG</title>
+  <meta name="description" content="Remets les morceaux de la tête dans l'ordre en faisant glisser les tuiles.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Taquin</h1>
+      <p>Remets les morceaux de la tête dans l'ordre en faisant glisser les tuiles.</p>
+    </div>
+    <div class="taquin-wrap">
+      <div class="memory-bar">
+        <div class="hud-item light"><span>Coups</span><strong id="moves">0</strong></div>
+        <div class="hud-item light"><span>Temps</span><strong id="time">0</strong></div>
+        <div class="hud-item light"><span>Record</span><strong id="best">—</strong></div>
+        <label class="field memory-level"><span>Taille</span><select id="size"><option value="3">3 × 3</option><option value="4">4 × 4</option></select></label>
+        <button class="btn btn-small btn-secondary" id="change" type="button">Autre tête</button>
+        <button class="btn btn-small btn-secondary" id="shuffle" type="button">Mélanger</button>
+        <button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button>
+      </div>
+      <div class="taquin" id="puzzle"></div>
+      <p class="memory-result hidden" id="msg"></p>
+    </div>
+  </main>
+  <script type="module" src="js/games/taquin.js"></script>
+</body>
+</html>

@@ -99,7 +99,8 @@ legend,
   outline-offset: 2px;
 }
 
-.field input {
+.field input,
+.field select {
   width: 100%;
   padding: 12px 14px;
   font: inherit;
@@ -109,7 +110,8 @@ legend,
   border-radius: 0;
 }
 
-.field input:focus {
+.field input:focus,
+.field select:focus {
   outline: 0;
   border-color: var(--ink);
   box-shadow: 0 0 0 1px var(--ink);

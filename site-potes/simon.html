@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simon des potes — LE QG</title>
+  <meta name="description" content="Retiens la suite de têtes qui s'allument et rejoue-la sans te tromper.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Simon des potes</h1>
+      <p>Retiens la suite de têtes qui s'allument et rejoue-la sans te tromper.</p>
+    </div>
+    <div class="simon-wrap">
+      <div class="memory-bar">
+        <div class="hud-item light"><span>Manche</span><strong id="round">0</strong></div>
+        <div class="hud-item light"><span>Record</span><strong id="best">0</strong></div>
+        <button class="hud-btn dark-btn" id="sound" type="button" style="margin-left:auto">Son : activé</button>
+      </div>
+      <div class="simon">
+        <button class="spad s0" type="button" aria-label="Tête rouge"></button>
+        <button class="spad s1" type="button" aria-label="Tête verte"></button>
+        <button class="spad s2" type="button" aria-label="Tête jaune"></button>
+        <button class="spad s3" type="button" aria-label="Tête bleue"></button>
+      </div>
+      <p class="p4-status" id="status">Appuie sur Jouer.</p>
+      <div class="btn-row" style="justify-content:center"><button class="btn" id="start" type="button">Jouer</button></div>
+    </div>
+  </main>
+  <script type="module" src="js/games/simon.js"></script>
+</body>
+</html>

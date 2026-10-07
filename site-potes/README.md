@@ -22,8 +22,8 @@ il ne fonctionne pas en double-cliquant sur `index.html`, il faut passer par un 
 | Jeux | `jeux.html` |
 | Kill all the Jules | `jeu.html` + `js/game/` |
 | Memes (galerie + générateur) | `memes.html` |
-| Jeux : Flappy Tête, Tape-Tête, Serpent, Memory, Tête Clicker, Casse-Tête, 2048, Mot-Tête, Puissance 4, Course de têtes, Réflexes | `*.html` + `js/games/` |
-| Outils : Roulette, Soundboard, Affiches (10 modèles), Tier list, Excuses, Textes, Équipes, Scores, Dés, Action ou vérité, Susceptible, Tu préfères, Minuteur | `outils.html` + `js/tools/` |
+| Jeux (18) : Flappy Tête, Tape-Tête, Serpent, Memory, Clicker, Casse-Tête, 2048, Mot-Tête, Puissance 4, Course, Réflexes, Démineur, Simon, Pierre-feuille-ciseaux, Pendu, Tire-Tête, Taquin | `*.html` + `js/games/` |
+| Outils (14) : Roulette, Soundboard, Affiches, Tier list (22 thèmes), Excuses, Textes, Équipes, Scores, Dés, Action ou vérité, Susceptible, Tu préfères, Minuteur, Le grand random | `outils.html` + `js/tools/` |
 
 ## Personnaliser
 

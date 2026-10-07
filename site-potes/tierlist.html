@@ -20,7 +20,10 @@
       <h1>Tier list</h1>
       <p>Classe la bande de S à D. Glisse les têtes, ou touche une tête puis une ligne sur mobile.</p>
     </div>
-    <div class="field" style="max-width:420px;margin-bottom:16px"><label for="tier-title">Titre de la tier list</label><input type="text" id="tier-title" value="Les meilleurs potes" maxlength="40"></div>
+    <div class="btn-row" style="margin-bottom:16px;align-items:end">
+      <div class="field" style="min-width:240px;flex:1"><label for="preset">Thème</label><select id="preset"></select></div>
+      <div class="field" style="min-width:240px;flex:1"><label for="tier-title">Titre de la tier list</label><input type="text" id="tier-title" value="Les meilleurs potes" maxlength="40"></div>
+    </div>
     <div class="tier-board" id="board"></div>
     <section class="tier-pool">
       <h2>Les potes</h2>
@@ -29,9 +32,11 @@
         <label class="btn btn-small btn-secondary" for="file">Ajouter des images</label>
         <input type="file" id="file" accept="image/*" multiple hidden>
         <button class="btn btn-small btn-secondary" id="reset" type="button">Tout remettre</button>
+        <button class="btn btn-small btn-secondary" id="random-fill" type="button">Ranger au hasard</button>
         <button class="btn btn-small" id="export" type="button">Télécharger l'image</button>
         <button class="btn btn-small btn-secondary" id="sound" type="button">Son : activé</button>
       </div>
+      <form class="btn-row" id="custom-form" style="margin-top:14px"><input type="text" id="custom-item" maxlength="40" placeholder="Ajouter un élément (texte)" autocomplete="off" style="flex:1;min-width:200px;padding:10px 14px;font:inherit;border:1px solid var(--line)"><button class="btn btn-small" type="submit">Ajouter</button></form>
       <p class="muted" style="margin-top:10px">Les images que tu ajoutes restent sur ton ordinateur : rien n'est envoyé nulle part.</p>
     </section>
   </main>

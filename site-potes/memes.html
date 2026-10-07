@@ -29,6 +29,19 @@
           <legend>Modèle</legend>
           <div class="models" id="models"></div>
         </fieldset>
+        <label class="field">
+          <span>Format</span>
+          <select id="layout">
+            <option value="classic">Classique (texte haut et bas)</option>
+            <option value="banniere">Bannière blanche</option>
+            <option value="drake">Je refuse / je préfère</option>
+            <option value="versus">Versus (deux têtes)</option>
+          </select>
+        </label>
+        <fieldset id="models2-box" class="hidden">
+          <legend>Deuxième modèle</legend>
+          <div class="models" id="models2"></div>
+        </fieldset>
         <fieldset>
           <legend>Fond</legend>
           <div class="swatches" id="swatches"></div>
@@ -49,7 +62,11 @@
     </section>
 
     <section class="section">
-      <div class="section-head"><h2>Galerie</h2></div>
+      <div class="section-head"><h2>Galerie</h2>
+        <label class="field" style="min-width:200px"><span>Format</span>
+          <select id="filter"><option value="all">Tous les memes</option><option value="classic">Classiques</option><option value="banniere">Bannières</option><option value="drake">Je refuse / je préfère</option><option value="versus">Versus</option></select>
+        </label>
+      </div>
       <div class="grid" id="gallery"></div>
     </section>
   </main>

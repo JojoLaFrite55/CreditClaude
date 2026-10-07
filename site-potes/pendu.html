@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pendu — LE QG</title>
+  <meta name="description" content="Trouve le mot avant que la tête ne soit pendue (pour de faux, c'est un dessin).">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Pendu</h1>
+      <p>Trouve le mot avant que la tête ne soit pendue (pour de faux, c'est un dessin).</p>
+    </div>
+    <div class="hang">
+      <div class="memory-bar">
+        <div class="hud-item light"><span>Série</span><strong id="streak">0</strong></div>
+        <div class="hud-item light"><span>Record</span><strong id="best">0</strong></div>
+        <div class="hud-item light"><span>Thème</span><strong id="category">—</strong></div>
+        <button class="btn btn-small btn-secondary" id="new" type="button" style="margin-left:auto">Nouveau mot</button>
+        <button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button>
+      </div>
+      <svg class="gallows" viewBox="0 0 200 220" fill="none" stroke="#121212" stroke-width="5" stroke-linecap="round" aria-hidden="true">
+        <path d="M20 205H120M50 205V15H140V40"/>
+        <circle data-part cx="140" cy="62" r="22"/>
+        <path data-part d="M140 84V138"/>
+        <path data-part d="M140 98L116 120"/>
+        <path data-part d="M140 98L164 120"/>
+        <path data-part d="M140 138L120 175"/>
+        <path data-part d="M140 138L160 175"/>
+        <path data-part d="M132 56h.1M148 56h.1M132 70q8 -6 16 0"/>
+      </svg>
+      <p class="hang-word" id="word"></p>
+      <p class="p4-status" id="status"></p>
+      <div class="hang-keys" id="keys"></div>
+    </div>
+  </main>
+  <script type="module" src="js/games/pendu.js"></script>
+</body>
+</html>

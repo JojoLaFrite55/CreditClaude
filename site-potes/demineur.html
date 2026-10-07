@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Démineur — LE QG</title>
+  <meta name="description" content="Ouvre les cases sans réveiller les têtes cachées dessous.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Démineur</h1>
+      <p>Ouvre les cases sans réveiller les têtes cachées dessous.</p>
+    </div>
+    <div class="mines-wrap">
+      <div class="memory-bar">
+        <div class="hud-item light"><span>Drapeaux</span><strong id="flags">10</strong></div>
+        <div class="hud-item light"><span>Temps</span><strong id="time">0</strong></div>
+        <div class="hud-item light"><span>Record</span><strong id="best">—</strong></div>
+        <label class="field memory-level"><span>Niveau</span><select id="level"><option value="easy">Facile</option><option value="normal">Normal</option><option value="hard">Difficile</option></select></label>
+        <button class="btn btn-small btn-secondary" id="flagmode" type="button" aria-pressed="false">Mode drapeau : non</button>
+        <button class="btn btn-small btn-secondary" id="restart" type="button">Nouvelle partie</button>
+        <button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button>
+      </div>
+      <div class="mines" id="mines"></div>
+      <p class="memory-result hidden" id="msg"></p>
+    </div>
+    <p class="muted" style="text-align:center;margin-top:14px">Clic droit ou appui long pour poser un drapeau. Sur mobile, active le mode drapeau.</p>
+  </main>
+  <script type="module" src="js/games/demineur.js"></script>
+</body>
+</html>
