@@ -45,6 +45,53 @@ const DATA = {
   },
 };
 
+DATA.annul = {
+  intro: ["Je suis vraiment désolé mais", "Ne m'en veux pas :", "Gros souci de dernière minute :", "Je préviens tôt pour une fois :"],
+  cause: [
+    "mon canapé refuse de me lâcher",
+    "j'ai promis à ma plante de rester avec elle ce soir",
+    "mon horoscope m'interdit de sortir",
+    "j'ai mangé un truc bizarre à midi",
+    "ma mère m'a appelé et je n'ai pas osé raccrocher",
+    "j'ai commencé une série et il me reste 11 saisons",
+    "j'ai décidé de devenir quelqu'un de raisonnable",
+  ],
+  twist: ["mais on se refait ça très vite.", "mais passez un super moment sans moi.", "et c'est promis, la prochaine fois je viens.", "donc je suis déjà en pyjama."],
+};
+
+DATA.pardon = {
+  intro: ["Je tiens à dire que", "Pour ma défense,", "Je ne dis pas que c'est faux, mais", "En toute honnêteté,"],
+  cause: [
+    "ça s'est cassé tout seul",
+    "c'était déjà fêlé quand je suis arrivé",
+    "je n'étais même pas dans la pièce",
+    "c'est la faute du vent",
+    "j'ai suivi les instructions d'une vidéo YouTube",
+    "quelqu'un m'a poussé, et ce quelqu'un était la gravité",
+  ],
+  twist: ["donc je m'excuse un peu, mais pas trop.", "mais je rachète le même demain.", "et d'ailleurs, merci de ne pas en parler au groupe.", "et vous aurez tous oublié d'ici une semaine."],
+};
+
+DATA.devoir = {
+  intro: ["Alors, pour le truc que je devais faire :", "Au sujet de la tâche :", "Je sais ce que tu vas dire, mais"],
+  cause: [
+    "mon ordinateur a redémarré pour une mise à jour de 3 heures",
+    "j'ai tout fait mais j'ai oublié de sauvegarder",
+    "j'ai demandé à un ami qui a demandé à un ami",
+    "mon chien l'a mangé, version numérique",
+    "j'attendais le bon moment, qui n'est jamais venu",
+    "j'ai passé la nuit à chercher la police d'écriture parfaite",
+  ],
+  twist: ["mais je te le rends demain, c'est sûr.", "mais en vrai c'est presque fini.", "donc dans un sens je suis en avance sur mon retard."],
+};
+
+const MORE = {
+  retard: { cause: ["un camion de poules s'est renversé devant chez moi", "j'ai fait demi-tour trois fois pour vérifier le gaz", "ma montre est restée en heure d'hiver depuis 2019", "j'ai donné rendez-vous à la mauvaise personne dans la mauvaise ville"] },
+  message: { cause: ["j'ai dit « je réponds plus tard » et mon cerveau a classé ça en urgence nulle", "mon téléphone a mis le groupe en silencieux de lui-même", "j'ai tapé la réponse dans mes notes"] },
+  sous: { cause: ["j'ai acheté un poisson rouge qui coûte plus cher que prévu", "ma tirelire s'est fait cambrioler par ma petite sœur"] },
+};
+for (const [key, extra] of Object.entries(MORE)) DATA[key].cause.push(...extra.cause);
+
 const SIGNS = ["Bélier", "Taureau", "Gémeaux", "Cancer", "Lion", "Vierge", "Balance", "Scorpion", "Sagittaire", "Capricorne", "Verseau", "Poissons"];
 const HORO = {
   love: ["Aujourd'hui, un message que tu attendais arrive… mais pas de la bonne personne.", "Une belle rencontre t'attend à la boulangerie. Prends de la monnaie.", "Tu vas dire « je t'aime » à ta pizza. Elle le mérite."],

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Générateur de textes — LE QG</title>
+  <meta name="description" content="Insultes de pote, compliments douteux, surnoms, pseudos, répliques de drague, prédictions et débats absurdes.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Générateur de textes</h1>
+      <p>Insultes de pote, compliments douteux, surnoms, pseudos, répliques de drague, prédictions et débats absurdes.</p>
+    </div>
+    <div class="tool-panel" style="max-width:720px">
+      <div class="btn-row">
+        <label class="field" style="flex:1;min-width:200px"><span>Type de texte</span>
+          <select id="type">
+            <option value="insulte">Insulte de pote</option><option value="compliment">Compliment douteux</option><option value="surnom">Surnom</option><option value="pseudo">Pseudo de gamer</option>
+            <option value="drague">Phrase de drague nulle</option><option value="prediction">Prédiction</option><option value="relance">SMS de relance</option><option value="debat">Débat absurde</option>
+          </select></label>
+        <label class="field" style="flex:1;min-width:200px"><span>Pour (facultatif)</span><input type="text" id="who" maxlength="30" autocomplete="off" placeholder="Prénom du pote"></label>
+      </div>
+      <blockquote class="quote" id="output"></blockquote>
+      <div class="btn-row"><button class="btn" id="new" type="button">Générer</button><button class="btn btn-secondary" id="copy" type="button">Copier</button><button class="btn btn-secondary" id="sound" type="button">Son : activé</button></div>
+      <ul class="history" id="history" aria-label="Derniers textes"></ul>
+    </div>
+  </main>
+  <script type="module" src="js/tools/textes.js"></script>
+</body>
+</html>

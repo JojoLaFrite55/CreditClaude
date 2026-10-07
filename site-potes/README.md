@@ -23,7 +23,7 @@ il ne fonctionne pas en double-cliquant sur `index.html`, il faut passer par un 
 | Kill all the Jules | `jeu.html` + `js/game/` |
 | Memes (galerie + générateur) | `memes.html` |
 | Jeux : Flappy Tête, Tape-Tête, Serpent, Memory, Tête Clicker, Casse-Tête, 2048, Mot-Tête, Puissance 4, Course de têtes, Réflexes | `*.html` + `js/games/` |
-| Outils : Roulette, Soundboard, Affiches, Tier list, Excuses, Équipes, Scores, Dés, Action ou vérité | `outils.html` + `js/tools/` |
+| Outils : Roulette, Soundboard, Affiches (10 modèles), Tier list, Excuses, Textes, Équipes, Scores, Dés, Action ou vérité, Susceptible, Tu préfères, Minuteur | `outils.html` + `js/tools/` |
 
 ## Personnaliser
 

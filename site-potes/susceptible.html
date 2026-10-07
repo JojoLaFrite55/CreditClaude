@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Qui est le plus susceptible de… — LE QG</title>
+  <meta name="description" content="Une question qui fâche, un tirage au sort, et la honte qui va avec.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Qui est le plus susceptible de…</h1>
+      <p>Une question qui fâche, un tirage au sort, et la honte qui va avec.</p>
+    </div>
+    <div class="tool-grid">
+      <div class="tool-panel">
+        <div class="field"><label for="names">Les potes (un par ligne)</label><textarea id="names"></textarea></div>
+        <h2>Classement des élus</h2>
+        <ul class="history" id="counts"></ul>
+        <button class="btn btn-secondary btn-small" id="clear" type="button" style="align-self:flex-start">Remettre à zéro</button>
+      </div>
+      <div class="tool-panel">
+        <blockquote class="quote" id="question"></blockquote>
+        <p class="big-result" id="result">—</p>
+        <div class="btn-row"><button class="btn" id="pick" type="button">Désigner le coupable</button><button class="btn btn-secondary" id="ask" type="button">Autre question</button><button class="btn btn-secondary" id="sound" type="button">Son : activé</button></div>
+        <ul class="history" id="history" aria-label="Derniers verdicts"></ul>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/susceptible.js"></script>
+</body>
+</html>

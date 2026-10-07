@@ -23,6 +23,12 @@ const TEMPLATES = {
   employee: { label: "Mois", extra: "Octobre", name: "Le pote en question" },
   certificate: { label: "Pour avoir…", extra: "avoir dit « j'arrive » depuis 3 heures", name: "Le pote en question" },
   pasdispo: { label: "Message d'absence", extra: "Injoignable jusqu'à nouvel ordre", name: "Le pote en question" },
+  film: { label: "Slogan", extra: "Cet été, personne ne sera à l'heure", name: "Le Retour du Retardataire" },
+  disparu: { label: "Dernière fois vu…", extra: "au moment de payer l'addition", name: "Le pote en question" },
+  election: { label: "Promesse de campagne", extra: "Pizza gratuite tous les vendredis", name: "Le pote en question" },
+  identite: { label: "Profession", extra: "Professionnel de la procrastination", name: "Le pote en question" },
+  avendre: { label: "Prix (en €)", extra: "1", name: "Pote en bon état" },
+  alerte: { label: "Titre de l'info", extra: "Il n'a toujours pas répondu au groupe", name: "Le pote en question" },
 };
 
 function wrapText(text, maxWidth, font) {
@@ -227,6 +233,210 @@ const draws = {
     g.restore();
     single((name || "Anonyme").toUpperCase(), 770, 64, ANTON, "#fff");
     centered(extra || "", 840, '600 34px "Inter", sans-serif', "#ffd6da", W - 140, 1.25);
+  },
+
+  film(image, name, extra) {
+    const bg = g.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, "#04040c");
+    bg.addColorStop(0.55, "#1a0b2e");
+    bg.addColorStop(1, "#4a1a0a");
+    g.fillStyle = bg;
+    g.fillRect(0, 0, W, H);
+    const glow = g.createRadialGradient(W / 2, 470, 20, W / 2, 470, 360);
+    glow.addColorStop(0, "rgba(255,170,60,0.55)");
+    glow.addColorStop(1, "rgba(255,170,60,0)");
+    g.fillStyle = glow;
+    g.fillRect(0, 100, W, 740);
+    g.textAlign = "center";
+    g.fillStyle = "#ffd9a0";
+    g.font = '400 24px "Inter", sans-serif';
+    g.fillText("LE QG FILMS PRÉSENTE", W / 2, 70);
+    face(image, W / 2, 430, 520);
+    g.fillStyle = "rgba(0,0,0,0.0)";
+    single((name || "TITRE").toUpperCase(), 760, 78, ANTON, "#ffd24a", W - 80, 36);
+    centered(extra || "", 810, 'italic 500 28px "Inter", Georgia, serif', "#ffe9c4", W - 140, 1.3);
+    g.fillStyle = "#b8a58a";
+    g.font = '400 20px "Inter", sans-serif';
+    g.fillText("AVEC LES POTES · SORTIE EN SALLES QUAND ILS SERONT PRÊTS", W / 2, 910);
+  },
+  disparu(image, name, extra) {
+    g.fillStyle = "#f6f6f0";
+    g.fillRect(0, 0, W, H);
+    g.fillStyle = "#111";
+    g.fillRect(0, 0, W, 170);
+    g.fillStyle = "#fff";
+    g.textAlign = "center";
+    g.font = '400 100px Anton, Impact, sans-serif';
+    g.fillText("DISPARU", W / 2, 128);
+    g.fillStyle = "#fff";
+    g.fillRect(130, 210, W - 260, 400);
+    g.strokeStyle = "#111";
+    g.lineWidth = 6;
+    g.strokeRect(130, 210, W - 260, 400);
+    g.save();
+    g.beginPath();
+    g.rect(132, 212, W - 264, 396);
+    g.clip();
+    face(image, W / 2, 410, 380, "grayscale(1) contrast(1.15)");
+    g.restore();
+    single((name || "INCONNU").toUpperCase(), 690, 64, ANTON, "#111");
+    g.font = '600 26px "Inter", sans-serif';
+    g.fillStyle = "#444";
+    g.fillText("DERNIÈRE FOIS VU", W / 2, 745);
+    centered(extra || "", 795, '700 36px "Inter", sans-serif', "#111", W - 150, 1.25);
+    g.font = '500 22px "Inter", sans-serif';
+    g.fillStyle = "#666";
+    g.fillText("Si vous l'avez vu, ne le prévenez pas.", W / 2, 910);
+  },
+  election(image, name, extra) {
+    g.fillStyle = "#fff";
+    g.fillRect(0, 0, W, H);
+    g.fillStyle = "#1d4ed8";
+    g.fillRect(0, 0, W, 330);
+    g.fillStyle = "#fff";
+    g.fillRect(0, 330, W, 40);
+    g.fillStyle = "#dc2626";
+    g.fillRect(0, 370, W, 40);
+    g.textAlign = "center";
+    g.fillStyle = "#fff";
+    g.font = '400 64px Anton, Impact, sans-serif';
+    g.fillText("VOTEZ", W / 2, 150);
+    single((name || "").toUpperCase(), 250, 84, ANTON, "#fff", W - 100, 34);
+    g.fillStyle = "#e9eefb";
+    g.fillRect(150, 440, W - 300, 330);
+    g.strokeStyle = "#1d4ed8";
+    g.lineWidth = 8;
+    g.strokeRect(150, 440, W - 300, 330);
+    g.save();
+    g.beginPath();
+    g.rect(152, 442, W - 304, 326);
+    g.clip();
+    face(image, W / 2, 610, 320);
+    g.restore();
+    g.fillStyle = "#1d4ed8";
+    g.font = '400 36px Anton, Impact, sans-serif';
+    g.fillText("MON PROGRAMME", W / 2, 830);
+    centered(extra || "", 880, '700 30px "Inter", sans-serif', "#111", W - 120, 1.2);
+  },
+  identite(image, name, extra) {
+    g.fillStyle = "#e9f1ff";
+    g.fillRect(0, 0, W, H);
+    g.fillStyle = "#2b4a8b";
+    g.fillRect(0, 0, W, 140);
+    g.fillStyle = "#fff";
+    g.textAlign = "center";
+    g.font = '400 54px Anton, Impact, sans-serif';
+    g.fillText("CARTE D'IDENTITÉ DU QG", W / 2, 90);
+    g.fillStyle = "#fff";
+    g.fillRect(60, 200, 280, 360);
+    g.strokeStyle = "#2b4a8b";
+    g.lineWidth = 5;
+    g.strokeRect(60, 200, 280, 360);
+    g.save();
+    g.beginPath();
+    g.rect(62, 202, 276, 356);
+    g.clip();
+    face(image, 200, 380, 340);
+    g.restore();
+    g.textAlign = "left";
+    g.fillStyle = "#2b4a8b";
+    g.font = '600 20px "Inter", sans-serif';
+    const rows = [["NOM", (name || "").toUpperCase()], ["PROFESSION", extra || ""], ["TAILLE", "Assez grand"], ["SIGNE PARTICULIER", "Dit « j'arrive »"], ["NATIONALITÉ", "Du QG"]];
+    let y = 235;
+    for (const [label, value] of rows) {
+      g.fillStyle = "#6a7fb0";
+      g.font = '600 16px "Inter", sans-serif';
+      g.fillText(label, 380, y);
+      let size = 28;
+      g.font = `700 ${size}px "Inter", sans-serif`;
+      while (g.measureText(value).width > W - 410 && size > 14) {
+        size -= 2;
+        g.font = `700 ${size}px "Inter", sans-serif`;
+      }
+      g.fillStyle = "#111";
+      g.fillText(value, 380, y + 32);
+      y += 78;
+    }
+    g.fillStyle = "#cfd9ef";
+    g.fillRect(60, 640, W - 120, 120);
+    g.fillStyle = "#2b4a8b";
+    g.font = '700 28px monospace';
+    const code = `IDQG<<${(name || "X").toUpperCase().replace(/[^A-Z]/g, "<").slice(0, 20).padEnd(20, "<")}`;
+    g.fillText(code, 80, 690);
+    g.fillText("0000000000QG<<<<<<<<<<<<<<<<<<<<<0", 80, 735);
+    g.textAlign = "center";
+    g.fillStyle = "#6a7fb0";
+    g.font = '500 20px "Inter", sans-serif';
+    g.fillText("Document sans aucune valeur légale", W / 2, 880);
+  },
+  avendre(image, name, extra) {
+    g.fillStyle = "#fff59d";
+    g.fillRect(0, 0, W, H);
+    g.textAlign = "center";
+    single("À VENDRE", 190, 150, ANTON, "#c62828", W - 80, 60);
+    g.fillStyle = "#fff";
+    g.fillRect(140, 235, W - 280, 380);
+    g.strokeStyle = "#111";
+    g.lineWidth = 6;
+    g.strokeRect(140, 235, W - 280, 380);
+    g.save();
+    g.beginPath();
+    g.rect(142, 237, W - 284, 376);
+    g.clip();
+    face(image, W / 2, 430, 360);
+    g.restore();
+    single((name || "").toUpperCase(), 695, 60, ANTON, "#111", W - 100, 28);
+    g.fillStyle = "#c62828";
+    g.font = '400 120px Anton, Impact, sans-serif';
+    g.fillText(`${extra || "0"} €`, W / 2, 830);
+    g.fillStyle = "#333";
+    g.font = '600 20px "Inter", sans-serif';
+    g.fillText("Fonctionne sans piles · Non repris ni échangé", W / 2, 900);
+  },
+  alerte(image, name, extra) {
+    g.fillStyle = "#0b1b4d";
+    g.fillRect(0, 0, W, H);
+    g.fillStyle = "#c8102e";
+    g.fillRect(0, 0, W, 90);
+    g.fillStyle = "#fff";
+    g.textAlign = "left";
+    g.font = '400 48px Anton, Impact, sans-serif';
+    g.fillText("ALERTE INFO", 40, 64);
+    g.textAlign = "right";
+    g.font = '600 24px "Inter", sans-serif';
+    g.fillText("EN DIRECT", W - 40, 60);
+    g.fillStyle = "#13265f";
+    g.fillRect(60, 130, W - 120, 470);
+    g.save();
+    g.beginPath();
+    g.rect(60, 130, W - 120, 470);
+    g.clip();
+    face(image, W / 2, 380, 460);
+    g.restore();
+    g.fillStyle = "#ffd400";
+    g.fillRect(0, 640, W, 190);
+    g.textAlign = "center";
+    const lines = wrapText((extra || "").toUpperCase(), W - 100, '400 46px Anton, Impact, sans-serif');
+    g.fillStyle = "#0b1b4d";
+    g.font = '400 46px Anton, Impact, sans-serif';
+    lines.slice(0, 3).forEach((line, index) => g.fillText(line, W / 2, 698 + index * 54));
+    g.fillStyle = "#fff";
+    g.fillRect(0, 850, W, 110);
+    g.fillStyle = "#c8102e";
+    g.fillRect(0, 850, 190, 110);
+    g.fillStyle = "#fff";
+    g.font = '400 36px Anton, sans-serif';
+    g.fillText("LE QG", 95, 918);
+    g.textAlign = "left";
+    g.fillStyle = "#0b1b4d";
+    g.font = '700 28px "Inter", sans-serif';
+    let size = 28;
+    const text = `${name || ""} · édition spéciale`;
+    while (g.measureText(text).width > W - 240 && size > 14) {
+      size -= 2;
+      g.font = `700 ${size}px "Inter", sans-serif`;
+    }
+    g.fillText(text, 215, 915);
   },
 };
 
