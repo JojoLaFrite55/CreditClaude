@@ -71,6 +71,7 @@ h3 {
 }
 
 .announce {
+  position: relative;
   background: var(--ink);
   color: #fff;
   text-align: center;
@@ -542,5 +543,28 @@ h3 {
 .car-egg:focus-visible {
   opacity: 1;
   transform: translateX(-10px);
+  outline: 0;
+}
+
+.egg-67 {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  padding: 4px 6px;
+  color: #fff;
+  font: inherit;
+  font-size: 11px;
+  opacity: 0.08;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.egg-67:hover,
+.egg-67:focus-visible {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.25);
   outline: 0;
 }

@@ -8,7 +8,7 @@ const links = NAV.map(
 ).join("");
 
 const header = `
-<div class="announce">${SITE.announce}</div>
+<div class="announce">${SITE.announce}<button class="egg-67" type="button" aria-label="67">67</button></div>
 <header class="site-header">
   <div class="wrap header-grid">
     <a class="brand" href="index.html" aria-label="${SITE.name} — accueil">${SITE.name}</a>
@@ -70,3 +70,5 @@ document.querySelector(".site-footer .brand").addEventListener("click", () => {
 });
 
 document.querySelector(".car-egg").addEventListener("click", () => import("./voiture.js").then((module) => module.openCar()));
+
+document.querySelector(".egg-67").addEventListener("click", () => import("./soixantesept.js").then((module) => module.open67()));

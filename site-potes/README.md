@@ -47,6 +47,7 @@ Konami code (haut haut bas bas gauche droite gauche droite B A) ou six clics sur
 La chèvre 🐐 en bas à gauche de l'accueil mène à `sacrifice.html` : tuer la chèvre, tracer le pentagramme avec son sang, puis le rituel s'ouvre (`js/sacrifice.js`, rendu dans `js/gore/`, images libres de droits dans `assets/gore/`, crédits dans `assets/gore/CREDITS.md`).
 
 Le petit 🚗 presque invisible dans le pied de page (survole-le) ouvre la vidéo du trajet (`js/voiture.js`).
+Le "67" presque invisible tout à droite de la barre noire en haut (survole-le) ouvre la vidéo du 67 man (`js/soixantesept.js`).
 
 Les sons du sacrifice sont de vrais échantillons CC0 (`assets/sfx/`, crédits dans `assets/sfx/CREDITS.md`).
 
