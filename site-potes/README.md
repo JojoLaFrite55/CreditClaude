@@ -53,4 +53,4 @@ Le 🎤 gris presque invisible tout à gauche des petits symboles du pied de pag
 
 Les sons du sacrifice sont de vrais échantillons CC0 (`assets/sfx/`, crédits dans `assets/sfx/CREDITS.md`).
 
-Le 🚗 du pied de page lance maintenant la vidéo avec une musique techno hardcore générée par le navigateur (bouton pour la couper) et des effets (spectre, lasers, têtes qui rebondissent). Les photos complètes des potes sont dans `assets/photos/`, les têtes détourées dans `assets/heads/`.
+Le 🚗 du pied de page lance maintenant la vidéo avec le son « Stadium Rave » (`assets/secret/stadium-rave.mp3`, en boucle, bouton pour le couper) et des effets (spectre, lasers, têtes qui rebondissent). Les photos complètes des potes sont dans `assets/photos/`, les têtes détourées dans `assets/heads/`.
