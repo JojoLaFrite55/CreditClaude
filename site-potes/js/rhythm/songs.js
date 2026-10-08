@@ -12,6 +12,7 @@ export const SONGS = [
   { id: "egypte", title: "Propriété en Égypte", sub: "I bought a property in Egypt", mp4: secret("egypte.mp4"), webm: secret("egypte.webm"), duration: "0:07", color: "#d4a017" },
   { id: "bonbonnes", title: "Les Bonbonnes", sub: "Gymnastique entre les bouteilles de gaz", mp4: secret("bonbonnes.mp4"), webm: secret("bonbonnes.webm"), duration: "0:13", color: "#e85d9b" },
   { id: "circuit", title: "Le Circuit", sub: "Course de karts, version chaos", mp4: secret("circuit.mp4"), webm: secret("circuit.webm"), duration: "0:27", color: "#4a7bd0" },
+  { id: "pain", title: "Le Casse-Croûte", sub: "Mâcher en rythme", mp4: secret("pain.mp4"), webm: secret("pain.webm"), duration: "0:14", color: "#c9792b" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 

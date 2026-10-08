@@ -33,6 +33,10 @@ const PHOTOS = [
   "assets/heads/tete-16.png",
   "assets/heads/tete-17.png",
   "assets/heads/tete-18.png",
+  "assets/heads/tete-19.png",
+  "assets/heads/tete-20.png",
+  "assets/heads/tete-21.png",
+  "assets/heads/tete-22.png",
 ];
 
 export const MEME_EXTRAS = ["assets/memes/soixante-sept.png"];
@@ -59,6 +63,10 @@ export const BACKGROUNDS = [
   { id: "photo-cri", label: "Photo : le cri", a: "#555", b: "#ddd", image: "assets/photos/cri.jpg", focus: 0.5 },
   { id: "photo-webcam", label: "Photo : webcam", a: "#888", b: "#eee", image: "assets/photos/webcam.jpg", focus: 0.3 },
   { id: "photo-moustache", label: "Photo : moustache", a: "#7a4a3a", b: "#d9a08c", image: "assets/photos/moustache.jpg", focus: 0.3 },
+  { id: "photo-cri-noir", label: "Photo : cri dans le noir", a: "#101810", b: "#dfeedd", image: "assets/photos/cri-noir.jpg", focus: 0.4 },
+  { id: "photo-lunettes", label: "Photo : lunettes de nuit", a: "#0b1a3a", b: "#4cc9e0", image: "assets/photos/lunettes.jpg", focus: 0.5 },
+  { id: "photo-concombres", label: "Photo : concombres", a: "#4d6b2a", b: "#b9d68b", image: "assets/photos/concombres.jpg", focus: 0.4 },
+  { id: "photo-oasis", label: "Photo : Oasis", a: "#c9792b", b: "#f3d9a8", image: "assets/photos/oasis.jpg", focus: 0.5 },
 ];
 
 export const MEMES = [
@@ -221,7 +229,7 @@ export const GAMES = [
   {
     slug: "rythme",
     title: "Rythme des potes",
-    text: "Des flèches en rythme avec les vidéos du QG : 8 morceaux, 4 difficultés.",
+    text: "Des flèches en rythme avec les vidéos du QG : 9 morceaux, 4 difficultés.",
     href: "rythme.html",
     image: "assets/previews/rythme.jpg",
     badge: "Nouveau",
