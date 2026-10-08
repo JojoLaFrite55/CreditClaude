@@ -82,3 +82,5 @@ Trois morceaux de plus dans le jeu de rythme : Le Visage Étiré, Un Homme sur l
 « Le Filtre Muet » est une vidéo sans piste son : ses notes suivent une grille régulière.
 
 Un morceau de plus dans le jeu de rythme : Les Grands Champions.
+
+Un morceau de plus dans le jeu de rythme : Monténégro (vidéo recadrée sur le visage et les épaules).
