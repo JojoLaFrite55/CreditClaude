@@ -519,3 +519,58 @@ h3 {
   90% { transform: rotate(-12deg); }
   95% { transform: rotate(10deg); }
 }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.car-egg {
+  background: none;
+  border: 0;
+  padding: 4px;
+  font-size: 15px;
+  line-height: 1;
+  opacity: 0.1;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+.car-egg:hover,
+.car-egg:focus-visible {
+  opacity: 1;
+  transform: translateX(-10px);
+  outline: 0;
+}
+
+.car-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.92);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.car-modal video {
+  max-width: 100%;
+  max-height: calc(100svh - 32px);
+  background: #000;
+}
+
+.car-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 1;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
