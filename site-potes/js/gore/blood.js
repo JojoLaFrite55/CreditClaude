@@ -169,3 +169,69 @@ export function bloodStrokeLayers(layers, from, to, width) {
     drawBlob(layers.dark, to[0] + Math.cos(a) * width * 1.1, to[1] + Math.sin(a) * width * 1.1, width * (0.18 + Math.random() * 0.2), (Math.random() * 1e6) | 0, { wet: 0.8 });
   }
 }
+
+let bloodPattern = null;
+
+export function setBloodTexture(img) {
+  const c = document.createElement("canvas");
+  c.width = 256;
+  c.height = 256;
+  const g = c.getContext("2d");
+  const sx = img.width * 0.33;
+  const sy = img.height * 0.33;
+  const sw = img.width * 0.34;
+  const sh = img.height * 0.34;
+  g.drawImage(img, sx, sy, sw, sh, 0, 0, 256, 256);
+  g.globalCompositeOperation = "destination-over";
+  g.fillStyle = "#5e0707";
+  g.fillRect(0, 0, 256, 256);
+  bloodPattern = g.createPattern(c, "repeat");
+}
+
+export function bloodPaint(layers, from, to, { start = false } = {}) {
+  const dist = Math.hypot(to[0] - from[0], to[1] - from[1]);
+  const width = Math.max(11, Math.min(26, 27 - dist * 0.5));
+  const line = (g, color, w, dx = 0, dy = 0, alpha = 1) => {
+    g.save();
+    g.globalAlpha = alpha;
+    g.lineCap = "round";
+    g.lineJoin = "round";
+    g.strokeStyle = color;
+    g.lineWidth = w;
+    g.beginPath();
+    g.moveTo(from[0] + dx, from[1] + dy);
+    g.lineTo(to[0] + dx, to[1] + dy);
+    g.stroke();
+    g.restore();
+  };
+  const nx = -(to[1] - from[1]) / (dist || 1);
+  const ny = (to[0] - from[0]) / (dist || 1);
+  line(layers.dark, "#1c0101", width + 9);
+  line(layers.mid, "#560404", width + 2, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2);
+  line(layers.core, bloodPattern || "#750808", width * 0.84);
+  line(layers.core, "#a30d0d", width * 0.5, 0, 0, 0.4);
+  for (let i = -2; i <= 2; i++) {
+    const off = i * width * 0.16;
+    line(layers.core, i % 2 ? "#2a0202" : "#9a0f0f", Math.max(1, width * 0.06), nx * off, ny * off, 0.3);
+  }
+  line(layers.hi, "rgba(255,150,140,0.2)", Math.max(2, width * 0.2), -width * 0.2, -width * 0.22);
+  if (Math.random() < 0.25) line(layers.hi, "rgba(255,225,215,0.4)", Math.max(1.5, width * 0.08), -width * 0.24, -width * 0.26);
+  if (Math.random() < 0.3) {
+    const side = Math.random() < 0.5 ? -1 : 1;
+    const bx = to[0] + nx * side * width * 0.35;
+    const by = to[1] + ny * side * width * 0.35;
+    const r = width * (0.3 + Math.random() * 0.35);
+    drawBlob(layers.dark, bx, by, r + 3, (Math.random() * 1e6) | 0, { wet: 0 });
+    drawBlob(layers.mid, bx, by, r, (Math.random() * 1e6) | 0, { wet: 0.5 });
+  }
+  if (start) {
+    drawBlob(layers.dark, to[0], to[1], width * 1.0, (Math.random() * 1e6) | 0, { wet: 0.9 });
+    drawBlob(layers.mid, to[0], to[1], width * 0.7, (Math.random() * 1e6) | 0, { wet: 0.7 });
+  }
+  const drops = dist > 14 ? 1 + Math.floor(Math.random() * 3) : Math.random() < 0.05 ? 1 : 0;
+  for (let i = 0; i < drops; i++) {
+    const a = Math.atan2(to[1] - from[1], to[0] - from[0]) + (Math.random() - 0.5) * 1.8;
+    const d = width * (0.9 + Math.random() * 2.6);
+    drawBlob(layers.dark, to[0] + Math.cos(a) * d, to[1] + Math.sin(a) * d, 1.2 + Math.random() * 3.2, (Math.random() * 1e6) | 0, { wet: 0.7 });
+  }
+}

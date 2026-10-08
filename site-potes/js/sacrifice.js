@@ -1,5 +1,5 @@
 import { createDrone, openHell } from "./enfer.js";
-import { bloodStrokeLayers, drawBlob, streak } from "./gore/blood.js";
+import { bloodPaint, drawBlob, setBloodTexture, streak } from "./gore/blood.js";
 import { rand } from "./gore/noise.js";
 
 const $ = (id) => document.getElementById(id);
@@ -49,12 +49,12 @@ const verts = Array.from({ length: 5 }, (_, k) => {
 });
 const starOrder = [0, 2, 4, 1, 3, 0];
 const segments = starOrder.slice(0, -1).map((v, i) => [verts[v], verts[starOrder[i + 1]]]);
-const samples = [];
+const pentPoints = [];
 for (let i = 0; i < 180; i++) {
   const a = (i / 180) * Math.PI * 2;
-  samples.push({ x: CX + Math.cos(a) * R, y: CY + Math.sin(a) * R, on: false });
+  pentPoints.push({ x: CX + Math.cos(a) * R, y: CY + Math.sin(a) * R, on: false });
 }
-for (const [[ax, ay], [bx, by]] of segments) for (let i = 0; i <= 60; i++) samples.push({ x: ax + ((bx - ax) * i) / 60, y: ay + ((by - ay) * i) / 60, on: false });
+for (const [[ax, ay], [bx, by]] of segments) for (let i = 0; i <= 60; i++) pentPoints.push({ x: ax + ((bx - ax) * i) / 60, y: ay + ((by - ay) * i) / 60, on: false });
 const pathLength = Math.PI * 2 * R + segments.reduce((sum, [[ax, ay], [bx, by]]) => sum + Math.hypot(bx - ax, by - ay), 0);
 
 function resizeFx() {
@@ -78,6 +78,106 @@ function noiseBuffer(ctx) {
   return buffer;
 }
 
+const SFX_BASE = new URL("../assets/sfx/", import.meta.url).href;
+const SFX_NAMES = ["stab2", "stab4", "stab6", "stab8", "break1", "break3", "break5", "break7", "break9", "break_deep", "cut1", "cut2", "pull1", "pull2", "pull3", "squish1", "squish2", "squish3", "squish4", "squish5", "squish6", "splat_impact", "mud1", "mud3", "mud4", "mud5", "mud7", "mud9", "mud12", "mud14", "mud17", "mud19", "mud22", "splat5", "splatter_a", "splatter_b", "rip_a", "rip_b", "rip_c", "baa", "scream_bird", "voice1", "voice2", "voice3", "growl1", "horror_scream", "ghost_shriek", "laugh", "heart_slow", "heart_fast", "chant3", "chant8", "chant15", "demon_growl_2", "demon_snarl_1", "demon_dies"];
+const samples = {};
+const rr = (list) => list[Math.floor(Math.random() * list.length)];
+const spurtSet = ["squish1", "squish2", "squish3", "squish4", "squish5", "squish6", "mud1", "mud3", "mud5", "mud7", "mud9", "mud17", "mud19", "splat_impact"];
+const squelchSet = ["mud1", "mud3", "mud4", "mud5", "mud7", "mud9", "mud12", "mud14", "mud19", "mud22", "squish1", "squish3", "squish5"];
+
+let bus = null;
+let wetBus = null;
+let shaper = null;
+
+function setupBus(ctx) {
+  const comp = ctx.createDynamicsCompressor();
+  comp.threshold.value = -14;
+  comp.ratio.value = 6;
+  comp.connect(ctx.destination);
+  bus = ctx.createGain();
+  bus.gain.value = 1;
+  bus.connect(comp);
+  const conv = ctx.createConvolver();
+  const len = ctx.sampleRate * 2.4;
+  const ir = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let c = 0; c < 2; c++) {
+    const d = ir.getChannelData(c);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+  }
+  conv.buffer = ir;
+  wetBus = ctx.createGain();
+  wetBus.gain.value = 0.35;
+  conv.connect(wetBus).connect(comp);
+  bus.connect(conv);
+  shaper = ctx.createWaveShaper();
+  const curve = new Float32Array(1024);
+  for (let i = 0; i < 1024; i++) {
+    const x = (i / 512) - 1;
+    curve[i] = Math.tanh(x * 5);
+  }
+  shaper.curve = curve;
+  shaper.oversample = "2x";
+}
+
+async function loadSamples(ctx) {
+  await Promise.all(
+    SFX_NAMES.map(async (name) => {
+      try {
+        const res = await fetch(`${SFX_BASE}${name}.mp3`);
+        samples[name] = await ctx.decodeAudioData(await res.arrayBuffer());
+      } catch {
+        samples[name] = null;
+      }
+    }),
+  );
+}
+
+function play(name, { vol = 1, rate = 1, delay = 0, dist = 0, lp = 0, hp = 0, stop = 0, loop = false } = {}) {
+  const ctx = state.ctx;
+  const buffer = samples[name];
+  if (!ctx || !buffer || !bus) return null;
+  const src = ctx.createBufferSource();
+  src.buffer = buffer;
+  src.playbackRate.value = rate;
+  src.loop = loop;
+  let node = src;
+  if (hp) {
+    const f = ctx.createBiquadFilter();
+    f.type = "highpass";
+    f.frequency.value = hp;
+    node.connect(f);
+    node = f;
+  }
+  if (lp) {
+    const f = ctx.createBiquadFilter();
+    f.type = "lowpass";
+    f.frequency.value = lp;
+    node.connect(f);
+    node = f;
+  }
+  if (dist) {
+    const pre = ctx.createGain();
+    pre.gain.value = dist;
+    node.connect(pre);
+    pre.connect(shaper);
+    const post = ctx.createGain();
+    post.gain.value = 0.55 / Math.max(1, dist * 0.6);
+    shaper.connect(post);
+    node = post;
+  }
+  const gain = ctx.createGain();
+  const t = ctx.currentTime + delay;
+  gain.gain.setValueAtTime(vol, t);
+  if (stop) {
+    gain.gain.setValueAtTime(vol, t + stop * 0.7);
+    gain.gain.linearRampToValueAtTime(0.0001, t + stop);
+  }
+  node.connect(gain).connect(bus);
+  src.start(t);
+  if (stop) src.stop(t + stop + 0.05);
+  return src;
+}
+
 const audio = {
   noise(duration, volume, type, freq, q = 1) {
     const ctx = state.ctx;
@@ -91,7 +191,7 @@ const audio = {
     const gain = ctx.createGain();
     gain.gain.setValueAtTime(volume, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
-    source.connect(filter).connect(gain).connect(ctx.destination);
+    source.connect(filter).connect(gain).connect(bus || ctx.destination);
     source.start();
     source.stop(ctx.currentTime + duration + 0.05);
   },
@@ -106,64 +206,75 @@ const audio = {
     const gain = ctx.createGain();
     gain.gain.setValueAtTime(volume, t);
     gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
-    osc.connect(gain).connect(ctx.destination);
+    osc.connect(gain).connect(bus || ctx.destination);
     osc.start(t);
     osc.stop(t + duration + 0.05);
   },
   swoosh() {
-    this.noise(0.18, 0.25, "bandpass", 1800, 1.4);
+    this.noise(0.2, 0.28, "bandpass", 1900, 1.2);
   },
   stab() {
-    this.noise(0.14, 0.85, "bandpass", 900, 2);
-    this.noise(0.3, 0.6, "lowpass", 380);
-    this.tone("sine", 120, 36, 0.28, 0.9);
-    this.noise(0.5, 0.18, "highpass", 2600, 0.8);
+    play(rr(["stab2", "stab4", "stab6", "stab8"]), { vol: 1.2, rate: 0.92 + Math.random() * 0.16 });
+    play(rr(["break1", "break3", "break5", "break7", "break9"]), { vol: 0.9, rate: 0.9 + Math.random() * 0.2, delay: 0.015 });
+    play(rr(["cut1", "cut2"]), { vol: 0.6, rate: 1.05, delay: 0.03, stop: 0.9 });
+    play("break_deep", { vol: 0.7, rate: 0.9, delay: 0.02 });
+    this.tone("sine", 110, 34, 0.3, 0.55);
+    this.spurt();
+  },
+  spurt() {
+    const n = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < n; i++) play(rr(spurtSet), { vol: 0.7 + Math.random() * 0.3, rate: 0.82 + Math.random() * 0.36, delay: 0.05 + i * (0.06 + Math.random() * 0.1) });
+    play("splat5", { vol: 0.6, rate: 1.1, delay: 0.1, hp: 200 });
   },
   pull() {
-    this.noise(0.22, 0.4, "bandpass", 500, 3);
+    play(rr(["pull1", "pull2", "pull3"]), { vol: 1, rate: 0.85 + Math.random() * 0.2 });
+    play(rr(spurtSet), { vol: 0.7, rate: 0.8, delay: 0.08 });
   },
   bleat(step) {
-    const ctx = state.ctx;
-    if (!ctx) return;
-    const t = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    osc.type = "sawtooth";
-    const base = 520 - step * 38;
-    osc.frequency.setValueAtTime(base, t);
-    osc.frequency.linearRampToValueAtTime(base * 0.62, t + 0.6);
-    const lfo = ctx.createOscillator();
-    lfo.frequency.value = 38;
-    const depth = ctx.createGain();
-    depth.gain.value = 55;
-    lfo.connect(depth).connect(osc.frequency);
-    const filter = ctx.createBiquadFilter();
-    filter.type = "bandpass";
-    filter.frequency.value = 950;
-    filter.Q.value = 4;
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(0.4, t + 0.05);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.65);
-    osc.connect(filter).connect(gain).connect(ctx.destination);
-    osc.start(t);
-    lfo.start(t);
-    osc.stop(t + 0.7);
-    lfo.stop(t + 0.7);
+    const low = Math.max(0.4, 0.74 - step * 0.045);
+    play("baa", { vol: 1.1, rate: low, dist: 1.4, lp: 3600 });
+    play("baa", { vol: 0.7, rate: low * 1.22, dist: 2.2, delay: 0.1 + Math.random() * 0.08, lp: 3000 });
+    if (step >= 3) play(rr(["voice1", "voice2"]), { vol: 0.8, rate: 0.55 + Math.random() * 0.1, dist: 1.8, delay: 0.25 });
+    if (step >= 5) play("scream_bird", { vol: 0.55, rate: 0.5 + Math.random() * 0.1, dist: 1.5, delay: 0.12 });
+    if (step >= 8) {
+      play("baa", { vol: 0.8, rate: 0.42, dist: 3, delay: 0.4, lp: 2600 });
+      play("voice3", { vol: 0.7, rate: 0.5, dist: 1.4, delay: 0.5, lp: 2800 });
+    }
+  },
+  dying() {
+    play("baa", { vol: 0.8, rate: 0.36, dist: 2.4, lp: 2200 });
+    play("rip_b", { vol: 0.7, rate: 0.6, delay: 0.2, lp: 1800, stop: 3.2 });
+    play("growl1", { vol: 0.5, rate: 0.55, delay: 0.6, lp: 1500, stop: 2.4 });
   },
   thud() {
-    this.noise(0.4, 0.9, "lowpass", 300);
-    this.tone("sine", 90, 28, 0.5, 1);
+    play("break_deep", { vol: 1.2, rate: 0.7 });
+    play("splat5", { vol: 1, rate: 0.7, delay: 0.04 });
+    play("splatter_a", { vol: 0.8, rate: 0.9, delay: 0.1, stop: 2.6 });
+    this.noise(0.4, 0.8, "lowpass", 300);
+    this.tone("sine", 90, 28, 0.5, 0.9);
   },
-  squelch() {
-    this.noise(0.09, 0.12, "bandpass", 700 + Math.random() * 500, 3);
+  squelch(speed = 8) {
+    const vol = Math.min(1, 0.35 + speed * 0.05);
+    play(rr(squelchSet), { vol, rate: 0.85 + Math.random() * 0.35 });
+    if (speed > 14 && Math.random() < 0.5) play(rr(squelchSet), { vol: vol * 0.7, rate: 0.7 + Math.random() * 0.3, delay: 0.05 });
   },
   boom() {
     this.tone("sine", 70, 22, 2.2, 1);
     this.noise(1.8, 0.8, "lowpass", 260);
+    play("break_deep", { vol: 1.2, rate: 0.5 });
   },
   shriek() {
-    for (const [from, to, shift] of [[260, 2600, 1], [277, 2750, 1.04], [130, 1500, 1.5]]) this.tone("sawtooth", from * shift, to * shift, 2.6, 0.09);
-    this.noise(2.4, 0.18, "highpass", 3200, 0.7);
+    play("horror_scream", { vol: 0.9, rate: 0.95 });
+    play("ghost_shriek", { vol: 0.55, rate: 1 });
+    play("scream_bird", { vol: 0.8, rate: 0.7, dist: 1.6, delay: 0.3 });
+    play("demon_snarl_1", { vol: 0.8, rate: 0.7, delay: 0.6 });
+    play("chant8", { vol: 0.6, rate: 0.8, delay: 0.4, stop: 3.2 });
+    play("demon_growl_2", { vol: 1, rate: 0.6, delay: 1.2 });
+    this.tone("sawtooth", 130, 1500, 2.6, 0.05);
+  },
+  laugh() {
+    play("laugh", { vol: 0.9, rate: 0.75, dist: 1.4 });
+    play("demon_dies", { vol: 0.7, rate: 0.8, delay: 0.5, stop: 3.5 });
   },
 };
 
@@ -527,7 +638,8 @@ function startCollapse() {
   state.stage = "collapse";
   state.collapseT = 0;
   audio.bleat(8);
-  setTimeout(() => audio.thud(), 900);
+  setTimeout(() => audio.dying(), 500);
+  setTimeout(() => audio.thud(), 1300);
 }
 
 function startCut() {
@@ -612,6 +724,20 @@ function buildOverhead() {
   }
 }
 
+let heartTimer = 0;
+function startHeart() {
+  clearTimeout(heartTimer);
+  const beat = () => {
+    if (state.stage !== "draw" && state.stage !== "finale") return;
+    const progress = state.filled / samples_count();
+    if (progress > 0.45) play("heart_fast", { vol: 0.8 + progress * 0.4, rate: 0.95 + progress * 0.3 });
+    else play("heart_slow", { vol: 0.7 + progress, rate: 1 });
+    heartTimer = setTimeout(beat, 1500 - progress * 800);
+  };
+  beat();
+}
+const samples_count = () => pentPoints.length;
+
 function startOverhead() {
   buildOverhead();
   state.stage = "draw";
@@ -620,6 +746,7 @@ function startOverhead() {
   bloodBar.style.width = "100%";
   hint.textContent = "Il reste son sang. Trace le pentagramme sans t'arrêter.";
   state.fadeDir = -1;
+  startHeart();
 }
 
 function lightOverlay(g, candles, t, strength) {
@@ -835,7 +962,7 @@ const eyes = Array.from({ length: 16 }, (_, i) => {
 function drawOverhead(g, t) {
   g.drawImage(assets.bgOver, 0, 0);
   g.drawImage(assets.overBlood, 0, 0);
-  const progress = state.filled / samples.length;
+  const progress = state.filled / pentPoints.length;
   const breathe = 0.55 + Math.sin(t * 2.2) * 0.25;
   g.drawImage(assets.guide, 0, 0);
   g.save();
@@ -854,9 +981,10 @@ function drawOverhead(g, t) {
   g.drawImage(assets.paintMid, 0, 0);
   g.drawImage(assets.paintCore, 0, 0);
   g.drawImage(assets.paintHi, 0, 0);
+  const fin = state.stage === "finale" ? state.finaleT : 0;
   g.save();
   g.globalCompositeOperation = "lighter";
-  g.globalAlpha = Math.min(1, progress * 0.45 + (state.stage === "finale" ? 0.7 + Math.sin(t * 24) * 0.2 : 0));
+  g.globalAlpha = state.stage === "finale" ? Math.min(1, 0.55 + fin * 0.5 + Math.sin(t * 24) * 0.15) : Math.min(0.1, progress * 0.12);
   g.drawImage(assets.paintGlow, 0, 0);
   g.restore();
   drawGoatOverhead(g);
@@ -873,7 +1001,6 @@ function drawOverhead(g, t) {
   g.fillRect(-30, -assets.tipY, 80, assets.tipY);
   g.drawImage(assets.daggerBloody, -assets.tipX, -assets.tipY);
   g.restore();
-  const fin = state.stage === "finale" ? state.finaleT : 0;
   for (const [i, [x, y]] of verts.entries()) drawCandleTop(g, x, y, t, i + 3, 1 + fin * 0.9);
   const lights = verts.map(([x, y]) => ({ x, y, r: 280 + fin * 200 }));
   lights.push({ x: CX, y: CY, r: 160 + fin * 260 });
@@ -1056,11 +1183,13 @@ async function startScene() {
   state.drone.level(0.4);
   state.ctx = state.drone.ctx;
   state.noise = noiseBuffer(state.ctx);
+  setupBus(state.ctx);
   if (state.ctx.state === "suspended") state.ctx.resume();
   gate.classList.add("hidden");
   state.stage = "loading";
   hint.textContent = "Tes yeux s'habituent à l'obscurité…";
-  await buildAssets();
+  await Promise.all([buildAssets(), loadSamples(state.ctx)]);
+  setBloodTexture(assets.splat17);
   state.stage = "kill";
   hint.textContent = `Elle t'attend sur l'autel. Frappe-la. (0/${HITS_NEEDED})`;
   bloodBar.style.width = "0%";
@@ -1075,7 +1204,7 @@ stage.addEventListener("pointerdown", (event) => {
     stage.setPointerCapture(event.pointerId);
     state.drawing = true;
     state.last = [x, y];
-    stroke(state.last, state.last);
+    stroke(state.last, state.last, true);
   }
 });
 stage.addEventListener("pointermove", (event) => {
@@ -1098,7 +1227,7 @@ function distanceToSegment(px, py, ax, ay, bx, by) {
   return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
 }
 
-function stroke(from, to) {
+function stroke(from, to, start = false) {
   const cost = Math.hypot(to[0] - from[0], to[1] - from[1]) / (pathLength * 4.5);
   state.reserve -= cost;
   if (state.reserve <= 0) {
@@ -1106,9 +1235,10 @@ function stroke(from, to) {
     hint.textContent = "Le sang ruisselle encore. Continue.";
   }
   bloodBar.style.width = `${state.reserve * 100}%`;
-  const width = 15 + Math.random() * 3;
+  const dist = Math.hypot(to[0] - from[0], to[1] - from[1]);
+  const width = Math.max(11, Math.min(26, 27 - dist * 0.5));
   if (!assets.layers) assets.layers = { dark: assets.paint.getContext("2d"), mid: assets.paintMid.getContext("2d"), core: assets.paintCore.getContext("2d"), hi: assets.paintHi.getContext("2d") };
-  bloodStrokeLayers(assets.layers, from, to, width);
+  bloodPaint(assets.layers, from, to, { start });
   const pg = assets.paintGlow.getContext("2d");
   pg.strokeStyle = "rgba(255,40,20,0.9)";
   pg.lineWidth = width * 0.8;
@@ -1120,7 +1250,7 @@ function stroke(from, to) {
   pg.lineTo(to[0], to[1]);
   pg.stroke();
   let newly = 0;
-  for (const s of samples) {
+  for (const s of pentPoints) {
     if (s.on) continue;
     if (distanceToSegment(s.x, s.y, from[0], from[1], to[0], to[1]) < 24) {
       s.on = true;
@@ -1128,10 +1258,10 @@ function stroke(from, to) {
     }
   }
   state.filled += newly;
-  const ratio = state.filled / samples.length;
+  const ratio = state.filled / pentPoints.length;
   progressBar.style.width = `${Math.round(ratio * 100)}%`;
-  if (performance.now() - state.squelchAt > 140) {
-    audio.squelch();
+  if (performance.now() - state.squelchAt > 120 && (dist > 3 || start)) {
+    audio.squelch(dist);
     state.squelchAt = performance.now();
   }
   if (ratio >= 0.95 && state.stage === "draw") finale();
@@ -1172,6 +1302,7 @@ function finale() {
       burstFx(Math.random() * innerWidth, Math.random() * innerHeight * 0.6, 40, 1.6);
     }, 400 + i * 900);
   });
+  setTimeout(() => audio.laugh(), 3600);
   setTimeout(() => flashHead(170), 1500);
   setTimeout(() => flashHead(120), 2000);
   setTimeout(() => flashHead(260), 3300);
@@ -1183,6 +1314,7 @@ function finale() {
   }, 4300);
   setTimeout(() => {
     clearInterval(spawnDrips);
+    clearTimeout(heartTimer);
     state.drone.stop();
     scene.classList.add("hidden");
     finaleText.textContent = "";
