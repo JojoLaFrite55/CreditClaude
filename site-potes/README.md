@@ -70,3 +70,5 @@ Encore quatre têtes détourées (`tete-19` à `tete-22`, dont les trois potes a
 Quatre morceaux de plus dans le jeu de rythme (Le Manège, Disco Flash, Disco Couloir, Le Grand Disco), la tête `tete-23` et la photo `chemise-rose` (fond photo des memes).
 
 Cinq morceaux de plus dans le jeu de rythme : Le Café, Fond Turquoise, Les Backup Dancers, Danse à Trois et Le Matelas.
+
+Quatre morceaux de plus dans le jeu de rythme : Rendez-vous Tour Eiffel, Le Biscuit, Les Deux Visages et L'Aquarium.

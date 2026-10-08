@@ -22,6 +22,10 @@ export const SONGS = [
   { id: "backup", title: "Les Backup Dancers", sub: "Une équipe derrière toi", mp4: secret("backup.mp4"), webm: secret("backup.webm"), duration: "0:11", color: "#a64ca6" },
   { id: "trois", title: "Danse à Trois", sub: "Deux invités surprise dans le salon", mp4: secret("trois.mp4"), webm: secret("trois.webm"), duration: "0:20", color: "#5d6d7e" },
   { id: "matelas", title: "Le Matelas", sub: "Danse sur le lit", mp4: secret("matelas.mp4"), webm: secret("matelas.webm"), duration: "0:14", color: "#b565a7" },
+  { id: "eiffel", title: "Rendez-vous Tour Eiffel", sub: "Un chanteur en uniforme devant la tour", mp4: secret("eiffel.mp4"), webm: secret("eiffel.webm"), duration: "0:33", color: "#6c7a89" },
+  { id: "biscuit", title: "Le Biscuit", sub: "Un paquet de biscuits qui sourit", mp4: secret("biscuit.mp4"), webm: secret("biscuit.webm"), duration: "0:12", color: "#d4a05a" },
+  { id: "deux-visages", title: "Les Deux Visages", sub: "Gentil d'un côté, diable de l'autre", mp4: secret("deux-visages.mp4"), webm: secret("deux-visages.webm"), duration: "0:25", color: "#e25822" },
+  { id: "aquarium", title: "L'Aquarium", sub: "Ça va Mathis ? Court mais intense", mp4: secret("aquarium.mp4"), webm: secret("aquarium.webm"), duration: "0:05", color: "#2e86c1" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 
