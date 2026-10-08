@@ -26,6 +26,10 @@ export const SONGS = [
   { id: "biscuit", title: "Le Biscuit", sub: "Un paquet de biscuits qui sourit", mp4: secret("biscuit.mp4"), webm: secret("biscuit.webm"), duration: "0:12", color: "#d4a05a" },
   { id: "deux-visages", title: "Les Deux Visages", sub: "Gentil d'un côté, diable de l'autre", mp4: secret("deux-visages.mp4"), webm: secret("deux-visages.webm"), duration: "0:25", color: "#e25822" },
   { id: "aquarium", title: "L'Aquarium", sub: "Ça va Mathis ? Court mais intense", mp4: secret("aquarium.mp4"), webm: secret("aquarium.webm"), duration: "0:05", color: "#2e86c1" },
+  { id: "marche-noel", title: "Marché de Noël", sub: "Une balade de nuit entre les stands", mp4: secret("marche-noel.mp4"), webm: secret("marche-noel.webm"), duration: "0:11", color: "#c0392b" },
+  { id: "koda", title: "Le Petit-Déj de Koda", sub: "L'ourson et son bol de céréales", mp4: secret("koda.mp4"), webm: secret("koda.webm"), duration: "0:54", color: "#a0522d" },
+  { id: "spaghetti", title: "Spaghetti et Disco", sub: "Des grimaces, des pâtes, du mouvement", mp4: secret("spaghetti.mp4"), webm: secret("spaghetti.webm"), duration: "0:16", color: "#d4a017" },
+  { id: "attends", title: "Attends !", sub: "Cinq secondes de chaos", mp4: secret("attends.mp4"), webm: secret("attends.webm"), duration: "0:05", color: "#7f8c8d" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 

@@ -72,3 +72,5 @@ Quatre morceaux de plus dans le jeu de rythme (Le Manège, Disco Flash, Disco Co
 Cinq morceaux de plus dans le jeu de rythme : Le Café, Fond Turquoise, Les Backup Dancers, Danse à Trois et Le Matelas.
 
 Quatre morceaux de plus dans le jeu de rythme : Rendez-vous Tour Eiffel, Le Biscuit, Les Deux Visages et L'Aquarium.
+
+Quatre morceaux de plus dans le jeu de rythme : Marché de Noël, Le Petit-Déj de Koda, Spaghetti et Disco et Attends !
