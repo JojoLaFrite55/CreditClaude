@@ -39,6 +39,7 @@ export const SONGS = [
   { id: "lune", title: "Un Homme sur la Lune", sub: "Astronaute, la Terre en fond", mp4: secret("lune.mp4"), webm: secret("lune.webm"), duration: "0:15", color: "#2c3e50" },
   { id: "kirby", title: "Le Cri de Kirby", sub: "Bouche grande ouverte, Kirby en coin", mp4: secret("kirby.mp4"), webm: secret("kirby.webm"), duration: "0:15", color: "#ff7eb6" },
   { id: "filtre-muet", title: "Le Filtre Muet", sub: "Aucun son : tape en rythme à l'instinct", mp4: secret("filtre-muet.mp4"), webm: secret("filtre-muet.webm"), duration: "0:09", color: "#7f8fa6" },
+  { id: "champions", title: "Les Grands Champions", sub: "L'hymne et un visage étiré", mp4: secret("champions.mp4"), webm: secret("champions.webm"), duration: "0:15", color: "#1e3a8a" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 

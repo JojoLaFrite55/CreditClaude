@@ -80,3 +80,5 @@ Cinq morceaux de plus dans le jeu de rythme : La Dédicace, C'est Jason, Noooon 
 Trois morceaux de plus dans le jeu de rythme : Le Visage Étiré, Un Homme sur la Lune et Le Cri de Kirby.
 
 « Le Filtre Muet » est une vidéo sans piste son : ses notes suivent une grille régulière.
+
+Un morceau de plus dans le jeu de rythme : Les Grands Champions.
