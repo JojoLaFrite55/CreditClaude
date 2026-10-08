@@ -1,0 +1,186 @@
+.mic {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 6, 16, 0.94);
+  animation: mic-in 0.25s ease;
+  color: #fff;
+}
+
+.mic [hidden] {
+  display: none !important;
+}
+
+.mic-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(94vw, 440px);
+  height: min(96vh, 900px);
+  padding: 10px;
+}
+
+.mic-video {
+  position: relative;
+  flex: 0 0 auto;
+  height: 36vh;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mic-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.mic-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.mic-play button,
+.mic-end button {
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 34px;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+}
+
+.mic-count {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 96px;
+  font-weight: 900;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+.mic-stage {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #14111f;
+  touch-action: none;
+}
+
+.mic-stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.mic-hud {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.mic-end {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  background: rgba(10, 8, 20, 0.88);
+}
+
+.mic-end.is-on {
+  display: flex;
+}
+
+.mic-end .rank {
+  font-size: 84px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.mic-end p {
+  margin: 0;
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+.mic-end .row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.mic-end button {
+  padding: 10px 22px;
+  font-size: 15px;
+}
+
+.mic-end button.ghost {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.mic-close {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+@media (min-width: 820px) {
+  .mic-box {
+    flex-direction: row;
+    width: min(94vw, 900px);
+    height: min(90vh, 640px);
+  }
+
+  .mic-video {
+    flex: 1 1 0;
+    height: 100%;
+  }
+
+  .mic-stage {
+    flex: 0 0 360px;
+  }
+}
+
+@keyframes mic-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

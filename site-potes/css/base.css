@@ -575,7 +575,8 @@ h3 {
   gap: 6px;
 }
 
-.wolf-egg {
+.wolf-egg,
+.mic-egg {
   background: none;
   border: 0;
   padding: 4px;
@@ -588,7 +589,9 @@ h3 {
 }
 
 .wolf-egg:hover,
-.wolf-egg:focus-visible {
+.wolf-egg:focus-visible,
+.mic-egg:hover,
+.mic-egg:focus-visible {
   opacity: 1;
   filter: none;
   transform: rotate(-12deg) scale(1.2);
