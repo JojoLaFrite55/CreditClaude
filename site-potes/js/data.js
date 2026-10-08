@@ -28,6 +28,11 @@ const PHOTOS = [
   "assets/heads/tete-11.png",
   "assets/heads/tete-12.png",
   "assets/heads/tete-13.png",
+  "assets/heads/tete-14.png",
+  "assets/heads/tete-15.png",
+  "assets/heads/tete-16.png",
+  "assets/heads/tete-17.png",
+  "assets/heads/tete-18.png",
 ];
 
 export const MEME_EXTRAS = ["assets/memes/soixante-sept.png"];
@@ -49,6 +54,11 @@ export const BACKGROUNDS = [
   { id: "mint", label: "Menthe", a: "#0f766e", b: "#99f6e4" },
   { id: "gold", label: "Or", a: "#8a6a00", b: "#ffe066" },
   { id: "steel", label: "Acier", a: "#2d3748", b: "#cbd5e0" },
+  { id: "photo-gros-caca", label: "Photo : gros caca", a: "#a89968", b: "#e8dca8", image: "assets/photos/gros-caca.jpg", focus: 0.2 },
+  { id: "photo-chapeau", label: "Photo : chapeau", a: "#8b1a3a", b: "#f2b5c4", image: "assets/photos/chapeau.jpg", focus: 0.5 },
+  { id: "photo-cri", label: "Photo : le cri", a: "#555", b: "#ddd", image: "assets/photos/cri.jpg", focus: 0.5 },
+  { id: "photo-webcam", label: "Photo : webcam", a: "#888", b: "#eee", image: "assets/photos/webcam.jpg", focus: 0.3 },
+  { id: "photo-moustache", label: "Photo : moustache", a: "#7a4a3a", b: "#d9a08c", image: "assets/photos/moustache.jpg", focus: 0.3 },
 ];
 
 export const MEMES = [

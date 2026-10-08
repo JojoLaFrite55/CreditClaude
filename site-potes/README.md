@@ -60,3 +60,7 @@ Le 🚗 du pied de page lance maintenant la vidéo avec le son « Stadium Rave �
 `rythme.html` (menu Jeux) : jeu de rythme à flèches (← ↓ ↑ → ou tap sur les colonnes) calé sur les vidéos du QG : Tiki Tiki — 67 Man, Le Doberman (les 18 premières secondes de la vidéo envoyée) et Loup Sigma (le Micro reste accessible via le 🎤 caché). Quatre difficultés (Facile, Normal, Difficile, Hardcore : plus de notes, flèches plus rapides, fenêtres de timing plus serrées, accords en Hardcore, multiplicateur de score) et un record par morceau et par difficulté. On peut monter ou baisser d'un cran depuis l'écran de fin.
 
 Le moteur est dans `js/rhythm/` (`engine.js`, `songs.js`). Les notes sont générées depuis le son de chaque morceau (détection des attaques) et stockées dans `assets/rythme/charts.json`.
+
+## Nouvelles photos
+
+Cinq nouvelles têtes détourées (`assets/heads/tete-14` à `tete-18`) sont dans tous les jeux et outils qui piochent dans la liste des têtes. Les photos complètes (`assets/photos/gros-caca`, `chapeau`, `cri`, `webcam`, `moustache`) servent aussi de fonds de photo dans le générateur de memes.

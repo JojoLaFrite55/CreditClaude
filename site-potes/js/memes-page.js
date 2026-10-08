@@ -68,7 +68,7 @@ BACKGROUNDS.forEach((item, index) => {
     draw();
   });
   const dot = document.createElement("span");
-  dot.style.background = `linear-gradient(135deg, ${item.a}, ${item.b})`;
+  dot.style.background = item.image ? `center / cover url("${item.image}")` : `linear-gradient(135deg, ${item.a}, ${item.b})`;
   label.append(input, dot);
   swatches.append(label);
 });

@@ -55,7 +55,39 @@ function drawText(g, text, anchor) {
   });
 }
 
+const photoCache = new Map();
+
+function loadPhoto(url) {
+  if (!photoCache.has(url)) {
+    photoCache.set(url, new Promise((resolve) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => resolve(null);
+      image.src = new URL(`../${url}`, import.meta.url).href;
+    }));
+  }
+  return photoCache.get(url);
+}
+
+function paintPhoto(g, image, focusY, x, y, w, h) {
+  const scale = Math.max(w / image.width, h / image.height);
+  const dw = image.width * scale;
+  const dh = image.height * scale;
+  g.save();
+  g.beginPath();
+  g.rect(x, y, w, h);
+  g.clip();
+  g.drawImage(image, x + (w - dw) / 2, y - (dh - h) * focusY, dw, dh);
+  g.fillStyle = "rgba(0,0,0,0.25)";
+  g.fillRect(x, y, w, h);
+  g.restore();
+}
+
 function paintBackground(g, palette, x, y, w, h) {
+  if (palette.photo) {
+    paintPhoto(g, palette.photo, palette.focus ?? 0.3, x, y, w, h);
+    return;
+  }
   const gradient = g.createLinearGradient(x, y, x + w, y + h);
   gradient.addColorStop(0, palette.a);
   gradient.addColorStop(1, palette.b);
@@ -111,7 +143,9 @@ export async function renderMeme(canvas, { head, head2 = null, bg, top = "", bot
   canvas.width = SIZE;
   canvas.height = SIZE;
   const g = canvas.getContext("2d");
-  const palette = BACKGROUNDS.find((item) => item.id === bg) ?? BACKGROUNDS[0];
+  const found = BACKGROUNDS.find((item) => item.id === bg) ?? BACKGROUNDS[0];
+  const photo = found.image ? await loadPhoto(found.image) : null;
+  const palette = photo ? { ...found, photo } : found;
   const sans = '"Inter", system-ui, sans-serif';
 
   if (layout === "banniere") {
