@@ -66,3 +66,5 @@ Le moteur est dans `js/rhythm/` (`engine.js`, `songs.js`). Les notes sont géné
 Cinq nouvelles têtes détourées (`assets/heads/tete-14` à `tete-18`) sont dans tous les jeux et outils qui piochent dans la liste des têtes. Les photos complètes (`assets/photos/gros-caca`, `chapeau`, `cri`, `webcam`, `moustache`) servent aussi de fonds de photo dans le générateur de memes.
 
 Encore quatre têtes détourées (`tete-19` à `tete-22`, dont les trois potes aux lunettes de nuit), les photos `cri-noir`, `lunettes`, `concombres` et `oasis` en fonds photo pour les memes, et le morceau « Le Casse-Croûte » dans le jeu de rythme.
+
+Quatre morceaux de plus dans le jeu de rythme (Le Manège, Disco Flash, Disco Couloir, Le Grand Disco), la tête `tete-23` et la photo `chemise-rose` (fond photo des memes).

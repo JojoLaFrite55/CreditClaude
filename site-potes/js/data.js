@@ -37,6 +37,7 @@ const PHOTOS = [
   "assets/heads/tete-20.png",
   "assets/heads/tete-21.png",
   "assets/heads/tete-22.png",
+  "assets/heads/tete-23.png",
 ];
 
 export const MEME_EXTRAS = ["assets/memes/soixante-sept.png"];
@@ -67,6 +68,7 @@ export const BACKGROUNDS = [
   { id: "photo-lunettes", label: "Photo : lunettes de nuit", a: "#0b1a3a", b: "#4cc9e0", image: "assets/photos/lunettes.jpg", focus: 0.5 },
   { id: "photo-concombres", label: "Photo : concombres", a: "#4d6b2a", b: "#b9d68b", image: "assets/photos/concombres.jpg", focus: 0.4 },
   { id: "photo-oasis", label: "Photo : Oasis", a: "#c9792b", b: "#f3d9a8", image: "assets/photos/oasis.jpg", focus: 0.5 },
+  { id: "photo-chemise-rose", label: "Photo : chemise rose", a: "#c97b8f", b: "#f4d6dc", image: "assets/photos/chemise-rose.jpg", focus: 0.3 },
 ];
 
 export const MEMES = [
@@ -229,7 +231,7 @@ export const GAMES = [
   {
     slug: "rythme",
     title: "Rythme des potes",
-    text: "Des flèches en rythme avec les vidéos du QG : 9 morceaux, 4 difficultés.",
+    text: "Des flèches en rythme avec les vidéos du QG : 13 morceaux, 4 difficultés.",
     href: "rythme.html",
     image: "assets/previews/rythme.jpg",
     badge: "Nouveau",

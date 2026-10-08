@@ -13,6 +13,10 @@ export const SONGS = [
   { id: "bonbonnes", title: "Les Bonbonnes", sub: "Gymnastique entre les bouteilles de gaz", mp4: secret("bonbonnes.mp4"), webm: secret("bonbonnes.webm"), duration: "0:13", color: "#e85d9b" },
   { id: "circuit", title: "Le Circuit", sub: "Course de karts, version chaos", mp4: secret("circuit.mp4"), webm: secret("circuit.webm"), duration: "0:27", color: "#4a7bd0" },
   { id: "pain", title: "Le Casse-Croûte", sub: "Mâcher en rythme", mp4: secret("pain.mp4"), webm: secret("pain.webm"), duration: "0:14", color: "#c9792b" },
+  { id: "manege", title: "Le Manège", sub: "Tour de fête foraine", mp4: secret("manege.mp4"), webm: secret("manege.webm"), duration: "0:07", color: "#e0a030" },
+  { id: "disco-flash", title: "Disco Flash", sub: "Les lumières changent de couleur", mp4: secret("disco-flash.mp4"), webm: secret("disco-flash.webm"), duration: "0:11", color: "#8e44ad" },
+  { id: "disco-couloir", title: "Disco Couloir", sub: "La suite, avec la porte", mp4: secret("disco-couloir.mp4"), webm: secret("disco-couloir.webm"), duration: "0:22", color: "#27ae60" },
+  { id: "grand-disco", title: "Le Grand Disco", sub: "Plus d'une minute de lumières", mp4: secret("grand-disco.mp4"), webm: secret("grand-disco.webm"), duration: "1:09", color: "#2980b9" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 
