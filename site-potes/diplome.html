@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Générateur de diplômes — LE QG</title>
+  <meta name="description" content="Remets un diplôme officiel (et totalement bidon) à un pote, avec sa tête dessus.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Générateur de diplômes</h1>
+      <p>Remets un diplôme officiel (et totalement bidon) à un pote, avec sa tête dessus.</p>
+    </div>
+    <div class="cert-wrap">
+      <canvas id="cert" width="1200" height="850" aria-label="Aperçu du diplôme"></canvas>
+      <div class="tool-panel">
+        <div class="field"><label for="who">Nom du pote</label><input type="text" id="who" value="Jean-Michel" maxlength="30"></div>
+        <div class="field"><label for="title">Intitulé du diplôme</label><select id="title"></select></div>
+        <div class="field"><label for="reason">Motif</label><input type="text" id="reason" maxlength="90"></div>
+        <div class="field"><span>Tête sur le diplôme</span><div class="head-picker" id="picker"></div></div>
+        <div class="btn-row">
+          <button class="btn" id="download" type="button">Télécharger</button>
+          <button class="btn btn-secondary" id="random" type="button">Au hasard</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/diplome.js"></script>
+</body>
+</html>

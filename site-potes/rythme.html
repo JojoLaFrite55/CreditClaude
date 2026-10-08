@@ -23,6 +23,16 @@
     </div>
     <section id="menu" class="rhythm-menu">
       <div class="rhythm-levels" id="levels" role="group" aria-label="Difficulté"></div>
+      <div class="rhythm-filter">
+        <input type="search" id="search" placeholder="Chercher un morceau…" aria-label="Chercher un morceau">
+        <div class="rhythm-chips" id="chips" role="group" aria-label="Durée">
+          <button type="button" class="on" data-len="all">Tous</button>
+          <button type="button" data-len="short">Moins de 10 s</button>
+          <button type="button" data-len="mid">10 à 20 s</button>
+          <button type="button" data-len="long">Plus de 20 s</button>
+        </div>
+        <span class="muted" id="count"></span>
+      </div>
       <div class="rhythm-songs" id="songs"></div>
     </section>
     <section id="stage" class="rhythm-embed" hidden></section>

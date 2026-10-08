@@ -84,3 +84,11 @@ Trois morceaux de plus dans le jeu de rythme : Le Visage Étiré, Un Homme sur l
 Un morceau de plus dans le jeu de rythme : Les Grands Champions.
 
 Un morceau de plus dans le jeu de rythme : Monténégro (vidéo recadrée sur le visage et les épaules).
+
+## Nouveautés jeux et outils
+
+Jeux : `invasion.html` (shoot'em up de têtes), `pong.html` (contre la machine), `slots.html` (machine à sous, jetons fictifs), `zoomtete.html` (retrouver une tête depuis un détail zoomé), `erreurs.html` (cinq erreurs sur les photos des potes, généré à chaque manche) et `blindtest.html` (retrouver la vidéo d'après un extrait sonore des morceaux du jeu de rythme).
+
+Outils : `diplome.html` (diplôme téléchargeable en PNG), `boule.html` (boule magique), `horoscope.html` (même signe et même date donnent le même horoscope).
+
+Le jeu de rythme a maintenant une recherche et un filtre par durée pour s'y retrouver parmi les morceaux.

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boule magique — LE QG</title>
+  <meta name="description" content="Pose une question, secoue la boule, accepte la réponse. Ça n'a rien de scientifique.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Boule magique</h1>
+      <p>Pose une question, secoue la boule, accepte la réponse. Ça n'a rien de scientifique.</p>
+    </div>
+    <div class="ball-wrap">
+      <div class="stage"><div class="ball" id="ball" role="button" tabindex="0" aria-label="Secouer la boule"><div class="ball-window" id="answer">Pose une question</div></div></div>
+      <div class="tool-panel">
+        <div class="field"><label for="q">Ta question (réponse oui ou non, de préférence)</label><input type="text" id="q" maxlength="120" placeholder="Est-ce que j'ai raison ?"></div>
+        <div class="btn-row">
+          <button class="btn" id="shake" type="button">Secouer</button>
+          <button class="btn btn-secondary" id="sound" type="button">Son : activé</button>
+        </div>
+        <p class="big-result" id="verdict">—</p>
+        <ul class="history" id="history" aria-label="Dernières questions"></ul>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/boule.js"></script>
+</body>
+</html>

@@ -380,3 +380,42 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.rhythm-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.rhythm-filter input[type="search"] {
+  flex: 1 1 220px;
+  max-width: 340px;
+  padding: 10px 14px;
+  border: 1px solid var(--line, #ddd);
+  border-radius: 999px;
+  font: inherit;
+}
+
+.rhythm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rhythm-chips button {
+  padding: 8px 14px;
+  border: 1px solid var(--line, #ddd);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink, #111);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.rhythm-chips button.on {
+  background: var(--ink, #111);
+  color: #fff;
+  border-color: var(--ink, #111);
+}
