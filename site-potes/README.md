@@ -49,3 +49,5 @@ La chèvre 🐐 en bas à gauche de l'accueil mène à `sacrifice.html` : tuer l
 Le petit 🚗 presque invisible dans le pied de page (survole-le) ouvre la vidéo du trajet (`js/voiture.js`).
 
 Les sons du sacrifice sont de vrais échantillons CC0 (`assets/sfx/`, crédits dans `assets/sfx/CREDITS.md`).
+
+Le 🚗 du pied de page lance maintenant la vidéo avec une musique techno hardcore générée par le navigateur (bouton pour la couper) et des effets (spectre, lasers, têtes qui rebondissent). Les photos complètes des potes sont dans `assets/photos/`, les têtes détourées dans `assets/heads/`.
