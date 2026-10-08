@@ -74,3 +74,5 @@ Cinq morceaux de plus dans le jeu de rythme : Le Café, Fond Turquoise, Les Back
 Quatre morceaux de plus dans le jeu de rythme : Rendez-vous Tour Eiffel, Le Biscuit, Les Deux Visages et L'Aquarium.
 
 Quatre morceaux de plus dans le jeu de rythme : Marché de Noël, Le Petit-Déj de Koda, Spaghetti et Disco et Attends !
+
+Cinq morceaux de plus dans le jeu de rythme : La Dédicace, C'est Jason, Noooon !, Le Sourire et Le Pilote. « Noooon ! » est presque silencieux jusqu'au cri final : ses notes suivent donc une grille régulière puis le cri.

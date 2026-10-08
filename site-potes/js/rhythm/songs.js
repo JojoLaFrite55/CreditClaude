@@ -30,6 +30,11 @@ export const SONGS = [
   { id: "koda", title: "Le Petit-Déj de Koda", sub: "L'ourson et son bol de céréales", mp4: secret("koda.mp4"), webm: secret("koda.webm"), duration: "0:54", color: "#a0522d" },
   { id: "spaghetti", title: "Spaghetti et Disco", sub: "Des grimaces, des pâtes, du mouvement", mp4: secret("spaghetti.mp4"), webm: secret("spaghetti.webm"), duration: "0:16", color: "#d4a017" },
   { id: "attends", title: "Attends !", sub: "Cinq secondes de chaos", mp4: secret("attends.mp4"), webm: secret("attends.webm"), duration: "0:05", color: "#7f8c8d" },
+  { id: "dedicace", title: "La Dédicace", sub: "Une dédicace face caméra", mp4: secret("dedicace.mp4"), webm: secret("dedicace.webm"), duration: "0:11", color: "#16a085" },
+  { id: "jason", title: "C'est Jason", sub: "Melissa ? Non, c'est Jason", mp4: secret("jason.mp4"), webm: secret("jason.webm"), duration: "0:07", color: "#8e44ad" },
+  { id: "non", title: "Noooon !", sub: "Le calme avant le cri", mp4: secret("non.mp4"), webm: secret("non.webm"), duration: "0:13", color: "#c0392b" },
+  { id: "sourire", title: "Le Sourire", sub: "Un sourire dans le noir", mp4: secret("sourire.mp4"), webm: secret("sourire.webm"), duration: "0:15", color: "#566573" },
+  { id: "pilote", title: "Le Pilote", sub: "Vol en piqué au-dessus des vagues", mp4: secret("pilote.mp4"), webm: secret("pilote.webm"), duration: "0:20", color: "#1f8fcf" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 
