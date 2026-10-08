@@ -6,6 +6,7 @@ export const MICRO_SONG = { id: "micro", title: "Le Micro", sub: "La voix du mic
 
 export const SONGS = [
   { id: "67", title: "Tiki Tiki — 67 Man", sub: "Ultra slowed, ballon argenté", mp4: secret("67.mp4"), webm: secret("67.webm"), duration: "0:16", color: "#f2c230" },
+  { id: "doberman", title: "Le Doberman", sub: "Pipi, caca, dobermans et bergers allemands", mp4: secret("doberman.mp4"), webm: secret("doberman.webm"), duration: "0:18", color: "#d9782b" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 
