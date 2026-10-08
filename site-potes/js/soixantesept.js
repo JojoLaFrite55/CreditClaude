@@ -7,15 +7,15 @@ function loadCss() {
   document.head.append(link);
 }
 
-export function open67() {
+function openVideo(name, label) {
   if (document.querySelector(".s67")) return;
   loadCss();
-  const mp4 = new URL("../assets/secret/67.mp4", import.meta.url).href;
-  const webm = new URL("../assets/secret/67.webm", import.meta.url).href;
+  const mp4 = new URL(`../assets/secret/${name}.mp4`, import.meta.url).href;
+  const webm = new URL(`../assets/secret/${name}.webm`, import.meta.url).href;
   const modal = document.createElement("div");
   modal.className = "s67";
   modal.setAttribute("role", "dialog");
-  modal.setAttribute("aria-label", "67");
+  modal.setAttribute("aria-label", label);
   modal.innerHTML = `<div class="s67-box"><video controls playsinline autoplay loop><source src="${mp4}" type="video/mp4"><source src="${webm}" type="video/webm"></video><button class="s67-close" type="button" aria-label="Fermer">✕</button></div>`;
   document.body.append(modal);
   document.body.style.overflow = "hidden";
@@ -39,3 +39,6 @@ export function open67() {
     if (event.target === modal) close();
   });
 }
+
+export const open67 = () => openVideo("67", "67");
+export const openWolf = () => openVideo("loup", "Loup sigma");

@@ -29,7 +29,7 @@ const footer = `
     </div>
     <nav class="footer-links" aria-label="Pied de page">${links}</nav>
   </div>
-  <div class="wrap footer-bottom"><p class="muted">© ${new Date().getFullYear()} ${SITE.name} · Fait entre potes, pour de faux.</p><button class="car-egg" type="button" aria-label="Un petit tour ?">🚗</button></div>
+  <div class="wrap footer-bottom"><p class="muted">© ${new Date().getFullYear()} ${SITE.name} · Fait entre potes, pour de faux.</p><span class="footer-eggs"><button class="wolf-egg" type="button" aria-label="Loup sigma">🐺</button><button class="car-egg" type="button" aria-label="Un petit tour ?">🚗</button></span></div>
 </footer>`;
 
 document.body.insertAdjacentHTML("afterbegin", header);
@@ -72,3 +72,4 @@ document.querySelector(".site-footer .brand").addEventListener("click", () => {
 document.querySelector(".car-egg").addEventListener("click", () => import("./voiture.js").then((module) => module.openCar()));
 
 document.querySelector(".egg-67").addEventListener("click", () => import("./soixantesept.js").then((module) => module.open67()));
+document.querySelector(".wolf-egg").addEventListener("click", () => import("./soixantesept.js").then((module) => module.openWolf()));

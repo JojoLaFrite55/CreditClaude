@@ -568,3 +568,29 @@ h3 {
   transform: translateY(-50%) scale(1.25);
   outline: 0;
 }
+
+.footer-eggs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wolf-egg {
+  background: none;
+  border: 0;
+  padding: 4px;
+  font-size: 15px;
+  line-height: 1;
+  opacity: 0.1;
+  cursor: pointer;
+  filter: grayscale(1);
+  transition: opacity 0.3s ease, transform 0.4s ease, filter 0.3s ease;
+}
+
+.wolf-egg:hover,
+.wolf-egg:focus-visible {
+  opacity: 1;
+  filter: none;
+  transform: rotate(-12deg) scale(1.2);
+  outline: 0;
+}
