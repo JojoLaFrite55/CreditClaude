@@ -35,6 +35,9 @@ export const SONGS = [
   { id: "non", title: "Noooon !", sub: "Le calme avant le cri", mp4: secret("non.mp4"), webm: secret("non.webm"), duration: "0:13", color: "#c0392b" },
   { id: "sourire", title: "Le Sourire", sub: "Un sourire dans le noir", mp4: secret("sourire.mp4"), webm: secret("sourire.webm"), duration: "0:15", color: "#566573" },
   { id: "pilote", title: "Le Pilote", sub: "Vol en piqué au-dessus des vagues", mp4: secret("pilote.mp4"), webm: secret("pilote.webm"), duration: "0:20", color: "#1f8fcf" },
+  { id: "filtre", title: "Le Visage Étiré", sub: "Un filtre qui change tout", mp4: secret("filtre.mp4"), webm: secret("filtre.webm"), duration: "0:06", color: "#d35400" },
+  { id: "lune", title: "Un Homme sur la Lune", sub: "Astronaute, la Terre en fond", mp4: secret("lune.mp4"), webm: secret("lune.webm"), duration: "0:15", color: "#2c3e50" },
+  { id: "kirby", title: "Le Cri de Kirby", sub: "Bouche grande ouverte, Kirby en coin", mp4: secret("kirby.mp4"), webm: secret("kirby.webm"), duration: "0:15", color: "#ff7eb6" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 
