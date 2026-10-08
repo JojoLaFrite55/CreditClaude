@@ -1,8 +1,6 @@
 import { createDrone, openHell } from "./enfer.js";
-import { drawGoat, POSES } from "./gore/goat.js";
-import { drawKnife, KNIFE } from "./gore/knife.js";
-import { bloodStrokeLayers, drawBlob, splat, streak } from "./gore/blood.js";
-import { fbm, makeFloor, makeWall, rand } from "./gore/noise.js";
+import { bloodStrokeLayers, drawBlob, streak } from "./gore/blood.js";
+import { rand } from "./gore/noise.js";
 
 const $ = (id) => document.getElementById(id);
 const gate = $("gate");
@@ -13,35 +11,37 @@ const bloodBar = $("blood");
 const progressBar = $("progress");
 const pentMeter = $("pent-meter");
 const finaleText = $("finale-text");
+const headFlash = $("head-flash");
 const scene = $("scene");
 const sg = stage.getContext("2d");
 const fg = fx.getContext("2d");
 
 const W = 760;
 const H = 760;
-const FLOOR_Y = 500;
+const FLOOR_Y = 520;
+const FEET_Y = 548;
+const GOAT_H = 500;
+const DS = 0.62;
 const HITS_NEEDED = 7;
 const HIT_LINES = ["Elle hurle.", "Encore.", "Le sol est tout rouge.", "Ne t'arrête pas.", "Elle ne bouge presque plus.", "Un dernier coup."];
-const S = 0.92;
-const GX = 380 - 455 * S;
-const GY = FLOOR_Y + 20 - 564 * S;
 const CX = 380;
 const CY = 380;
 const R = 262;
+const BASE = new URL("../assets/gore/", import.meta.url).href;
 
-const state = { stage: "gate", hits: 0, reserve: 0, drawing: false, last: null, filled: 0, drone: null, ctx: null, noise: null, squelchAt: 0, time: 0, shake: 0, jerk: 0, fade: 0, fadeDir: 0, poolR: 0, poolTarget: 0, collapseT: 0, finaleT: 0, pulse: 0 };
+const state = { stage: "gate", hits: 0, reserve: 0, drawing: false, last: null, filled: 0, drone: null, ctx: null, noise: null, squelchAt: 0, time: 0, shake: 0, jerk: 0, fade: 0, fadeDir: 0, poolR: 0, poolTarget: 0, collapseT: 0, finaleT: 0 };
 const assets = {};
 const particles = [];
 const drips = [];
-const fall = [];
-const knife = { phase: "idle", t: 0, target: [0, 0], theta: 0.4, bloody: false };
-let alphaData = null;
-let soakDirty = true;
+const knife = { phase: "idle", t: 0, target: [0, 0], theta: 0.4, bloody: false, local: [0, 0] };
 const fxParticles = [];
 const stains = [];
 const fxDrips = [];
+let alphaData = null;
+let soakDirty = true;
 let flash = 0;
 let blackout = 0;
+let G = { x: 0, y: 0, s: 1, w: 0, h: 0 };
 
 const verts = Array.from({ length: 5 }, (_, k) => {
   const a = -Math.PI / 2 + (k * Math.PI * 2) / 5;
@@ -167,24 +167,221 @@ const audio = {
   },
 };
 
+const loadImage = (name) =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = BASE + name;
+  });
+
+function gradePixels(canvas, { sat, dark, tint, gamma = 1.12 }) {
+  const g = canvas.getContext("2d");
+  const data = g.getImageData(0, 0, canvas.width, canvas.height);
+  const d = data.data;
+  for (let i = 0; i < d.length; i += 4) {
+    if (d[i + 3] === 0) continue;
+    const l = 0.3 * d[i] + 0.59 * d[i + 1] + 0.11 * d[i + 2];
+    for (let c = 0; c < 3; c++) {
+      const v = l + (d[i + c] - l) * sat;
+      d[i + c] = Math.min(255, Math.pow(Math.max(0, v) / 255, gamma) * 255 * dark * tint[c]);
+    }
+  }
+  g.putImageData(data, 0, 0);
+}
+
+function stamp(g, img, x, y, size, rot = 0, alpha = 1) {
+  g.save();
+  g.globalAlpha = alpha;
+  g.translate(x, y);
+  g.rotate(rot);
+  const h = size * (img.height / img.width);
+  g.drawImage(img, -size / 2, -h / 2, size, h);
+  g.restore();
+}
+
+const pickSplat = (small = false) => {
+  const list = small ? [assets.splat3, assets.splat18, assets.splat3, assets.splat0] : [assets.splat0, assets.splat3, assets.splat18, assets.splat14, assets.splat21, assets.splat2];
+  return list[Math.floor(Math.random() * list.length)];
+};
+
+function maskTo(layer, sprite, dx = 0, dy = 0) {
+  const g = layer.getContext("2d");
+  g.save();
+  g.globalCompositeOperation = "destination-in";
+  g.drawImage(sprite, dx, dy);
+  g.restore();
+}
+
+function prepareStanding(img) {
+  const w = 800;
+  const h = Math.round((800 * img.height) / img.width);
+  const c = mk(w, h);
+  const g = c.getContext("2d");
+  g.drawImage(img, 0, 0, w, h);
+  gradePixels(c, { sat: 0.62, dark: 0.66, tint: [1.12, 0.9, 0.78] });
+  g.globalCompositeOperation = "source-atop";
+  const low = g.createLinearGradient(0, h * 0.45, 0, h);
+  low.addColorStop(0, "rgba(0,0,0,0)");
+  low.addColorStop(1, "rgba(0,0,0,0.78)");
+  g.fillStyle = low;
+  g.fillRect(0, 0, w, h);
+  const warm = g.createRadialGradient(w * 0.88, h * 0.4, 20, w * 0.88, h * 0.4, w * 0.7);
+  warm.addColorStop(0, "rgba(255,150,70,0.3)");
+  warm.addColorStop(1, "rgba(255,150,70,0)");
+  g.fillStyle = warm;
+  g.fillRect(0, 0, w, h);
+  const side = g.createLinearGradient(0, 0, w, 0);
+  side.addColorStop(0, "rgba(0,0,0,0.5)");
+  side.addColorStop(0.5, "rgba(0,0,0,0)");
+  g.fillStyle = side;
+  g.fillRect(0, 0, w, h);
+  g.globalCompositeOperation = "source-over";
+  return c;
+}
+
+function prepareLying(img) {
+  const w = 1120;
+  const h = Math.round((1120 * img.height) / img.width);
+  const c = mk(w, h);
+  const g = c.getContext("2d");
+  g.drawImage(img, 0, 0, w, h);
+  gradePixels(c, { sat: 0.5, dark: 0.58, tint: [1.1, 0.92, 0.82], gamma: 1.18 });
+  g.globalCompositeOperation = "source-atop";
+  const low = g.createLinearGradient(0, h * 0.4, 0, h);
+  low.addColorStop(0, "rgba(0,0,0,0)");
+  low.addColorStop(1, "rgba(0,0,0,0.6)");
+  g.fillStyle = low;
+  g.fillRect(0, 0, w, h);
+  g.globalCompositeOperation = "source-over";
+  const layer = mk(w, h);
+  const lg = layer.getContext("2d");
+  const rnd = rand(31);
+  for (let i = 0; i < 9; i++) {
+    const img2 = [assets.splat0, assets.splat3, assets.splat18, assets.splat14, assets.splat21][i % 5];
+    stamp(lg, img2, 520 + rnd() * 380, 130 + rnd() * 190, 150 + rnd() * 120, rnd() * Math.PI * 2, 0.95);
+  }
+  const ls = lg;
+  for (let i = 0; i < 6; i++) {
+    const x = 500 + rnd() * 380;
+    const y0 = 160 + rnd() * 120;
+    const len = 120 + rnd() * 180;
+    streak(ls, x, y0, x + (rnd() - 0.5) * 12, y0 + len, 5 + rnd() * 7);
+  }
+  stamp(lg, assets.splat17, 990, 470, 260, 0.3, 0.95);
+  stamp(lg, assets.splat0, 1030, 430, 200, 2.2, 0.95);
+  const soak = lg.createRadialGradient(700, 220, 20, 700, 220, 320);
+  soak.addColorStop(0, "rgba(70,0,0,0.6)");
+  soak.addColorStop(1, "rgba(70,0,0,0)");
+  lg.fillStyle = soak;
+  lg.fillRect(0, 0, w, h);
+  maskTo(layer, c);
+  g.drawImage(layer, 0, 0);
+  return c;
+}
+
+function prepareDagger(img) {
+  const c = mk(img.width, img.height);
+  c.getContext("2d").drawImage(img, 0, 0);
+  const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data;
+  let tipY = 0;
+  for (let y = c.height - 1; y >= 0 && !tipY; y--) for (let x = 0; x < c.width; x++) if (d[(y * c.width + x) * 4 + 3] > 90) tipY = y;
+  let sx = 0;
+  let n = 0;
+  for (let y = tipY - 4; y <= tipY; y++) for (let x = 0; x < c.width; x++) if (d[(y * c.width + x) * 4 + 3] > 90) {
+    sx += x;
+    n += 1;
+  }
+  const tipX = n ? sx / n : c.width / 2;
+  const bloody = mk(c.width, c.height);
+  const bg = bloody.getContext("2d");
+  bg.drawImage(c, 0, 0);
+  bg.globalCompositeOperation = "source-atop";
+  const wash = bg.createLinearGradient(0, c.height * 0.3, 0, c.height);
+  wash.addColorStop(0.45, "rgba(110,0,0,0)");
+  wash.addColorStop(0.7, "rgba(120,6,8,0.5)");
+  wash.addColorStop(1, "rgba(80,0,0,0.92)");
+  bg.fillStyle = wash;
+  bg.fillRect(0, 0, c.width, c.height);
+  const rnd = rand(8);
+  bg.strokeStyle = "rgba(150,10,10,0.9)";
+  bg.lineCap = "round";
+  for (let i = 0; i < 5; i++) {
+    const x = c.width * (0.3 + rnd() * 0.4);
+    bg.lineWidth = 2 + rnd() * 3;
+    bg.beginPath();
+    bg.moveTo(x, c.height * (0.4 + rnd() * 0.2));
+    bg.lineTo(x + (rnd() - 0.5) * 4, c.height * (0.7 + rnd() * 0.25));
+    bg.stroke();
+  }
+  bg.fillStyle = "rgba(255,170,160,0.35)";
+  bg.fillRect(c.width * 0.36, c.height * 0.45, 3, c.height * 0.45);
+  return { clean: c, bloody, tipX, tipY };
+}
+
+function bakeBackgrounds() {
+  const bg = mk(W, H);
+  const g = bg.getContext("2d");
+  g.drawImage(assets.wall, 0, 0, W, FLOOR_Y + 12);
+  g.fillStyle = "rgba(10,0,0,0.58)";
+  g.fillRect(0, 0, W, FLOOR_Y + 12);
+  const damp = g.createLinearGradient(0, 0, 0, FLOOR_Y);
+  damp.addColorStop(0, "rgba(0,0,0,0.5)");
+  damp.addColorStop(0.7, "rgba(0,0,0,0)");
+  g.fillStyle = damp;
+  g.fillRect(0, 0, W, FLOOR_Y);
+  const wallShade = g.createLinearGradient(0, FLOOR_Y - 120, 0, FLOOR_Y + 8);
+  wallShade.addColorStop(0, "rgba(0,0,0,0)");
+  wallShade.addColorStop(1, "rgba(0,0,0,0.6)");
+  g.fillStyle = wallShade;
+  g.fillRect(0, FLOOR_Y - 120, W, 128);
+  g.save();
+  g.beginPath();
+  g.rect(0, FLOOR_Y, W, H - FLOOR_Y);
+  g.clip();
+  g.drawImage(assets.floor, 0, FLOOR_Y - 60, W, H - FLOOR_Y + 120);
+  g.restore();
+  const floorShade = g.createLinearGradient(0, FLOOR_Y, 0, H);
+  floorShade.addColorStop(0, "rgba(0,0,0,0.55)");
+  floorShade.addColorStop(1, "rgba(0,0,0,0.2)");
+  g.fillStyle = floorShade;
+  g.fillRect(0, FLOOR_Y, W, H - FLOOR_Y);
+  g.fillStyle = "#050302";
+  g.fillRect(0, FLOOR_Y - 4, W, 8);
+  assets.bgKill = bg;
+  const ov = mk(W, H);
+  const og = ov.getContext("2d");
+  og.drawImage(assets.floor, 0, 0, W, H);
+  og.fillStyle = "rgba(12,0,0,0.5)";
+  og.fillRect(0, 0, W, H);
+  const vig = og.createRadialGradient(CX, CY, 120, CX, CY, 540);
+  vig.addColorStop(0, "rgba(0,0,0,0)");
+  vig.addColorStop(1, "rgba(0,0,0,0.6)");
+  og.fillStyle = vig;
+  og.fillRect(0, 0, W, H);
+  assets.bgOver = ov;
+}
+
 async function buildAssets() {
   const yieldFrame = () => new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
-  assets.floor = makeFloor(W, H - FLOOR_Y + 120);
+  const names = ["goat-standing.webp", "goat-lying.webp", "dagger.webp", "wall.jpg", "floor.jpg", "hands.webp", "splat-0.webp", "splat-2.webp", "splat-3.webp", "splat-14.webp", "splat-15.webp", "splat-17.webp", "splat-18.webp", "splat-21.webp"];
+  const imgs = await Promise.all(names.map(loadImage));
+  const [standImg, lieImg, daggerImg, wall, floor, hands, s0, s2, s3, s14, s15, s17, s18, s21] = imgs;
+  Object.assign(assets, { wall, floor, hands, splat0: s0, splat2: s2, splat3: s3, splat14: s14, splat15: s15, splat17: s17, splat18: s18, splat21: s21 });
   await yieldFrame();
-  assets.wall = makeWall(W, FLOOR_Y + 10);
+  assets.stand = prepareStanding(standImg);
+  const s = GOAT_H / assets.stand.height;
+  G = { s, w: assets.stand.width * s, h: GOAT_H, x: 380 - (assets.stand.width * s) / 2, y: FEET_Y - GOAT_H };
   await yieldFrame();
-  assets.stand = drawGoat(POSES.standing);
+  assets.dead = prepareLying(lieImg);
   await yieldFrame();
-  assets.dead = drawGoat(POSES.dead);
-  await yieldFrame();
-  assets.knife = drawKnife(false);
-  assets.knifeBloody = drawKnife(true);
-  assets.floorOver = makeFloor(W, H);
+  const dag = prepareDagger(daggerImg);
+  Object.assign(assets, { dagger: dag.clean, daggerBloody: dag.bloody, tipX: dag.tipX, tipY: dag.tipY });
+  bakeBackgrounds();
   assets.blood = mk(W, H);
   assets.overBlood = mk(W, H);
-  assets.soak = mk(900, 640);
-  assets.soakMaskedStand = mk(900, 640);
-  assets.soakMaskedDead = mk(900, 640);
+  assets.soak = mk(assets.stand.width, assets.stand.height);
+  assets.soakMasked = mk(assets.stand.width, assets.stand.height);
   assets.paint = mk(W, H);
   assets.paintMid = mk(W, H);
   assets.paintCore = mk(W, H);
@@ -192,45 +389,42 @@ async function buildAssets() {
   assets.paintGlow = mk(W, H);
   assets.guide = mk(W, H);
   assets.light = mk(W, H);
-  const mask = assets.stand.getContext("2d").getImageData(0, 0, 900, 640);
-  alphaData = mask.data;
+  alphaData = assets.stand.getContext("2d").getImageData(0, 0, assets.stand.width, assets.stand.height).data;
   await yieldFrame();
 }
 
 function hitMask(lx, ly) {
   const x = Math.round(lx);
   const y = Math.round(ly);
-  if (x < 0 || y < 0 || x >= 900 || y >= 640) return false;
-  return alphaData[(y * 900 + x) * 4 + 3] > 60;
+  if (x < 0 || y < 0 || x >= assets.stand.width || y >= assets.stand.height) return false;
+  return alphaData[(y * assets.stand.width + x) * 4 + 3] > 60;
 }
 
-const toSprite = (x, y) => [(x - GX) / S, (y - GY) / S];
+const toSprite = (x, y) => [(x - G.x) / G.s, (y - G.y) / G.s];
 
 function refreshSoak() {
-  for (const [target, sprite, dx] of [[assets.soakMaskedStand, assets.stand, 0], [assets.soakMaskedDead, assets.dead, 30]]) {
-    const g = target.getContext("2d");
-    g.clearRect(0, 0, 900, 640);
-    g.globalCompositeOperation = "source-over";
-    g.drawImage(assets.soak, dx, 0);
-    g.globalCompositeOperation = "destination-in";
-    g.drawImage(sprite, 0, 0);
-    g.globalCompositeOperation = "source-over";
-  }
+  const g = assets.soakMasked.getContext("2d");
+  g.clearRect(0, 0, assets.soakMasked.width, assets.soakMasked.height);
+  g.globalCompositeOperation = "source-over";
+  g.drawImage(assets.soak, 0, 0);
+  g.globalCompositeOperation = "destination-in";
+  g.drawImage(assets.stand, 0, 0);
+  g.globalCompositeOperation = "source-over";
   soakDirty = false;
 }
 
 function addWound(lx, ly) {
   const s = assets.soak.getContext("2d");
-  const soak = s.createRadialGradient(lx, ly, 2, lx, ly, 70 + Math.random() * 25);
-  soak.addColorStop(0, "rgba(60,0,0,0.82)");
+  const soak = s.createRadialGradient(lx, ly, 2, lx, ly, 120 + Math.random() * 40);
+  soak.addColorStop(0, "rgba(60,0,0,0.85)");
   soak.addColorStop(0.5, "rgba(80,0,0,0.5)");
   soak.addColorStop(1, "rgba(80,0,0,0)");
   s.fillStyle = soak;
-  s.fillRect(lx - 120, ly - 120, 240, 240);
-  const seed = (Math.random() * 1e6) | 0;
-  drawBlob(s, lx, ly, 15 + Math.random() * 8, seed, { squash: 0.75, wet: 1 });
-  const n = 3 + Math.floor(Math.random() * 3);
-  for (let i = 0; i < n; i++) drips.push({ x: lx + (Math.random() - 0.5) * 34, y: ly + 6, max: 70 + Math.random() * 170, len: 0, speed: 26 + Math.random() * 60, w: 3 + Math.random() * 4 });
+  s.fillRect(lx - 200, ly - 200, 400, 400);
+  stamp(s, pickSplat(true), lx, ly, 150 + Math.random() * 90, Math.random() * Math.PI * 2, 0.95);
+  drawBlob(s, lx, ly, 22 + Math.random() * 12, (Math.random() * 1e6) | 0, { squash: 0.75, wet: 1 });
+  const n = 2 + Math.floor(Math.random() * 2);
+  for (let i = 0; i < n; i++) drips.push({ x: lx + (Math.random() - 0.5) * 70, y: ly + 10, max: 80 + Math.random() * 200, len: 0, speed: 30 + Math.random() * 70, w: 3.5 + Math.random() * 5 });
   soakDirty = true;
 }
 
@@ -241,7 +435,7 @@ function startStab(x, y) {
     audio.tone("sawtooth", 300, 120, 0.08, 0.05);
     return;
   }
-  Object.assign(knife, { phase: "in", t: 0, target: [x, y], local: [lx, ly], theta: 0.28 + Math.random() * 0.42, bloody: state.hits > 0 });
+  Object.assign(knife, { phase: "in", t: 0, target: [x, y], local: [lx, ly], theta: 0.2 + Math.random() * 0.4, bloody: state.hits > 0 });
   audio.swoosh();
 }
 
@@ -251,18 +445,19 @@ function impact() {
   addWound(...knife.local);
   state.shake = 1;
   state.jerk = 1;
-  state.poolTarget = 38 + state.hits * 26;
+  state.poolTarget = 40 + state.hits * 28;
   state.reserve = state.hits / HITS_NEEDED;
   bloodBar.style.width = `${state.reserve * 100}%`;
   const u = Math.atan2(-Math.cos(knife.theta), Math.sin(knife.theta));
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 80; i++) {
     const a = u + (Math.random() - 0.5) * 2.4;
-    const speed = 160 + Math.random() * 620;
-    particles.push({ x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed - 120, size: 1.5 + Math.random() * 4.2, life: 1.4, age: 0 });
+    const speed = 160 + Math.random() * 640;
+    particles.push({ x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed - 120, size: 1.5 + Math.random() * 4.4, life: 1.4, age: 0 });
   }
-  for (let i = 0; i < 4; i++) {
+  const bg = assets.blood.getContext("2d");
+  for (let i = 0; i < 3; i++) {
     const a = Math.random() * Math.PI * 2;
-    splat(assets.blood.getContext("2d"), x + Math.cos(a) * 120, FLOOR_Y + 30 + Math.random() * 190, 3 + Math.random() * 7, (Math.random() * 1e6) | 0, { drops: 4 });
+    stamp(bg, pickSplat(true), x + Math.cos(a) * 130, FLOOR_Y + 30 + Math.random() * 190, 36 + Math.random() * 60, Math.random() * Math.PI * 2, 0.9);
   }
   audio.stab();
   setTimeout(() => audio.bleat(state.hits), 80);
@@ -298,31 +493,31 @@ function updateKnife(dt) {
 
 function drawKnifeAnim(g) {
   if (knife.phase === "idle") return;
-  const sprite = knife.bloody || knife.phase !== "in" ? assets.knifeBloody : assets.knife;
-  let tipY;
-  if (knife.phase === "in") tipY = -340 * (1 - knife.t) * (1 - knife.t);
-  else if (knife.phase === "stuck") tipY = Math.min(1, knife.t * 6) * 34;
-  else tipY = 34 - 420 * easeOut(knife.t);
+  const sprite = knife.bloody || knife.phase !== "in" ? assets.daggerBloody : assets.dagger;
+  let tip;
+  if (knife.phase === "in") tip = -420 * (1 - knife.t) * (1 - knife.t);
+  else if (knife.phase === "stuck") tip = Math.min(1, knife.t * 6) * 40;
+  else tip = 40 - 520 * easeOut(knife.t);
   g.save();
   g.translate(knife.target[0], knife.target[1]);
   g.rotate(knife.theta);
   g.beginPath();
-  g.rect(-300, -1500, 600, 1500);
+  g.rect(-400, -1800, 800, 1800);
   g.clip();
-  g.scale(0.74, 0.74);
-  g.drawImage(sprite, -KNIFE.tipX, tipY - KNIFE.tipY);
+  g.scale(DS, DS);
+  g.drawImage(sprite, -assets.tipX, tip / DS - assets.tipY);
   g.restore();
   if (knife.phase !== "in") {
     g.save();
     g.translate(knife.target[0], knife.target[1]);
     g.rotate(knife.theta);
-    const lip = g.createRadialGradient(0, 0, 2, 0, 0, 24);
+    const lip = g.createRadialGradient(0, 0, 2, 0, 0, 22);
     lip.addColorStop(0, "rgba(40,0,0,0.95)");
     lip.addColorStop(0.7, "rgba(110,6,6,0.85)");
     lip.addColorStop(1, "rgba(110,6,6,0)");
     g.fillStyle = lip;
     g.beginPath();
-    g.ellipse(0, 0, 26, 8, 0, 0, Math.PI * 2);
+    g.ellipse(0, 0, 24, 8, 0, 0, Math.PI * 2);
     g.fill();
     g.restore();
   }
@@ -344,13 +539,12 @@ function buildOverhead() {
   const og = assets.overBlood.getContext("2d");
   og.clearRect(0, 0, W, H);
   const rnd = rand(11);
-  drawBlob(og, CX + 10, CY + 40, 190, 21, { squash: 0.9 });
-  drawBlob(og, CX - 80, CY + 60, 130, 22, { squash: 0.8 });
-  drawBlob(og, CX + 120, CY + 10, 110, 23, { squash: 0.85 });
-  for (let i = 0; i < 26; i++) {
+  stamp(og, assets.splat17, CX + 10, CY + 40, 620, 0.2, 0.96);
+  stamp(og, assets.splat17, CX - 120, CY + 110, 300, 2.4, 0.9);
+  for (let i = 0; i < 16; i++) {
     const a = rnd() * Math.PI * 2;
-    const d = 150 + rnd() * 210;
-    splat(og, CX + Math.cos(a) * d, CY + Math.sin(a) * d, 3 + rnd() * 10, 500 + i, { drops: 5, directional: a });
+    const d = 200 + rnd() * 160;
+    stamp(og, [assets.splat0, assets.splat3, assets.splat14, assets.splat18, assets.splat21, assets.splat2][i % 6], CX + Math.cos(a) * d, CY + Math.sin(a) * d, 90 + rnd() * 170, a + 1.5, 0.92);
   }
   const g = assets.guide.getContext("2d");
   g.clearRect(0, 0, W, H);
@@ -428,10 +622,6 @@ function startOverhead() {
   state.fadeDir = -1;
 }
 
-function candlesOverhead() {
-  return verts.map(([x, y]) => ({ x, y }));
-}
-
 function lightOverlay(g, candles, t, strength) {
   const lg = assets.light.getContext("2d");
   lg.globalCompositeOperation = "source-over";
@@ -457,7 +647,7 @@ function lightOverlay(g, candles, t, strength) {
     const flick = 0.85 + Math.sin(t * 9 + i * 2.1) * 0.08 + Math.sin(t * 23 + i) * 0.05;
     const rr = c.r * 0.55 * flick;
     const warm = g.createRadialGradient(c.x, c.y, 2, c.x, c.y, rr);
-    warm.addColorStop(0, "rgba(255,150,60,0.28)");
+    warm.addColorStop(0, "rgba(255,150,60,0.26)");
     warm.addColorStop(1, "rgba(255,90,20,0)");
     g.fillStyle = warm;
     g.fillRect(c.x - rr, c.y - rr, rr * 2, rr * 2);
@@ -546,58 +736,46 @@ function drawKillScene(g, t) {
   const oy = (Math.random() - 0.5) * 14 * state.shake;
   g.save();
   g.translate(ox, oy);
-  g.drawImage(assets.wall, 0, 0);
-  const wallShade = g.createLinearGradient(0, FLOOR_Y - 120, 0, FLOOR_Y + 8);
-  wallShade.addColorStop(0, "rgba(0,0,0,0)");
-  wallShade.addColorStop(1, "rgba(0,0,0,0.55)");
-  g.fillStyle = wallShade;
-  g.fillRect(0, FLOOR_Y - 120, W, 128);
-  g.drawImage(assets.floor, 0, FLOOR_Y, W, H - FLOOR_Y);
-  const floorShade = g.createLinearGradient(0, FLOOR_Y, 0, H);
-  floorShade.addColorStop(0, "rgba(0,0,0,0.5)");
-  floorShade.addColorStop(1, "rgba(0,0,0,0.1)");
-  g.fillStyle = floorShade;
-  g.fillRect(0, FLOOR_Y, W, H - FLOOR_Y);
-  g.fillStyle = "#050302";
-  g.fillRect(0, FLOOR_Y - 4, W, 8);
+  g.drawImage(assets.bgKill, 0, 0);
   g.drawImage(assets.blood, 0, 0);
   if (state.poolR > 1) {
-    drawBlob(g, 380 + 10, FLOOR_Y + 38, state.poolR * 1.7, 31, { squash: 0.2 });
-    drawBlob(g, 380 - 40, FLOOR_Y + 44, state.poolR * 1.0, 32, { squash: 0.2 });
+    const r = state.poolR * 2.1;
+    g.save();
+    g.globalAlpha = 0.97;
+    g.drawImage(assets.splat17, 395 - r, FEET_Y + 6 - r * 0.2, r * 2, r * 0.4);
+    g.drawImage(assets.splat17, 350 - r * 0.6, FEET_Y + 22 - r * 0.12, r * 1.2, r * 0.24);
+    g.restore();
   }
   drawCandleSide(g, 96, FLOOR_Y + 110, t, 1);
   drawCandleSide(g, 668, FLOOR_Y + 118, t, 2);
-
   g.save();
-  g.translate(390, FLOOR_Y + 24);
-  g.scale(1, 0.12);
-  const gs = g.createRadialGradient(0, 0, 10, 0, 0, 270);
+  g.translate(390, FEET_Y - 6);
+  g.scale(1, 0.1);
+  const gs = g.createRadialGradient(0, 0, 10, 0, 0, 260);
   gs.addColorStop(0, "rgba(0,0,0,0.85)");
   gs.addColorStop(1, "rgba(0,0,0,0)");
   g.fillStyle = gs;
   g.beginPath();
-  g.arc(0, 0, 270, 0, Math.PI * 2);
+  g.arc(0, 0, 260, 0, Math.PI * 2);
   g.fill();
   g.restore();
 
   if (soakDirty) refreshSoak();
   g.save();
-  const jerk = state.jerk;
-  const gx = GX + Math.sin(t * 70) * 12 * jerk;
   if (state.stage === "collapse") {
     const e = Math.min(1, state.collapseT / 1.1);
     const ease = e * e * (3 - 2 * e);
-    g.translate(GX + 455 * S, GY + 564 * S);
-    g.rotate(-0.1 * ease);
-    g.scale(1 + 0.05 * ease, 1 - 0.14 * ease);
-    g.translate(-455 * S, -564 * S);
-    g.scale(S, S);
+    g.translate(G.x + G.w / 2, FEET_Y);
+    g.rotate(-0.07 * ease);
+    g.scale(1 + 0.04 * ease, 1 - 0.12 * ease);
+    g.translate(-G.w / 2, -G.h);
+    g.scale(G.s, G.s);
   } else {
-    g.translate(gx, GY + Math.abs(Math.sin(t * 50)) * 3 * jerk);
-    g.scale(S, S);
+    g.translate(G.x + Math.sin(t * 70) * 10 * state.jerk, G.y + Math.abs(Math.sin(t * 50)) * 3 * state.jerk);
+    g.scale(G.s, G.s);
   }
   g.drawImage(assets.stand, 0, 0);
-  g.drawImage(assets.soakMaskedStand, 0, 0);
+  g.drawImage(assets.soakMasked, 0, 0);
   g.restore();
 
   for (const p of particles) {
@@ -608,52 +786,43 @@ function drawKillScene(g, t) {
   drawKnifeAnim(g);
   g.restore();
 
-  const candles = [{ x: 96, y: FLOOR_Y + 32, r: 330 }, { x: 668, y: FLOOR_Y + 40, r: 330 }, { x: 380, y: 300, r: 330 }];
-  lightOverlay(g, candles, t, 0.8);
+  const candles = [{ x: 96, y: FLOOR_Y + 32, r: 340 }, { x: 668, y: FLOOR_Y + 40, r: 340 }, { x: 380, y: 300, r: 330 }];
+  lightOverlay(g, candles, t, 0.72);
 }
 
-function drawGoatOverhead(g, t) {
+function drawGoatOverhead(g) {
+  const w = assets.dead.width;
+  const h = assets.dead.height;
+  const sc = 480 / w;
   g.save();
-  g.translate(CX + 18, CY + 26);
-  g.rotate(-0.35);
+  g.translate(CX + 14, CY + 22);
+  g.rotate(-0.12);
   g.scale(1, 0.55);
-  const os = g.createRadialGradient(0, 0, 10, 0, 0, 175);
-  os.addColorStop(0, "rgba(0,0,0,0.8)");
+  const os = g.createRadialGradient(0, 0, 10, 0, 0, 300);
+  os.addColorStop(0, "rgba(0,0,0,0.75)");
   os.addColorStop(1, "rgba(0,0,0,0)");
   g.fillStyle = os;
   g.beginPath();
-  g.arc(0, 0, 175, 0, Math.PI * 2);
+  g.arc(0, 0, 300, 0, Math.PI * 2);
   g.fill();
   g.restore();
   g.save();
   g.translate(CX, CY + 6);
-  g.rotate(-0.35);
-  g.scale(0.4, 0.4);
-  g.translate(-455, -330);
-  g.drawImage(assets.dead, 0, 0);
-  g.drawImage(assets.soakMaskedDead, 0, 0);
+  g.rotate(-0.12);
+  g.scale(sc, sc);
+  g.drawImage(assets.dead, -w / 2, -h / 2);
   g.restore();
 }
 
-function localToStage(x, y) {
-  const pose = POSES.dead;
-  const hc = Math.cos(pose.head);
-  const hs = Math.sin(pose.head);
-  const dx = x - 262;
-  const dy = y - 236;
-  let px = 262 + dx * hc - dy * hs;
-  let py = 236 + dx * hs + dy * hc;
-  const tc = Math.cos(pose.tilt);
-  const ts = Math.sin(pose.tilt);
-  const ex = px - 450;
-  const ey = py - 380;
-  px = 450 + ex * tc - ey * ts + 110;
-  py = 380 + ex * ts + ey * tc;
-  const ax = (px - 455) * 0.4;
-  const ay = (py - 330) * 0.4;
-  const c2 = Math.cos(-0.35);
-  const s2 = Math.sin(-0.35);
-  return [CX + ax * c2 - ay * s2, CY + 6 + ax * s2 + ay * c2];
+function eyePos() {
+  const w = assets.dead.width;
+  const h = assets.dead.height;
+  const sc = 480 / w;
+  const lx = 0.7 * w - w / 2;
+  const ly = 0.64 * h - h / 2;
+  const c = Math.cos(-0.12);
+  const s = Math.sin(-0.12);
+  return [CX + (lx * c - ly * s) * sc, CY + 6 + (lx * s + ly * c) * sc];
 }
 
 const eyes = Array.from({ length: 16 }, (_, i) => {
@@ -664,21 +833,14 @@ const eyes = Array.from({ length: 16 }, (_, i) => {
 });
 
 function drawOverhead(g, t) {
-  g.drawImage(assets.floorOver, 0, 0);
-  const vig = g.createRadialGradient(CX, CY, 120, CX, CY, 520);
-  vig.addColorStop(0, "rgba(0,0,0,0.05)");
-  vig.addColorStop(1, "rgba(0,0,0,0.55)");
-  g.fillStyle = vig;
-  g.fillRect(0, 0, W, H);
+  g.drawImage(assets.bgOver, 0, 0);
   g.drawImage(assets.overBlood, 0, 0);
+  const progress = state.filled / samples.length;
   const breathe = 0.55 + Math.sin(t * 2.2) * 0.25;
-  g.save();
-  g.globalAlpha = state.stage === "finale" ? 1 : 1;
   g.drawImage(assets.guide, 0, 0);
-  g.restore();
   g.save();
   g.globalCompositeOperation = "lighter";
-  g.globalAlpha = 0.18 * breathe * (1 - Math.min(1, state.filled / samples.length));
+  g.globalAlpha = 0.18 * breathe * (1 - Math.min(1, progress));
   g.strokeStyle = "#ff2a1a";
   g.lineWidth = 3;
   g.shadowColor = "#ff2a1a";
@@ -692,36 +854,40 @@ function drawOverhead(g, t) {
   g.drawImage(assets.paintMid, 0, 0);
   g.drawImage(assets.paintCore, 0, 0);
   g.drawImage(assets.paintHi, 0, 0);
-  const progress = state.filled / samples.length;
   g.save();
   g.globalCompositeOperation = "lighter";
   g.globalAlpha = Math.min(1, progress * 0.45 + (state.stage === "finale" ? 0.7 + Math.sin(t * 24) * 0.2 : 0));
   g.drawImage(assets.paintGlow, 0, 0);
   g.restore();
-  drawGoatOverhead(g, t);
+  drawGoatOverhead(g);
+  const handAlpha = Math.min(1, Math.max(0, (progress - 0.25) * 2.2));
+  if (handAlpha > 0) {
+    stamp(g, assets.hands, 190, 640, 230, -0.4, handAlpha * 0.9);
+    stamp(g, assets.hands, 590, 650, 200, 0.5, handAlpha * 0.9);
+  }
   g.save();
-  g.translate(590, 600);
-  g.rotate(0.95);
-  g.scale(0.5, 0.5);
+  g.translate(590, 690);
+  g.rotate(-1.38);
+  g.scale(DS * 0.72, DS * 0.72);
   g.fillStyle = "rgba(0,0,0,0.3)";
-  g.fillRect(-10, -540, 34, 540);
-  g.drawImage(assets.knifeBloody, -KNIFE.tipX, -KNIFE.tipY);
+  g.fillRect(-30, -assets.tipY, 80, assets.tipY);
+  g.drawImage(assets.daggerBloody, -assets.tipX, -assets.tipY);
   g.restore();
   const fin = state.stage === "finale" ? state.finaleT : 0;
   for (const [i, [x, y]] of verts.entries()) drawCandleTop(g, x, y, t, i + 3, 1 + fin * 0.9);
-  const lights = candlesOverhead().map((c) => ({ ...c, r: 280 + fin * 200 }));
-  lights.push({ x: CX, y: CY, r: 150 + fin * 260 });
-  lightOverlay(g, lights, t, state.stage === "finale" ? Math.max(0.35, 0.82 - fin * 0.5) : 0.82);
+  const lights = verts.map(([x, y]) => ({ x, y, r: 280 + fin * 200 }));
+  lights.push({ x: CX, y: CY, r: 160 + fin * 260 });
+  lightOverlay(g, lights, t, state.stage === "finale" ? Math.max(0.3, 0.74 - fin * 0.5) : 0.74);
   if (state.stage === "finale") {
     g.save();
     g.globalCompositeOperation = "lighter";
-    const [ex, ey] = localToStage(150, 206);
-    const glow = g.createRadialGradient(ex, ey, 1, ex, ey, 60 + Math.sin(t * 12) * 8);
+    const [ex, ey] = eyePos();
+    const glow = g.createRadialGradient(ex, ey, 1, ex, ey, 70 + Math.sin(t * 12) * 8);
     glow.addColorStop(0, "rgba(255,40,20,1)");
     glow.addColorStop(0.3, "rgba(255,20,10,0.6)");
     glow.addColorStop(1, "rgba(255,0,0,0)");
     g.fillStyle = glow;
-    g.fillRect(ex - 90, ey - 90, 180, 180);
+    g.fillRect(ex - 100, ey - 100, 200, 200);
     for (const e of eyes) {
       const k = Math.min(1, Math.max(0, state.finaleT * 3 - e.start * 0.5));
       if (k <= 0) continue;
@@ -754,6 +920,15 @@ function drawOverhead(g, t) {
       g.stroke();
     }
     g.restore();
+    if (fin > 0.45) {
+      const reveal = Math.min(1, (fin - 0.45) * 2);
+      g.save();
+      g.beginPath();
+      g.rect(0, 0, W, H * reveal * 0.55);
+      g.clip();
+      g.drawImage(assets.splat15, 0, -20, W, W * (assets.splat15.height / assets.splat15.width) * 0.8);
+      g.restore();
+    }
   }
 }
 
@@ -767,18 +942,18 @@ function updateParticles(dt) {
     p.y += p.vy * dt;
     const floorHit = FLOOR_Y + 20 + (p.size * 17) % 190;
     if (p.y > floorHit && p.vy > 0) {
-      if (p.size > 2.2) splat(bg, p.x, p.y, p.size * 0.9, (p.x * 7 + p.y * 13) | 0, { drops: 2, directional: Math.atan2(p.vy * 0.2, p.vx) });
+      if (p.size > 2.4) stamp(bg, pickSplat(true), p.x, p.y, 10 + p.size * 7, Math.random() * Math.PI * 2, 0.9);
       particles.splice(i, 1);
     } else if (p.age > p.life || p.x < -40 || p.x > W + 40) particles.splice(i, 1);
   }
   const s = assets.soak.getContext("2d");
   for (let i = drips.length - 1; i >= 0; i--) {
     const d = drips[i];
-    const step = d.speed * dt * (1 - d.len / d.max * 0.8);
     if (d.len >= d.max) {
       drips.splice(i, 1);
       continue;
     }
+    const step = d.speed * dt * (1 - (d.len / d.max) * 0.8);
     streak(s, d.x, d.y + d.len, d.x + (Math.random() - 0.5) * 0.4, d.y + d.len + step + 0.5, d.w);
     d.len += step;
     soakDirty = true;
@@ -812,7 +987,7 @@ function frame(now) {
   } else if (assets.blood && (state.stage === "draw" || state.stage === "finale")) {
     state.finaleT = state.stage === "finale" ? state.finaleT + dt / 4 : 0;
     drawOverhead(sg, t);
-  } else if (assets.blood === undefined) {
+  } else {
     sg.fillStyle = "#000";
     sg.fillRect(0, 0, W, H);
   }
@@ -913,7 +1088,7 @@ stage.addEventListener("pointermove", (event) => {
 addEventListener("keydown", (event) => {
   if (state.stage !== "kill" || (event.key !== "Enter" && event.key !== " ")) return;
   event.preventDefault();
-  startStab(330 + Math.random() * 190, 250 + Math.random() * 90);
+  startStab(G.x + G.w * (0.3 + Math.random() * 0.4), G.y + G.h * (0.3 + Math.random() * 0.2));
 });
 
 function distanceToSegment(px, py, ax, ay, bx, by) {
@@ -923,7 +1098,6 @@ function distanceToSegment(px, py, ax, ay, bx, by) {
   return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
 }
 
-let glowTimer = 0;
 function stroke(from, to) {
   const cost = Math.hypot(to[0] - from[0], to[1] - from[1]) / (pathLength * 4.5);
   state.reserve -= cost;
@@ -971,6 +1145,12 @@ function burstFx(x, y, amount, power = 1) {
   }
 }
 
+function flashHead(duration) {
+  headFlash.style.transform = `translate(${(Math.random() - 0.5) * 30}px, ${(Math.random() - 0.5) * 30}px) scale(${1.05 + Math.random() * 0.1})`;
+  headFlash.classList.add("on");
+  setTimeout(() => headFlash.classList.remove("on"), duration);
+}
+
 function finale() {
   state.stage = "finale";
   state.drawing = false;
@@ -992,6 +1172,9 @@ function finale() {
       burstFx(Math.random() * innerWidth, Math.random() * innerHeight * 0.6, 40, 1.6);
     }, 400 + i * 900);
   });
+  setTimeout(() => flashHead(170), 1500);
+  setTimeout(() => flashHead(120), 2000);
+  setTimeout(() => flashHead(260), 3300);
   setTimeout(() => {
     const fade = setInterval(() => {
       blackout += 0.1;

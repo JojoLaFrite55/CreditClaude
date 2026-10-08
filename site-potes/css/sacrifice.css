@@ -323,3 +323,19 @@ body.finale .draw canvas {
 body.finale .stage {
   filter: contrast(1.25) saturate(1.5);
 }
+
+.head-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 57;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  filter: sepia(1) saturate(5) hue-rotate(-55deg) contrast(1.45) brightness(0.8);
+}
+
+.head-flash.on {
+  opacity: 0.92;
+}
