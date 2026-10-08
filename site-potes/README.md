@@ -68,3 +68,5 @@ Cinq nouvelles têtes détourées (`assets/heads/tete-14` à `tete-18`) sont dan
 Encore quatre têtes détourées (`tete-19` à `tete-22`, dont les trois potes aux lunettes de nuit), les photos `cri-noir`, `lunettes`, `concombres` et `oasis` en fonds photo pour les memes, et le morceau « Le Casse-Croûte » dans le jeu de rythme.
 
 Quatre morceaux de plus dans le jeu de rythme (Le Manège, Disco Flash, Disco Couloir, Le Grand Disco), la tête `tete-23` et la photo `chemise-rose` (fond photo des memes).
+
+Cinq morceaux de plus dans le jeu de rythme : Le Café, Fond Turquoise, Les Backup Dancers, Danse à Trois et Le Matelas.

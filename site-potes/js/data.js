@@ -231,7 +231,7 @@ export const GAMES = [
   {
     slug: "rythme",
     title: "Rythme des potes",
-    text: "Des flèches en rythme avec les vidéos du QG : 13 morceaux, 4 difficultés.",
+    text: "Des flèches en rythme avec les vidéos du QG : 18 morceaux, 4 difficultés.",
     href: "rythme.html",
     image: "assets/previews/rythme.jpg",
     badge: "Nouveau",

@@ -17,6 +17,11 @@ export const SONGS = [
   { id: "disco-flash", title: "Disco Flash", sub: "Les lumières changent de couleur", mp4: secret("disco-flash.mp4"), webm: secret("disco-flash.webm"), duration: "0:11", color: "#8e44ad" },
   { id: "disco-couloir", title: "Disco Couloir", sub: "La suite, avec la porte", mp4: secret("disco-couloir.mp4"), webm: secret("disco-couloir.webm"), duration: "0:22", color: "#27ae60" },
   { id: "grand-disco", title: "Le Grand Disco", sub: "Plus d'une minute de lumières", mp4: secret("grand-disco.mp4"), webm: secret("grand-disco.webm"), duration: "1:09", color: "#2980b9" },
+  { id: "cafe", title: "Le Café", sub: "Le pantalon qui fait danser", mp4: secret("cafe.mp4"), webm: secret("cafe.webm"), duration: "0:19", color: "#a0522d" },
+  { id: "turquoise", title: "Fond Turquoise", sub: "Un pas de danse, un fond bleu", mp4: secret("turquoise.mp4"), webm: secret("turquoise.webm"), duration: "0:10", color: "#1abc9c" },
+  { id: "backup", title: "Les Backup Dancers", sub: "Une équipe derrière toi", mp4: secret("backup.mp4"), webm: secret("backup.webm"), duration: "0:11", color: "#a64ca6" },
+  { id: "trois", title: "Danse à Trois", sub: "Deux invités surprise dans le salon", mp4: secret("trois.mp4"), webm: secret("trois.webm"), duration: "0:20", color: "#5d6d7e" },
+  { id: "matelas", title: "Le Matelas", sub: "Danse sur le lit", mp4: secret("matelas.mp4"), webm: secret("matelas.webm"), duration: "0:14", color: "#b565a7" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 
