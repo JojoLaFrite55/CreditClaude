@@ -1,4 +1,4 @@
-import { SONGS, loadCharts } from "./rhythm/songs.js";
+import { MICRO_SONG, loadCharts } from "./rhythm/songs.js";
 import { createRhythm } from "./rhythm/engine.js";
 
 function loadCss() {
@@ -26,7 +26,7 @@ export async function openMicro() {
     modal.remove();
     document.body.style.overflow = "";
   };
-  game = createRhythm(modal, { song: SONGS[0], charts: all.micro, diffKey: "normal", onExit: close, closable: true });
+  game = createRhythm(modal, { song: MICRO_SONG, charts: all.micro, diffKey: "normal", onExit: close, closable: true });
   modal.addEventListener("click", (event) => {
     if (event.target === modal) close();
   });
