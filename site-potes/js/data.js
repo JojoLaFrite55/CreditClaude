@@ -25,6 +25,9 @@ const PHOTOS = [
   "assets/heads/tete-8.png",
   "assets/heads/tete-9.png",
   "assets/heads/tete-10.png",
+  "assets/heads/tete-11.png",
+  "assets/heads/tete-12.png",
+  "assets/heads/tete-13.png",
 ];
 
 export const MEME_EXTRAS = ["assets/memes/soixante-sept.png"];
