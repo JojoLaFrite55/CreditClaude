@@ -7,6 +7,11 @@ export const MICRO_SONG = { id: "micro", title: "Le Micro", sub: "La voix du mic
 export const SONGS = [
   { id: "67", title: "Tiki Tiki — 67 Man", sub: "Ultra slowed, ballon argenté", mp4: secret("67.mp4"), webm: secret("67.webm"), duration: "0:16", color: "#f2c230" },
   { id: "doberman", title: "Le Doberman", sub: "Pipi, caca, dobermans et bergers allemands", mp4: secret("doberman.mp4"), webm: secret("doberman.webm"), duration: "0:18", color: "#d9782b" },
+  { id: "duplex", title: "La Visite du Duplex", sub: "Le duplex le plus branché du quartier", mp4: secret("duplex.mp4"), webm: secret("duplex.webm"), duration: "0:49", color: "#2f9e8f" },
+  { id: "danse", title: "Les Danseurs", sub: "Chorégraphie sur fond rouge", mp4: secret("danse.mp4"), webm: secret("danse.webm"), duration: "0:09", color: "#e0245e" },
+  { id: "egypte", title: "Propriété en Égypte", sub: "I bought a property in Egypt", mp4: secret("egypte.mp4"), webm: secret("egypte.webm"), duration: "0:07", color: "#d4a017" },
+  { id: "bonbonnes", title: "Les Bonbonnes", sub: "Gymnastique entre les bouteilles de gaz", mp4: secret("bonbonnes.mp4"), webm: secret("bonbonnes.webm"), duration: "0:13", color: "#e85d9b" },
+  { id: "circuit", title: "Le Circuit", sub: "Course de karts, version chaos", mp4: secret("circuit.mp4"), webm: secret("circuit.webm"), duration: "0:27", color: "#4a7bd0" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
 ];
 
