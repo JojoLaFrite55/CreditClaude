@@ -49,8 +49,14 @@ La chèvre 🐐 en bas à gauche de l'accueil mène à `sacrifice.html` : tuer l
 Le petit 🚗 presque invisible dans le pied de page (survole-le) ouvre la vidéo du trajet (`js/voiture.js`).
 Le "67" presque invisible tout à droite de la barre noire en haut (survole-le) ouvre la vidéo du 67 man (`js/soixantesept.js`).
 Le 🐺 gris presque invisible dans le pied de page, à gauche de la 🚗 (survole-le), ouvre la vidéo du loup sigma (`js/soixantesept.js`, `assets/secret/loup.*`).
-Le 🎤 gris presque invisible tout à gauche des petits symboles du pied de page ouvre la vidéo du micro : un clic sur « Jouer » lance un mini jeu de rythme à flèches (← ↓ ↑ → ou tap sur les colonnes) calé sur la voix de la vidéo (`js/micro.js`, notes générées depuis le son dans `assets/secret/micro-chart.json`).
+Le 🎤 gris presque invisible du pied de page ouvre le même jeu de rythme sur la vidéo du micro.
 
 Les sons du sacrifice sont de vrais échantillons CC0 (`assets/sfx/`, crédits dans `assets/sfx/CREDITS.md`).
 
 Le 🚗 du pied de page lance maintenant la vidéo avec le son « Stadium Rave » (`assets/secret/stadium-rave.mp3`, en boucle, bouton pour le couper) et des effets (spectre, lasers, têtes qui rebondissent). Les photos complètes des potes sont dans `assets/photos/`, les têtes détourées dans `assets/heads/`.
+
+## Rythme des potes
+
+`rythme.html` (menu Jeux) : jeu de rythme à flèches (← ↓ ↑ → ou tap sur les colonnes) calé sur les vidéos du QG : Le Micro, Stadium Rave (vidéo du trajet), Tiki Tiki — 67 Man, Loup Sigma, Le Rituel. Quatre difficultés (Facile, Normal, Difficile, Hardcore : plus de notes, flèches plus rapides, fenêtres de timing plus serrées, accords en Hardcore, multiplicateur de score) et un record par morceau et par difficulté. On peut monter ou baisser d'un cran depuis l'écran de fin.
+
+Le moteur est dans `js/rhythm/` (`engine.js`, `songs.js`). Les notes sont générées depuis le son de chaque morceau (détection des attaques) et stockées dans `assets/rythme/charts.json`.

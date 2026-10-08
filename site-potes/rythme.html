@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rythme des potes — LE QG</title>
+  <meta name="description" content="Appuie sur les flèches en rythme avec les vidéos du QG. Quatre difficultés, des records par morceau.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/micro.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head" id="head">
+      <h1>Rythme des potes</h1>
+      <p>Appuie sur les flèches en rythme avec les vidéos du QG. Choisis un morceau et une difficulté.</p>
+    </div>
+    <section id="menu" class="rhythm-menu">
+      <div class="rhythm-levels" id="levels" role="group" aria-label="Difficulté"></div>
+      <div class="rhythm-songs" id="songs"></div>
+    </section>
+    <section id="stage" class="rhythm-embed" hidden></section>
+  </main>
+  <script type="module" src="js/games/rythme.js"></script>
+</body>
+</html>

@@ -9,7 +9,8 @@
   color: #fff;
 }
 
-.mic [hidden] {
+.mic [hidden],
+.rhythm-embed [hidden] {
   display: none !important;
 }
 
@@ -42,12 +43,66 @@
 .mic-play {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
 }
 
-.mic-play button,
+.mic-title {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.mic-hint {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.mic-diffs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  width: min(100%, 300px);
+}
+
+.mic-diffs button {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mic-diffs button small {
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+.mic-diffs button.on {
+  background: #fff;
+  color: #111;
+  border-color: #fff;
+}
+
+.mic-end button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.mic-play [data-start],
 .mic-end button {
   border: 0;
   border-radius: 999px;
@@ -133,13 +188,15 @@
 
 .mic-end .row {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
   margin-top: 8px;
 }
 
 .mic-end button {
-  padding: 10px 22px;
-  font-size: 15px;
+  padding: 9px 14px;
+  font-size: 14px;
 }
 
 .mic-end button.ghost {
@@ -183,4 +240,143 @@
 @keyframes mic-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+.rhythm-embed {
+  scroll-margin-top: 80px;
+  color: #fff;
+  background: #08060f;
+  border-radius: 16px;
+}
+
+.rhythm-embed .mic-box {
+  width: 100%;
+  height: min(84vh, 720px);
+}
+
+@media (min-width: 820px) {
+  .rhythm-embed .mic-box {
+    width: 100%;
+    height: min(78vh, 640px);
+  }
+}
+
+.rhythm-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rhythm-menu[hidden],
+.rhythm-menu [hidden] {
+  display: none !important;
+}
+
+.rhythm-levels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  max-width: 560px;
+}
+
+.rhythm-levels button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 8px;
+  border: 1px solid var(--line, #ddd);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink, #111);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rhythm-levels button small {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+.rhythm-levels button.on {
+  background: var(--ink, #111);
+  color: #fff;
+  border-color: var(--ink, #111);
+}
+
+.rhythm-songs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.rhythm-song {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+  text-align: left;
+  border: 1px solid var(--line, #ddd);
+  border-left: 6px solid var(--c);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink, #111);
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rhythm-song:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.rhythm-song-title {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.rhythm-song-sub {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.rhythm-song-meta {
+  font-size: 12px;
+  opacity: 0.55;
+}
+
+@media (max-width: 520px) {
+  .mic-end .rank {
+    font-size: 56px;
+  }
+
+  .mic-end button {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .mic-end .row {
+    gap: 6px;
+  }
+
+  .mic-diffs {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+
+  .mic-diffs button {
+    padding: 8px 2px;
+    font-size: 12px;
+  }
+
+  .mic-diffs button small {
+    display: none;
+  }
+
+  .rhythm-levels {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

@@ -209,6 +209,15 @@ export const GAMES = [
     tags: ["Réflexion", "3 niveaux"],
   },
   {
+    slug: "rythme",
+    title: "Rythme des potes",
+    text: "Des flèches en rythme avec les vidéos du QG : 5 morceaux, 4 difficultés.",
+    href: "rythme.html",
+    image: "assets/previews/rythme.jpg",
+    badge: "Nouveau",
+    tags: ["Rythme", "Vidéo", "Records"],
+  },
+  {
     slug: "simon",
     title: "Simon des potes",
     text: "Retiens la suite de têtes qui s'allument et rejoue-la.",
