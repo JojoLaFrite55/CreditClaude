@@ -110,3 +110,5 @@ Cinquième difficulté « Flow », placée entre Facile et Normal : elle garde t
 « Le Filtre Muet » a été raccourci à 7 s : les 2 secondes qui montraient des fesses nues ont été coupées.
 
 Quatre têtes de plus (`tete-24` à `tete-27`), détourées à partir de captures d'appel vocal : seule la vignette de la personne a été gardée, sans l'interface (ni le chat avatar ni le bandeau « Connexion Internet instable »).
+
+Sept têtes de plus (`tete-28` à `tete-34`) : le filtre violet, le masque « 329 », les trois potes du canapé (une tête chacun), la tête du BeReal et le selfie en treillis (avec le téléphone). Les interfaces (noms d'utilisateur, bandeaux, vignettes) ont été écartées. Trois photos complètes (`canape`, `treillis`, `filtre-violet`) servent de fonds dans le générateur de memes, l'atelier montage et le jeu des cinq erreurs.

@@ -1,6 +1,6 @@
 import { getBest, loadHeads, pick, setBest, shuffle } from "../arcade/kit.js";
 
-const PHOTOS = ["casque", "bouche", "tourne-mal", "grimace", "dinguerie", "gros-caca", "chapeau", "cri", "webcam", "moustache", "cri-noir", "lunettes", "concombres", "oasis", "chemise-rose"];
+const PHOTOS = ["casque", "bouche", "tourne-mal", "grimace", "dinguerie", "gros-caca", "chapeau", "cri", "webcam", "moustache", "cri-noir", "lunettes", "concombres", "oasis", "chemise-rose", "canape", "treillis", "filtre-violet"];
 const S = 480;
 const COUNT = 5;
 const START_TIME = 75;

@@ -42,6 +42,13 @@ const PHOTOS = [
   "assets/heads/tete-25.png",
   "assets/heads/tete-26.png",
   "assets/heads/tete-27.png",
+  "assets/heads/tete-28.png",
+  "assets/heads/tete-29.png",
+  "assets/heads/tete-30.png",
+  "assets/heads/tete-31.png",
+  "assets/heads/tete-32.png",
+  "assets/heads/tete-33.png",
+  "assets/heads/tete-34.png",
 ];
 
 export const MEME_EXTRAS = ["assets/memes/soixante-sept.png"];
@@ -73,6 +80,9 @@ export const BACKGROUNDS = [
   { id: "photo-concombres", label: "Photo : concombres", a: "#4d6b2a", b: "#b9d68b", image: "assets/photos/concombres.jpg", focus: 0.4 },
   { id: "photo-oasis", label: "Photo : Oasis", a: "#c9792b", b: "#f3d9a8", image: "assets/photos/oasis.jpg", focus: 0.5 },
   { id: "photo-chemise-rose", label: "Photo : chemise rose", a: "#c97b8f", b: "#f4d6dc", image: "assets/photos/chemise-rose.jpg", focus: 0.3 },
+  { id: "photo-canape", label: "Photo : le canapé", a: "#6b5a3a", b: "#cbb98a", image: "assets/photos/canape.jpg", focus: 0.4 },
+  { id: "photo-treillis", label: "Photo : treillis", a: "#4a5a3a", b: "#9aa88a", image: "assets/photos/treillis.jpg", focus: 0.4 },
+  { id: "photo-filtre-violet", label: "Photo : filtre violet", a: "#4a2a8a", b: "#a78bfa", image: "assets/photos/filtre-violet.jpg", focus: 0.5 },
 ];
 
 export const MEMES = [
