@@ -11,7 +11,7 @@ const rotEl = document.getElementById("rot");
 const textEl = document.getElementById("text");
 const colorEl = document.getElementById("color");
 const upload = document.getElementById("upload");
-const PHOTOS = ["casque", "bouche", "tourne-mal", "grimace", "dinguerie", "gros-caca", "chapeau", "cri", "webcam", "moustache", "cri-noir", "lunettes", "concombres", "oasis", "chemise-rose", "canape", "treillis", "filtre-violet"];
+const PHOTOS = ["casque", "bouche", "tourne-mal", "grimace", "dinguerie", "gros-caca", "chapeau", "cri", "webcam", "moustache", "cri-noir", "lunettes", "concombres", "oasis", "chemise-rose", "canape", "treillis", "filtre-violet", "chaise-gamer", "portrait-mur", "nintendo", "nuit", "voiture-flou"];
 const GRADS = [["#0f4c75", "#3282b8"], ["#c0392b", "#f39c12"], ["#1e8449", "#b7e44a"], ["#4a235a", "#af7ac5"], ["#17202a", "#566573"], ["#d63384", "#ffb3d9"]];
 const state = { bg: { type: "grad", i: 0 }, bgImg: null, items: [], sel: null, drag: null };
 

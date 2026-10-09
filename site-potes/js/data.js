@@ -49,6 +49,12 @@ const PHOTOS = [
   "assets/heads/tete-32.png",
   "assets/heads/tete-33.png",
   "assets/heads/tete-34.png",
+  "assets/heads/tete-35.png",
+  "assets/heads/tete-36.png",
+  "assets/heads/tete-37.png",
+  "assets/heads/tete-38.png",
+  "assets/heads/tete-39.png",
+  "assets/heads/tete-40.png",
 ];
 
 export const MEME_EXTRAS = ["assets/memes/soixante-sept.png"];
@@ -83,6 +89,11 @@ export const BACKGROUNDS = [
   { id: "photo-canape", label: "Photo : le canapé", a: "#6b5a3a", b: "#cbb98a", image: "assets/photos/canape.jpg", focus: 0.4 },
   { id: "photo-treillis", label: "Photo : treillis", a: "#4a5a3a", b: "#9aa88a", image: "assets/photos/treillis.jpg", focus: 0.4 },
   { id: "photo-filtre-violet", label: "Photo : filtre violet", a: "#4a2a8a", b: "#a78bfa", image: "assets/photos/filtre-violet.jpg", focus: 0.5 },
+  { id: "photo-chaise-gamer", label: "Photo : chaise gamer", a: "#5a6b8a", b: "#cbd5e0", image: "assets/photos/chaise-gamer.jpg", focus: 0.3 },
+  { id: "photo-portrait-mur", label: "Photo : portrait", a: "#8a8070", b: "#d5cfc0", image: "assets/photos/portrait-mur.jpg", focus: 0.4 },
+  { id: "photo-nintendo", label: "Photo : Super Nintendo", a: "#7a8a8a", b: "#d0d8d8", image: "assets/photos/nintendo.jpg", focus: 0.3 },
+  { id: "photo-nuit", label: "Photo : nuit", a: "#10141a", b: "#3a4a5a", image: "assets/photos/nuit.jpg", focus: 0.4 },
+  { id: "photo-voiture-flou", label: "Photo : voiture floue", a: "#8a7a60", b: "#e0d4b8", image: "assets/photos/voiture-flou.jpg", focus: 0.4 },
 ];
 
 export const MEMES = [
