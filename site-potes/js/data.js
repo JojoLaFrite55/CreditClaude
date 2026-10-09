@@ -38,6 +38,10 @@ const PHOTOS = [
   "assets/heads/tete-21.png",
   "assets/heads/tete-22.png",
   "assets/heads/tete-23.png",
+  "assets/heads/tete-24.png",
+  "assets/heads/tete-25.png",
+  "assets/heads/tete-26.png",
+  "assets/heads/tete-27.png",
 ];
 
 export const MEME_EXTRAS = ["assets/memes/soixante-sept.png"];

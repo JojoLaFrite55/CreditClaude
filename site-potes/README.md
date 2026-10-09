@@ -108,3 +108,5 @@ Les pages Jeux et Outils ont une recherche et des filtres par thème (avec « No
 Cinquième difficulté « Flow », placée entre Facile et Normal : elle garde toutes les notes du Hardcore (même tempo), mais sans accords et avec des enchaînements simples (une flèche répétée, deux flèches voisines en alternance, ou un escalier de flèches voisines, jamais de saut d'une extrémité à l'autre). Fenêtres de timing un peu plus larges que Normal, multiplicateur ×1,2. Les notes sont générées à partir du chart Hardcore dans `assets/rythme/charts.json` (clé `flow`).
 
 « Le Filtre Muet » a été raccourci à 7 s : les 2 secondes qui montraient des fesses nues ont été coupées.
+
+Quatre têtes de plus (`tete-24` à `tete-27`), détourées à partir de captures d'appel vocal : seule la vignette de la personne a été gardée, sans l'interface (ni le chat avatar ni le bandeau « Connexion Internet instable »).
