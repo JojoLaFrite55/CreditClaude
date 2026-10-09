@@ -55,6 +55,9 @@ const PHOTOS = [
   "assets/heads/tete-38.png",
   "assets/heads/tete-39.png",
   "assets/heads/tete-40.png",
+  "assets/heads/tete-41.png",
+  "assets/heads/tete-42.png",
+  "assets/heads/tete-43.png",
 ];
 
 export const MEME_EXTRAS = ["assets/memes/soixante-sept.png"];
@@ -94,6 +97,10 @@ export const BACKGROUNDS = [
   { id: "photo-nintendo", label: "Photo : Super Nintendo", a: "#7a8a8a", b: "#d0d8d8", image: "assets/photos/nintendo.jpg", focus: 0.3 },
   { id: "photo-nuit", label: "Photo : nuit", a: "#10141a", b: "#3a4a5a", image: "assets/photos/nuit.jpg", focus: 0.4 },
   { id: "photo-voiture-flou", label: "Photo : voiture floue", a: "#8a7a60", b: "#e0d4b8", image: "assets/photos/voiture-flou.jpg", focus: 0.4 },
+  { id: "photo-mouchoir", label: "Photo : mouchoir", a: "#c9c2b0", b: "#f1ecdc", image: "assets/photos/mouchoir.jpg", focus: 0.4 },
+  { id: "photo-advisory", label: "Photo : parental advisory", a: "#1a1a1a", b: "#4a4a4a", image: "assets/photos/advisory.jpg", focus: 0.3 },
+  { id: "photo-souris", label: "Photo : souris", a: "#a8a79e", b: "#e6e4da", image: "assets/photos/souris.jpg", focus: 0.4 },
+  { id: "photo-cheveux-longs", label: "Photo : cheveux longs", a: "#4a3a2a", b: "#a89878", image: "assets/photos/cheveux-longs.jpg", focus: 0.4 },
 ];
 
 export const MEMES = [
