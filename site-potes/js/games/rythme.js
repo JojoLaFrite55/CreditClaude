@@ -28,7 +28,7 @@ const seconds = (text) => {
 const norm = (text) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 const renderLevels = () => {
-  levelsEl.innerHTML = DIFFS.map((item) => `<button type="button" class="${item.key === diffKey ? "on" : ""}" data-diff="${item.key}">${item.label}<small>×${item.mult}</small></button>`).join("");
+  levelsEl.innerHTML = DIFFS.map((item) => `<button type="button" class="${item.key === diffKey ? "on" : ""}" data-diff="${item.key}">${item.label}<small>${item.hint || `×${item.mult}`}</small></button>`).join("");
 };
 
 const renderSongs = () => {

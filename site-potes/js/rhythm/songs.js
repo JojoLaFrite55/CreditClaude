@@ -38,7 +38,7 @@ export const SONGS = [
   { id: "filtre", title: "Le Visage Étiré", sub: "Un filtre qui change tout", mp4: secret("filtre.mp4"), webm: secret("filtre.webm"), duration: "0:06", color: "#d35400" },
   { id: "lune", title: "Un Homme sur la Lune", sub: "Astronaute, la Terre en fond", mp4: secret("lune.mp4"), webm: secret("lune.webm"), duration: "0:15", color: "#2c3e50" },
   { id: "kirby", title: "Le Cri de Kirby", sub: "Bouche grande ouverte, Kirby en coin", mp4: secret("kirby.mp4"), webm: secret("kirby.webm"), duration: "0:15", color: "#ff7eb6" },
-  { id: "filtre-muet", title: "Le Filtre Muet", sub: "Aucun son : tape en rythme à l'instinct", mp4: secret("filtre-muet.mp4"), webm: secret("filtre-muet.webm"), duration: "0:09", color: "#7f8fa6" },
+  { id: "filtre-muet", title: "Le Filtre Muet", sub: "Aucun son : tape en rythme à l'instinct", mp4: secret("filtre-muet.mp4"), webm: secret("filtre-muet.webm"), duration: "0:07", color: "#7f8fa6" },
   { id: "champions", title: "Les Grands Champions", sub: "L'hymne et un visage étiré", mp4: secret("champions.mp4"), webm: secret("champions.webm"), duration: "0:15", color: "#1e3a8a" },
   { id: "montenegro", title: "Monténégro", sub: "Monténégro, escargots, et un crâne lisse", mp4: secret("montenegro.mp4"), webm: secret("montenegro.webm"), duration: "0:10", color: "#b03a2e" },
   { id: "loup", title: "Loup Sigma", sub: "Le hurlement de la meute", mp4: secret("loup.mp4"), webm: secret("loup.webm"), duration: "0:14", color: "#9aa3b2" },
@@ -46,6 +46,7 @@ export const SONGS = [
 
 export const DIFFS = [
   { key: "facile", label: "Facile", lead: 2.1, win: [0.09, 0.16, 0.24], mult: 0.7 },
+  { key: "flow", label: "Flow", lead: 1.3, win: [0.075, 0.13, 0.19], mult: 1.2, hint: "tempo hardcore, flèches simples" },
   { key: "normal", label: "Normal", lead: 1.5, win: [0.065, 0.115, 0.17], mult: 1 },
   { key: "difficile", label: "Difficile", lead: 1.25, win: [0.055, 0.1, 0.14], mult: 1.4 },
   { key: "hardcore", label: "Hardcore", lead: 1.0, win: [0.045, 0.085, 0.12], mult: 2 },

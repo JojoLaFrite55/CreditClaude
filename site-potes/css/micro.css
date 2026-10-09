@@ -64,10 +64,15 @@
 }
 
 .mic-diffs {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 6px;
-  width: min(100%, 300px);
+  width: min(100%, 340px);
+}
+
+.mic-diffs button {
+  flex: 1 1 96px;
 }
 
 .mic-diffs button {
@@ -274,9 +279,9 @@
 
 .rhythm-levels {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
-  max-width: 560px;
+  max-width: 720px;
 }
 
 .rhythm-levels button {
@@ -363,8 +368,11 @@
   }
 
   .mic-diffs {
-    grid-template-columns: repeat(4, 1fr);
     gap: 4px;
+  }
+
+  .mic-diffs button {
+    flex: 1 1 56px;
   }
 
   .mic-diffs button {
@@ -377,7 +385,7 @@
   }
 
   .rhythm-levels {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

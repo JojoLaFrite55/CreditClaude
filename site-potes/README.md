@@ -102,3 +102,9 @@ Outils : `addition.html` (partage de l'addition par article ou à parts égales,
 Corrections : chèvre de l'accueil intégrée au bloc d'accueil (elle ne recouvre plus rien), HUD et fenêtres de départ des jeux repensés pour le mobile, jeux qui tiennent dans la hauteur de l'écran, vignettes régénérées à partir de vraies captures, badges « Nouveau » réservés aux ajouts récents, têtes détourées avec des bords rectangulaires reprises.
 
 Les pages Jeux et Outils ont une recherche et des filtres par thème (avec « Nouveautés »).
+
+## Mode Flow (jeu de rythme)
+
+Cinquième difficulté « Flow », placée entre Facile et Normal : elle garde toutes les notes du Hardcore (même tempo), mais sans accords et avec des enchaînements simples (une flèche répétée, deux flèches voisines en alternance, ou un escalier de flèches voisines, jamais de saut d'une extrémité à l'autre). Fenêtres de timing un peu plus larges que Normal, multiplicateur ×1,2. Les notes sont générées à partir du chart Hardcore dans `assets/rythme/charts.json` (clé `flow`).
+
+« Le Filtre Muet » a été raccourci à 7 s : les 2 secondes qui montraient des fesses nues ont été coupées.
