@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Morpion des têtes — LE QG</title>
+  <meta name="description" content="Trois têtes alignées gagnent. Contre la machine (qui ne se rate presque jamais) ou à deux.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Morpion des têtes</h1>
+      <p>Trois têtes alignées gagnent. Contre la machine (qui ne se rate presque jamais) ou à deux.</p>
+    </div>
+    <div class="ttt">
+      <div class="memory-bar">
+        <label class="field"><span>Mode</span><select id="mode"><option value="ai">Contre la machine</option><option value="two">À deux</option></select></label>
+        <label class="field"><span>Niveau</span><select id="level"><option value="easy">Facile</option><option value="normal" selected>Normal</option><option value="hard">Impossible</option></select></label>
+        <button class="btn btn-small btn-secondary" id="swap" type="button">Changer de têtes</button>
+        <button class="btn btn-small btn-secondary" id="restart" type="button">Nouvelle manche</button>
+        <button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button>
+      </div>
+      <p class="p4-score"><span>Joueur 1 : <strong id="me">0</strong></span><span>Nuls : <strong id="draw">0</strong></span><span>Joueur 2 : <strong id="foe">0</strong></span></p>
+      <div class="ttt-board" id="board"></div>
+      <p class="p4-status" id="status"></p>
+    </div>
+  </main>
+  <script type="module" src="js/games/morpion.js"></script>
+</body>
+</html>

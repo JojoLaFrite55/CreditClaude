@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calcul mental — LE QG</title>
+  <meta name="description" content="Des additions, soustractions, multiplications et divisions. 45 secondes, chaque erreur coûte du temps.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Calcul mental</h1>
+      <p>Des additions, soustractions, multiplications et divisions. 45 secondes, chaque erreur coûte du temps.</p>
+    </div>
+    <div class="calc">
+      <div class="zq-top"><div class="hud-item light"><span>Score</span><strong id="score">0</strong></div><div class="hud-item light"><span>Temps</span><strong id="time">45</strong></div><div class="hud-item light"><span>Série</span><strong id="streak">0</strong></div><div class="hud-item light"><span>Record</span><strong id="best">0</strong></div><label class="field memory-level"><span>Niveau</span><select id="level"><option value="easy">Facile</option><option value="normal" selected>Normal</option><option value="hard">Difficile</option></select></label><button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button></div>
+      <div class="face-token" id="face"></div>
+      <div class="calc-q" id="question">?</div>
+      <div class="calc-row"><input type="text" inputmode="numeric" id="answer" autocomplete="off" aria-label="Ta réponse"><button class="btn" id="ok" type="button">Valider</button></div>
+      <p class="p4-status" id="status">Appuie sur Commencer.</p>
+      <div class="btn-row" style="justify-content:center"><button class="btn" id="start" type="button">Commencer</button></div>
+    </div>
+  </main>
+  <script type="module" src="js/games/calcul.js"></script>
+</body>
+</html>

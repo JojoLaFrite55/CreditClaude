@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quel pote es-tu ? — LE QG</title>
+  <meta name="description" content="Huit questions, six profils. Découvre ton rôle dans la bande.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Quel pote es-tu ?</h1>
+      <p>Huit questions, six profils. Découvre ton rôle dans la bande.</p>
+    </div>
+    <div class="qp-wrap">
+      <div class="tool-panel">
+        <div class="qp-progress"><i id="bar"></i></div>
+        <form id="quiz" onsubmit="return false"><p class="muted" id="step"></p><h2 id="q"></h2><div id="opts"></div></form>
+        <div id="card" hidden></div>
+        <div class="btn-row"><button class="btn" id="restart" type="button" hidden>Recommencer</button><button class="btn btn-secondary" id="sound" type="button">Son : activé</button></div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/quelpote.js"></script>
+</body>
+</html>

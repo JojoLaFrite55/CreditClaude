@@ -92,3 +92,11 @@ Jeux : `invasion.html` (shoot'em up de têtes), `pong.html` (contre la machine),
 Outils : `diplome.html` (diplôme téléchargeable en PNG), `boule.html` (boule magique).
 
 Le jeu de rythme a maintenant une recherche et un filtre par durée pour s'y retrouver parmi les morceaux.
+
+## Nouvelle vague de jeux et d'outils
+
+Jeux : `tetris.html` (Tétris, avec écran tactile), `runner.html` (runner sans fin), `ballons.html` (crève-ballons, bombes et ballons dorés), `morpion.html` (contre la machine ou à deux, jusqu'au niveau « impossible »), `blackjack.html` (jetons fictifs), `chrono10.html` (arrêter à 10,00 s), `dactylo.html`, `silhouette.html` (une tête dans le noir qui s'éclaire), `videodevine.html` (image de vidéo pixelisée qui se précise), `saute.html` (type Doodle Jump), `tour.html` (empiler des étages) et `calcul.html`.
+
+Outils : `addition.html` (partage de l'addition par article ou à parts égales, avec pourboire, sauvegardé sur l'appareil), `bingo.html` (grille partageable par lien), `compatibilite.html`, `quelpote.html` (quiz de personnalité) et `stickers.html` (atelier de montage : têtes, texte, photo de fond ou image importée, téléchargement PNG).
+
+Corrections : chèvre de l'accueil intégrée au bloc d'accueil (elle ne recouvre plus rien), HUD et fenêtres de départ des jeux repensés pour le mobile, jeux qui tiennent dans la hauteur de l'écran, vignettes régénérées à partir de vraies captures, badges « Nouveau » réservés aux ajouts récents, têtes détourées avec des bords rectangulaires reprises.

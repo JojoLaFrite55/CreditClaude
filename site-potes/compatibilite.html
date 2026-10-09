@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compatibilité — LE QG</title>
+  <meta name="description" content="Deux prénoms, un pourcentage sans appel. Le même couple donne toujours le même résultat.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Compatibilité</h1>
+      <p>Deux prénoms, un pourcentage sans appel. Le même couple donne toujours le même résultat.</p>
+    </div>
+    <div class="cp-wrap">
+      <div class="tool-panel">
+        <div class="field"><label for="a">Premier prénom</label><input type="text" id="a" maxlength="30" placeholder="Léo"></div>
+        <div class="field"><label for="b">Deuxième prénom</label><input type="text" id="b" maxlength="30" placeholder="Sam"></div>
+        <div class="btn-row"><button class="btn" id="go" type="button">Calculer</button><button class="btn btn-secondary" id="sound" type="button">Son : activé</button></div>
+        <p class="muted">Calcul 100 % scientifique, 0 % sérieux.</p>
+      </div>
+      <div class="tool-panel" id="result" hidden>
+        <div class="cp-faces"><span id="face-a"></span><span aria-hidden="true" style="font-size:36px">❤</span><span id="face-b"></span></div>
+        <div class="cp-pct" id="pct" style="--fill:0%">0 %</div>
+        <p class="big-result" id="verdict"></p>
+        <div id="detail"></div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/compatibilite.js"></script>
+</body>
+</html>

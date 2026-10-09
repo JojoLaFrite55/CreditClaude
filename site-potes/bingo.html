@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bingo de soirée — LE QG</title>
+  <meta name="description" content="Une grille de situations qui arrivent à chaque soirée : coche-les au fil de la nuit.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Bingo de soirée</h1>
+      <p>Une grille de situations qui arrivent à chaque soirée : coche-les au fil de la nuit.</p>
+    </div>
+    <div class="bingo-wrap">
+      <div><div class="bingo-grid" id="grid"></div></div>
+      <div class="tool-panel">
+        <p class="big-result" id="status">Coche ce qui arrive pendant la soirée.</p>
+        <p class="muted" id="count"></p>
+        <p class="muted" id="seed"></p>
+        <div class="btn-row"><button class="btn" id="new" type="button">Nouvelle grille</button><button class="btn btn-secondary" id="reset" type="button">Tout décocher</button><button class="btn btn-secondary" id="copy" type="button">Copier le lien de la grille</button><button class="btn btn-secondary" id="sound" type="button">Son : activé</button></div>
+        <p class="muted">Le lien de la grille contient son numéro : toute la bande peut jouer la même grille.</p>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/bingo.js"></script>
+</body>
+</html>

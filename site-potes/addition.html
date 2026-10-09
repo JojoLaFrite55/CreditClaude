@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Partage de l'addition — LE QG</title>
+  <meta name="description" content="Qui doit combien ? Ajoute les articles, coche qui a mangé quoi, le calcul est fait.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Partage de l'addition</h1>
+      <p>Qui doit combien ? Ajoute les articles, coche qui a mangé quoi, le calcul est fait.</p>
+    </div>
+    <div class="ad-wrap">
+      <div class="tool-panel">
+        <div class="field"><label for="names">Les convives (un nom par ligne)</label><textarea id="names" rows="5">Léo
+Sam
+Max
+Jules</textarea></div>
+        <div class="field"><label for="mode">Mode de partage</label><select id="mode"><option value="items">Par article (chacun paie ce qu'il a pris)</option><option value="equal">À parts égales</option></select></div>
+        <div class="field" id="equal-wrap" hidden><label for="equal-amount">Montant total de l'addition (€)</label><input type="number" id="equal-amount" min="0" step="0.01"></div>
+        <div id="items-wrap"><h2>Les articles</h2><div id="items"></div><button class="btn btn-secondary" id="add-item" type="button">+ Ajouter un article</button></div>
+        <div class="field"><label for="tip">Pourboire (%)</label><input type="number" id="tip" min="0" max="50" step="1" value="0"></div>
+      </div>
+      <div class="tool-panel">
+        <h2>Ce que chacun doit</h2>
+        <p class="muted" id="total"></p>
+        <div id="result"></div>
+        <div class="btn-row"><button class="btn" id="copy" type="button">Copier le détail</button></div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/addition.js"></script>
+</body>
+</html>

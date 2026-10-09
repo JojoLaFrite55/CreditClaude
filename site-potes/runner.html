@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cours, Tête ! — LE QG</title>
+  <meta name="description" content="Un runner sans fin : saute les cactus, baisse-toi sous les oiseaux.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Cours, Tête !</h1>
+      <p>Un runner sans fin : saute les cactus, baisse-toi sous les oiseaux.</p>
+    </div>
+    <div class="arcade-shell">
+      <canvas id="cv" aria-label="Zone de jeu"></canvas>
+      <div class="arcade-bar">
+        <div class="hud-item"><span>Distance</span><strong id="score">0</strong></div><div class="hud-item"><span>Record</span><strong id="best">0</strong></div>
+        
+        <button class="hud-btn" id="sound" type="button">Son : activé</button>
+      </div>
+      <div class="overlay" id="ov">
+        <div class="panel">
+          <p class="eyebrow" data-ov-eyebrow></p>
+          <h2 data-ov-title></h2>
+          <p class="muted" data-ov-text></p>
+          <div data-ov-stats></div>
+          <div class="panel-actions stack">
+            <button class="btn" data-ov-action type="button">Jouer</button>
+            <a class="btn btn-secondary" href="jeux.html">Retour aux jeux</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="muted" style="text-align:center;margin-top:14px">Espace ou ↑ pour sauter, ↓ pour te baisser. Au doigt : touche en haut pour sauter, maintiens en bas pour te baisser.</p>
+  </main>
+  <script type="module" src="js/games/runner.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atelier montage — LE QG</title>
+  <meta name="description" content="Pose des têtes et du texte sur une photo ou un fond, déplace, agrandis, télécharge.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="outils">
+  <main class="wrap arcade-page page-tool">
+    <div class="page-head arcade-head">
+      <h1>Atelier montage</h1>
+      <p>Pose des têtes et du texte sur une photo ou un fond, déplace, agrandis, télécharge.</p>
+    </div>
+    <div class="st-wrap">
+      <div class="st-canvas"><canvas id="cv" aria-label="Zone de montage"></canvas></div>
+      <div class="tool-panel st-panel">
+        <h2>Fond</h2>
+        <div class="st-bgs" id="bgs"></div>
+        <div class="field"><label for="upload">Ou ta propre image</label><input type="file" id="upload" accept="image/*"></div>
+        <h2>Ajouter une tête</h2>
+        <div class="st-heads" id="heads"></div>
+        <h2>Ajouter du texte</h2>
+        <div class="btn-row"><input type="text" id="text" maxlength="40" placeholder="Ton texte" style="flex:1;min-width:0;padding:10px;border:1px solid var(--line);border-radius:8px;font:inherit"><input type="color" id="color" value="#ffffff" aria-label="Couleur"><button class="btn btn-secondary" id="add-text" type="button">Ajouter</button></div>
+        <h2>Élément sélectionné</h2>
+        <label>Taille<input type="range" id="size" min="20" max="400" value="100"></label>
+        <label>Rotation<input type="range" id="rot" min="-180" max="180" value="0"></label>
+        <div class="btn-row"><button class="btn btn-secondary" id="flip" type="button">Retourner</button><button class="btn btn-secondary" id="del" type="button">Supprimer</button><button class="btn btn-secondary" id="clear" type="button">Tout effacer</button></div>
+        <div class="btn-row"><button class="btn" id="download" type="button">Télécharger l'image</button></div>
+        <p class="muted">Clique un élément pour le sélectionner, glisse pour le déplacer, molette pour le redimensionner.</p>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="js/tools/stickers.js"></script>
+</body>
+</html>

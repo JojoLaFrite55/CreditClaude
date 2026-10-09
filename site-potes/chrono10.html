@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chrono 10 secondes — LE QG</title>
+  <meta name="description" content="Arrête le chrono pile sur 10,00 secondes. Cinq essais, le moins d'écart gagne.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/arcade.css">
+  <link rel="stylesheet" href="css/memes.css">
+  <link rel="stylesheet" href="css/jeux2.css">
+</head>
+<body data-page="jeux">
+  <main class="wrap arcade-page">
+    <div class="page-head arcade-head">
+      <h1>Chrono 10 secondes</h1>
+      <p>Arrête le chrono pile sur 10,00 secondes. Cinq essais, le moins d'écart gagne.</p>
+    </div>
+    <div class="chrono">
+      <div class="zq-top"><div class="hud-item light"><span>Essai</span><strong id="round">0/5</strong></div><div class="hud-item light"><span>Écart moyen</span><strong id="avg">—</strong></div><div class="hud-item light"><span>Record</span><strong id="best">—</strong></div><button class="hud-btn dark-btn" id="sound" type="button">Son : activé</button></div>
+      <div class="face-token" id="face"></div>
+      <div class="chrono-display" id="display">0.00</div>
+      <label><input type="checkbox" id="hide"> Masquer le chrono après 2 secondes (mode difficile)</label>
+      <button class="btn big-go" id="go" type="button">Lancer</button>
+      <p class="p4-status" id="status">Appuie sur Lancer, puis sur Stop à 10,00 s. Espace marche aussi.</p>
+      <ol id="history" aria-label="Résultats"></ol>
+    </div>
+  </main>
+  <script type="module" src="js/games/chrono10.js"></script>
+</body>
+</html>
