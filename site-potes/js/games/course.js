@@ -177,15 +177,20 @@ function draw() {
     g.fillStyle = i === state.pick ? "#ffd54a" : "#fff";
     g.fillText(`${i + 1}`, 14, y + 5);
   });
-  g.fillStyle = "rgba(0,0,0,0.65)";
-  g.font = '700 22px "Inter", sans-serif';
-  g.textAlign = "center";
-  if (state.mode === "bet") {
-    g.fillText("Choisis ton favori, mise, et lance la course", W / 2, 33);
-  } else if (state.mode === "run") {
-    g.fillText("Course en cours…", W / 2, 33);
-  } else if (state.ranking.length) {
-    g.fillText(`Vainqueur : ${state.ranking[0].name}`, W / 2, 33);
+  let banner = "";
+  if (state.mode === "bet") banner = "Choisis ton favori, mise, et lance la course";
+  else if (state.mode === "run") banner = "Course en cours…";
+  else if (state.ranking.length) banner = `Vainqueur : ${state.ranking[0].name}`;
+  if (banner) {
+    g.font = '700 22px "Inter", sans-serif';
+    g.textAlign = "center";
+    const width = g.measureText(banner).width + 36;
+    g.fillStyle = "rgba(236,236,236,0.96)";
+    g.beginPath();
+    g.roundRect(W / 2 - width / 2, 8, width, 36, 18);
+    g.fill();
+    g.fillStyle = "rgba(0,0,0,0.75)";
+    g.fillText(banner, W / 2, 33);
   }
 }
 

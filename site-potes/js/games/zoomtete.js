@@ -46,7 +46,7 @@ function thumb(head) {
 function drawZoom(head, factor) {
   zg.fillStyle = "#e9edf2";
   zg.fillRect(0, 0, 480, 480);
-  const side = Math.min(head.width, head.height) / factor;
+  const side = Math.min(head.height, head.width, Math.max(150, Math.min(head.width, head.height) / factor));
   const pts = opaquePoints(head);
   const [px, py] = pts.length ? pts[Math.floor(Math.random() * pts.length)] : [head.width / 2, head.height / 2];
   const sx = Math.max(0, Math.min(head.width - side, px - side / 2));
@@ -61,7 +61,7 @@ function nextRound() {
   roundEl.textContent = `${state.round}/${ROUNDS}`;
   const pool = shuffle(heads).slice(0, 4);
   state.answer = pool[Math.floor(Math.random() * 4)];
-  drawZoom(state.answer, 3 + Math.random() * 2.2);
+  drawZoom(state.answer, 2.2 + Math.random() * 1.4);
   optsEl.innerHTML = "";
   state.buttons = [];
   for (const head of pool) {
@@ -133,6 +133,13 @@ function finish() {
   startBtn.hidden = false;
   timerEl.style.transform = "scaleX(0)";
 }
+
+zg.fillStyle = "#e9edf2";
+zg.fillRect(0, 0, 480, 480);
+zg.fillStyle = "#6b7280";
+zg.textAlign = "center";
+zg.font = "700 28px Inter, system-ui, sans-serif";
+zg.fillText("Un détail apparaîtra ici", 240, 240);
 
 startBtn.addEventListener("click", () => {
   Object.assign(state, { round: 0, score: 0, streak: 0, good: 0 });

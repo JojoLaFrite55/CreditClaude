@@ -31,7 +31,7 @@
       card.href = item.href;
       card.innerHTML = `
         <div class="media">
-          <span class="badge">${item.badge}</span>
+          ${item.badge ? `<span class="badge">${item.badge}</span>` : ""}
           <img src="${item.image}" alt="Aperçu : ${item.title}" loading="lazy" onerror="this.remove()">
         </div>
         <h3>${item.title}</h3>

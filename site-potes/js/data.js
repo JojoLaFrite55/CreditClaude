@@ -126,7 +126,7 @@ export const GAMES = [
     text: "Une tête qui bat des ailes entre des tuyaux. Simple, cruel, addictif.",
     href: "flappy.html",
     image: "assets/previews/flappy.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Arcade", "Record"],
   },
   {
@@ -135,7 +135,7 @@ export const GAMES = [
     text: "Des têtes sortent des trous, tu les bonkes au marteau. Têtes dorées et combos.",
     href: "taupe.html",
     image: "assets/previews/taupe.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Réflexes", "45 secondes"],
   },
   {
@@ -144,7 +144,7 @@ export const GAMES = [
     text: "Le classique serpent, mais il mange des têtes. Il accélère à chaque palier.",
     href: "serpent.html",
     image: "assets/previews/serpent.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Classique", "Record"],
   },
   {
@@ -153,7 +153,7 @@ export const GAMES = [
     text: "Retrouve les paires de têtes en un minimum de coups. Trois niveaux.",
     href: "memory.html",
     image: "assets/previews/memory.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Réflexion", "3 niveaux"],
   },
   {
@@ -162,7 +162,7 @@ export const GAMES = [
     text: "Clique sur la tête, gagne des likes, achète des chaînes YouTube et des concerts.",
     href: "clicker.html",
     image: "assets/previews/clicker.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Idle", "Sauvegarde auto"],
   },
   {
@@ -171,7 +171,7 @@ export const GAMES = [
     text: "Un casse-briques dont les briques sont des têtes. Bonus, vies et niveaux.",
     href: "casse.html",
     image: "assets/previews/casse.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Arcade", "Bonus"],
   },
   {
@@ -180,7 +180,7 @@ export const GAMES = [
     text: "Fusionne les têtes identiques jusqu'à la tête ultime.",
     href: "deuxmille.html",
     image: "assets/previews/deuxmille.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Réflexion", "Record"],
   },
   {
@@ -189,7 +189,7 @@ export const GAMES = [
     text: "Un Wordle en français, avec un mot du jour pour toute la bande.",
     href: "mot.html",
     image: "assets/previews/mot.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Mots", "Quotidien"],
   },
   {
@@ -198,7 +198,7 @@ export const GAMES = [
     text: "Aligne quatre têtes contre l'ordinateur ou contre un pote.",
     href: "puissance4.html",
     image: "assets/previews/puissance4.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Duel", "IA"],
   },
   {
@@ -207,7 +207,7 @@ export const GAMES = [
     text: "Parie sur ton coureur, regarde la course, quitte ou double.",
     href: "course.html",
     image: "assets/previews/course.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Paris", "Cagnotte"],
   },
   {
@@ -216,7 +216,7 @@ export const GAMES = [
     text: "Ton temps de réaction et ton nombre de clics par seconde.",
     href: "reflexes.html",
     image: "assets/previews/reflexes.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Réflexes", "Défi"],
   },
   {
@@ -225,13 +225,13 @@ export const GAMES = [
     text: "Ouvre les cases sans réveiller les têtes cachées dessous.",
     href: "demineur.html",
     image: "assets/previews/demineur.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Réflexion", "3 niveaux"],
   },
   {
     slug: "rythme",
     title: "Rythme des potes",
-    text: "Des flèches en rythme avec les vidéos du QG : 37 morceaux, 4 difficultés.",
+    text: "Des flèches en rythme avec les vidéos du QG : des dizaines de morceaux, 4 difficultés.",
     href: "rythme.html",
     image: "assets/previews/rythme.jpg",
     badge: "Nouveau",
@@ -297,7 +297,7 @@ export const GAMES = [
     text: "Retiens la suite de têtes qui s'allument et rejoue-la.",
     href: "simon.html",
     image: "assets/previews/simon.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Mémoire", "Record"],
   },
   {
@@ -306,7 +306,7 @@ export const GAMES = [
     text: "Le classique contre l'ordinateur, premier à cinq points.",
     href: "pfc.html",
     image: "assets/previews/pfc.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Duel", "Rapide"],
   },
   {
@@ -315,7 +315,7 @@ export const GAMES = [
     text: "Trouve le mot avant que le dessin soit complet, avec des thèmes.",
     href: "pendu.html",
     image: "assets/previews/pendu.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Mots", "Série"],
   },
   {
@@ -324,7 +324,7 @@ export const GAMES = [
     text: "Un entraînement de précision : clique les têtes avant qu'elles disparaissent.",
     href: "aim.html",
     image: "assets/previews/aim.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Précision", "30 secondes"],
   },
   {
@@ -333,7 +333,7 @@ export const GAMES = [
     text: "Remets les morceaux de la tête dans l'ordre.",
     href: "taquin.html",
     image: "assets/previews/taquin.jpg",
-    badge: "Nouveau",
+    badge: "",
     tags: ["Puzzle", "2 tailles"],
   },
 ];
@@ -471,7 +471,7 @@ export const TOOLS = [
     text: "Un diplôme officiel (et bidon) avec nom, motif et tête de ton choix, à télécharger.",
     href: "diplome.html",
     image: "assets/previews/diplome.jpg",
-    badge: "Outil",
+    badge: "Nouveau",
     tags: ["Image", "Téléchargement"],
   },
   {
@@ -480,16 +480,7 @@ export const TOOLS = [
     text: "Pose une question, secoue, accepte la réponse. Aucune valeur scientifique.",
     href: "boule.html",
     image: "assets/previews/boule.jpg",
-    badge: "Outil",
+    badge: "Nouveau",
     tags: ["Décision", "Hasard"],
-  },
-  {
-    slug: "horoscope",
-    title: "Horoscope des potes",
-    text: "Ton signe, ta journée, des conseils discutables. Même signe, même horoscope.",
-    href: "horoscope.html",
-    image: "assets/previews/horoscope.jpg",
-    badge: "Outil",
-    tags: ["Humour", "Du jour"],
   },
 ];

@@ -182,6 +182,8 @@ function finish() {
 }
 
 for (const cv of [a, b]) cv.addEventListener("pointerdown", click);
+await newBoard();
+statusEl.textContent = "Appuie sur Jouer.";
 startBtn.addEventListener("click", async () => {
   state.round = 1;
   state.time = START_TIME;

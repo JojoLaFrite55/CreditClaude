@@ -1,5 +1,5 @@
 import "./layout.js";
-import { MEMES } from "./data.js";
+import { BACKGROUNDS, GAMES, MEMES } from "./data.js";
 import { loadHeads } from "./faces.js";
 import { renderMeme } from "./meme-core.js";
 
@@ -21,8 +21,22 @@ heads.slice(0, 4).forEach((head) => {
   collage.append(figure);
 });
 
+const gamesCount = document.getElementById("games-count");
+if (gamesCount) gamesCount.textContent = `${GAMES.length} jeux pour se défier entre nous, dont un avec boss.`;
+
 const memeCover = document.getElementById("meme-cover");
-renderMeme(memeCover, { head: heads[2 % heads.length], bg: MEMES[2].bg, top: MEMES[2].top, bottom: MEMES[2].bottom });
+const coverSource = document.createElement("canvas");
+await renderMeme(coverSource, { head: heads[2 % heads.length], bg: MEMES[2].bg, top: MEMES[2].top, bottom: MEMES[2].bottom });
+memeCover.width = 800;
+memeCover.height = 600;
+const cg = memeCover.getContext("2d");
+const palette = BACKGROUNDS.find((item) => item.id === MEMES[2].bg) ?? BACKGROUNDS[0];
+const fill = cg.createLinearGradient(0, 0, 800, 600);
+fill.addColorStop(0, palette.a);
+fill.addColorStop(1, palette.b);
+cg.fillStyle = fill;
+cg.fillRect(0, 0, 800, 600);
+cg.drawImage(coverSource, 100, 0, 600, 600);
 
 const featured = document.getElementById("featured");
 MEMES.slice(0, 4).forEach((meme, index) => {

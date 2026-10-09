@@ -9,8 +9,8 @@
 
 .arcade-shell {
   position: relative;
-  width: min(100%, 960px, calc((100svh - 190px) * 1.6));
-  min-width: min(100%, 480px);
+  width: min(100%, 960px, calc((100svh - 270px) * 1.6));
+  min-width: min(100%, 420px);
   margin-inline: auto;
   aspect-ratio: 8 / 5;
   background: #0b0e14;
@@ -22,7 +22,8 @@
 }
 
 .arcade-shell.portrait {
-  width: min(100%, 520px, calc((100svh - 190px) * 0.72));
+  width: min(100%, 520px, calc((100svh - 270px) * 0.72));
+  min-width: min(100%, 300px);
   aspect-ratio: 18 / 25;
 }
 
@@ -804,6 +805,14 @@
   touch-action: none;
 }
 
+@media (min-width: 701px) and (min-height: 600px) {
+  .p4-stage canvas {
+    display: block;
+    width: max(380px, min(100%, calc((100svh - 430px) * 1.025)));
+    margin-inline: auto;
+  }
+}
+
 .p4-score {
   display: flex;
   justify-content: space-between;
@@ -1279,11 +1288,13 @@
 }
 
 .spad {
+  position: relative;
   min-width: 0;
+  width: 100%;
+  align-self: start;
   aspect-ratio: 1;
   border: 0;
-  display: grid;
-  place-items: center;
+  overflow: hidden;
   cursor: pointer;
   opacity: 0.55;
   transition: opacity 0.08s, transform 0.08s, filter 0.08s;
@@ -1291,6 +1302,8 @@
 
 .spad img,
 .spad canvas {
+  position: absolute;
+  inset: 15%;
   width: 70%;
   height: 70%;
   object-fit: contain;
@@ -1452,5 +1465,29 @@
 @media (max-width: 860px) {
   .pfc-move {
     font-size: 48px;
+  }
+}
+
+@media (max-width: 700px) {
+  .arcade-shell,
+  .arcade-shell.portrait {
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: auto;
+  }
+
+  .arcade-bar {
+    position: static;
+    order: -1;
+    padding: 8px;
+    background: #0b0e14;
+    pointer-events: auto;
+  }
+
+  .arcade-shell canvas {
+    position: static;
+    inset: auto;
+    width: 100%;
+    height: auto;
   }
 }
