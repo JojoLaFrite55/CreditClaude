@@ -31,7 +31,7 @@ bestEl.textContent = state.best;
 
 function show() {
   const target = state.sentences[state.idx];
-  textEl.innerHTML = [...target].map((c, i) => `<span data-i="${i}">${c === " " ? "&nbsp;" : c.replace("<", "&lt;")}</span>`).join("");
+  textEl.innerHTML = [...target].map((c, i) => `<span data-i="${i}">${c.replace("<", "&lt;")}</span>`).join("");
   input.value = "";
   paint();
 }

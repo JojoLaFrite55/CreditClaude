@@ -100,3 +100,5 @@ Jeux : `tetris.html` (Tétris, avec écran tactile), `runner.html` (runner sans 
 Outils : `addition.html` (partage de l'addition par article ou à parts égales, avec pourboire, sauvegardé sur l'appareil), `bingo.html` (grille partageable par lien), `compatibilite.html`, `quelpote.html` (quiz de personnalité) et `stickers.html` (atelier de montage : têtes, texte, photo de fond ou image importée, téléchargement PNG).
 
 Corrections : chèvre de l'accueil intégrée au bloc d'accueil (elle ne recouvre plus rien), HUD et fenêtres de départ des jeux repensés pour le mobile, jeux qui tiennent dans la hauteur de l'écran, vignettes régénérées à partir de vraies captures, badges « Nouveau » réservés aux ajouts récents, têtes détourées avec des bords rectangulaires reprises.
+
+Les pages Jeux et Outils ont une recherche et des filtres par thème (avec « Nouveautés »).

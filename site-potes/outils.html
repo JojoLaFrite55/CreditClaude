@@ -17,6 +17,11 @@
       <h1>Outils</h1>
       <p>Les jeux du QG. Gratuits, sans pub, jouables directement dans le navigateur. Les records sont gardés sur ton appareil.</p>
     </div>
+    <div class="catalog-filter">
+      <input type="search" id="q" placeholder="Chercher un outil…" aria-label="Chercher">
+      <div class="catalog-chips" id="chips" role="group" aria-label="Filtrer"></div>
+      <span class="muted" id="count"></span>
+    </div>
     <div class="grid" id="tools"></div>
   </main>
   <script type="module">
@@ -40,7 +45,47 @@
       return card;
     };
 
-    TOOLS.forEach((game) => root.append(make(game)));
+    const items = TOOLS.map((item) => ({ item, node: make(item) }));
+    items.forEach(({ node }) => root.append(node));
+    const norm = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const chips = document.getElementById("chips");
+    const search = document.getElementById("q");
+    const count = document.getElementById("count");
+    const tagCounts = new Map();
+    TOOLS.forEach((item) => item.tags.forEach((tag) => tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1)));
+    const popular = [...tagCounts.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 9).map(([tag]) => tag);
+    let active = "";
+    const add = (label, value) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = label;
+      b.dataset.v = value;
+      if (value === "") b.classList.add("on");
+      chips.append(b);
+    };
+    add("Tous", "");
+    if (TOOLS.some((i) => i.badge === "Nouveau")) add("Nouveautés", "__new");
+    popular.forEach((tag) => add(tag, tag));
+    const apply = () => {
+      const q = norm(search.value.trim());
+      let n = 0;
+      items.forEach(({ item, node }) => {
+        const okTag = !active || (active === "__new" ? item.badge === "Nouveau" : item.tags.includes(active));
+        const okQ = !q || norm(`${item.title} ${item.text} ${item.tags.join(" ")}`).includes(q);
+        node.hidden = !(okTag && okQ);
+        if (!node.hidden) n += 1;
+      });
+      count.textContent = `${n} outil${n > 1 ? "s" : ""}`;
+    };
+    chips.addEventListener("click", (event) => {
+      const b = event.target.closest("button");
+      if (!b) return;
+      active = b.dataset.v;
+      chips.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
+      apply();
+    });
+    search.addEventListener("input", apply);
+    apply();
 
   </script>
 </body>

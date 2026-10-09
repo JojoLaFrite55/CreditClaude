@@ -462,6 +462,8 @@
 }
 
 .typing-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   width: 100%;
   padding: 18px;
   border: 1px solid var(--line, #ddd);
